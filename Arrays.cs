@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -79,6 +80,79 @@ namespace CrackingTheCodingInterview
                 }
             }
             return result;
+        }
+
+        public static List<List<string>> GroupAnagrams(string[] strs)
+        {
+            var ans = new Dictionary<string, List<string>>();
+
+            foreach (var s in strs)
+            {
+                var count = new int[26];
+                foreach (var c in s)
+                {
+                    count[c - 'a']++;
+                }
+
+                var key = string.Join(',', count);
+                if (!ans.ContainsKey(key))
+                {
+                    ans[key] = new List<string>();
+                }
+
+                ans[key].Add(s);
+            }
+
+            return new List<List<string>>(ans.Values);
+        }
+
+        public static int SumOfString(string s)
+        {
+            int count = 0;
+            foreach (char cc in s)
+                count = count + cc;
+            return count;
+        }
+
+        public static bool IsAnagram(string s, string t)
+        {
+            if (s.Length != t.Length) return false;
+            var a1 = s.ToCharArray();
+            var a2 = t.ToCharArray();
+            Array.Sort(a1);
+            Array.Sort(a2);
+            for (int i = 0; i < a1.Length; i++)
+            {
+                if (a1[i] != a2[i]) return false;
+            }
+            return true;
+        }
+
+        public static int[] TopKFrequent(int[] nums, int k)
+        {
+            var dic = new Dictionary<int, int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!dic.ContainsKey(nums[i]))
+                    dic.Add(nums[i], 1);
+                else dic[nums[i]]++;
+            }
+
+            var sorted = dic.OrderByDescending(x => x.Value).ToArray();
+            var result = new int[k];
+            for (int i = 0; i < k; i++)
+                result[i] = sorted[i].Key;
+            return result;
+        }
+
+        public static string Encode(IList<string> strs)
+        {
+
+        }
+
+        public static List<string> Decode(string s)
+        {
+
         }
     }
 }
