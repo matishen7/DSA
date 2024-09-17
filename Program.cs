@@ -1,5 +1,6 @@
 ﻿using CrackingTheCodingInterview;
 
-//Console.WriteLine(Arrays.IsUnique("abca"));
-int[] nums = [1, 2, 2, 3, 3, 3];int  k = 2;
-Console.WriteLine(Arrays.TopKFrequent(nums, k));
+//Console.WriteLine(Arrays.IsUnique('abca'));
+int[] nums = [9, 1, -3, 2, 4, 8, 3, -1, 6, -2, -4, 7];
+Console.WriteLine(Arrays.LongestConsecutive(nums));
+//Console.WriteLine(Arrays.Decode(Arrays.Encode(str)));
