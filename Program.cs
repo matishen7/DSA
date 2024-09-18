@@ -1,6 +1,5 @@
 ﻿using CrackingTheCodingInterview;
+using Neetcode150;
 
-//Console.WriteLine(Arrays.IsUnique('abca'));
-int[] nums = [9, 1, -3, 2, 4, 8, 3, -1, 6, -2, -4, 7];
-Console.WriteLine(Arrays.LongestConsecutive(nums));
-//Console.WriteLine(Arrays.Decode(Arrays.Encode(str)));
+int[] height = [2, 2, 2];
+Console.WriteLine(TwoPointers.MaxArea(height));
