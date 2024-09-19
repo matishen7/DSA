@@ -40,12 +40,12 @@ namespace Neetcode150
 
         public static int[] TwoSum(int[] numbers, int target)
         {
-            int [] result = new int[2];
+            int[] result = new int[2];
             int left = 0;
             int right = numbers.Length - 1;
             int diff1 = target - numbers[left];
             int diff2 = target - numbers[right];
-            while (diff1 + diff2 != target) 
+            while (diff1 + diff2 != target)
             {
                 if (diff1 + diff2 > target) left++;
                 else right--;
@@ -90,7 +90,7 @@ namespace Neetcode150
                 diff1 = target - numbers[left];
                 diff2 = target - numbers[right];
             }
-            result[0] = left ;
+            result[0] = left;
             result[1] = right;
             return result;
         }
@@ -112,7 +112,66 @@ namespace Neetcode150
 
         public static int Trap(int[] height)
         {
+            int[] maxLeft = new int[height.Length];
+            int[] maxRight = new int[height.Length];
+            int[] minLR = new int[height.Length];
+            int max = 0;
+            for (int i = 0; i < height.Length; i++)
+            {
+                if (i == 0) continue; 
+                max = Math.Max(max, height[i - 1]);
+                maxLeft[i] = max;
+            }
 
+            max = 0;
+            for (int i = height.Length - 1; i >= 0; i--)
+            {
+                if (i == height.Length - 1) continue;
+                max = Math.Max(max, height[i + 1 ]);
+                maxRight[i] = max;
+            }
+
+            for (int i = 0; i < minLR.Length; i++)
+                minLR[i] = Math.Min(maxLeft[i], maxRight[i]);
+
+            int waterSum = 0;
+            for (int i = 0; i < minLR.Length; i++)
+            {
+                int water = minLR[i] - height[i];
+                if (water > 0) waterSum += water; 
+            }
+
+            return waterSum;
+        }
+
+        public static int MaxProfit(int[] prices)
+        {
+            int result = 0;
+            int[] minArr = new int[prices.Length];
+            int[] maxArr = new int[prices.Length];
+            int min = prices[0];
+            minArr[0] = min;
+            for (int i = 1; i < prices.Length; i++) 
+            {
+                min = Math.Min(min, prices[i]);
+                minArr[i] = min;
+            }
+
+            int max = prices[prices.Length - 1];
+            maxArr[prices.Length - 1] = max;
+            for (int i = prices.Length - 2; i >= 0; i--)
+            {
+                max = Math.Max(max, prices[i]);
+                maxArr[i] = max;
+            }
+
+            for (int i = 0; i < maxArr.Length;i++)
+            {
+                int profit = maxArr[i] - minArr[i];
+                if (profit > result) result = profit;
+            }
+
+            return result;
         }
     }
 }
