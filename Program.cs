@@ -1,5 +1,5 @@
 ﻿using CrackingTheCodingInterview;
 using Neetcode150;
 
-string s = "abcabcbb";
-Console.WriteLine( SlidingWindow.LengthOfLongestSubstring(s));
+string[] tokens = ["1", "2", "+", "3", "*", "4", "-"];
+Console.WriteLine(Stacks.EvalRPN(tokens));
