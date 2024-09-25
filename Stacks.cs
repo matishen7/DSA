@@ -116,9 +116,55 @@ namespace Neetcode150
             return stack.Peek();
         }
 
-        public static List<string> GenerateParenthesis(int n)
+        public static int[] NextGreaterElement(int[] nums)
         {
+            int[] ans = new int[nums.Length];
+            var mono = new Stack<int>();
+            for (int i = nums.Length - 1; i >= 0; i--)
+            {
+                while (mono.Count > 0 && mono.Peek() <= nums[i])
+                    mono.Pop();
 
+                if (mono.Count == 0)
+                    ans[i] = -1;
+                else ans[i] = mono.Peek();
+
+                mono.Push(nums[i]);
+
+            }
+
+            return ans;
         }
+
+        public static int[] DailyTemperatures(int[] temperatures)
+        {
+            var dic = new Dictionary<int, int>();
+            int[] ans = new int[temperatures.Length];
+            var mono = new Stack<Temperature>();
+            for (int i = temperatures.Length - 1; i >= 0; i--)
+            {
+                while (mono.Count > 0 && mono.Peek().temperature <= temperatures[i])
+                {
+                    mono.Pop();
+                }
+                if (mono.Count == 0)
+                    ans[i] = 0;
+                else ans[i] = mono.Peek().index - i;
+
+
+                mono.Push(new Temperature() { temperature = temperatures[i], index = i });
+
+            }
+
+            return ans;
+        }
+
+        private class Temperature
+        {
+            public int temperature;
+            public int index;
+        }
+
+        
     }
 }
