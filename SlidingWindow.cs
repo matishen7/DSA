@@ -151,5 +151,39 @@ namespace Neetcode150
             }
             return true;
         }
+
+        public static int[] MaxSlidingWindow(int[] nums, int k)
+        {
+            var ans = new List<int>();
+            var maxHeap = new PriorityQueue<int, int>(Comparer<int>.Create((x, y) => y - x));
+            Queue<int> queue = new Queue<int>();
+            for (int i = 0; i < k; i++)
+                queue.Enqueue(nums[i]);
+
+            int l = 0;
+            while (l + k < nums.Length)
+            {
+
+                for (int i = 0; i < queue.Count; i++) 
+                {
+                    var el = queue.ElementAt(i);
+                    maxHeap.Enqueue(el, el);
+                }
+                ans.Add(maxHeap.Peek());
+                maxHeap.Clear();
+                
+                l++;
+                queue.Dequeue();
+                queue.Enqueue(nums[l + k - 1]);
+            }
+            for (int i = 0; i < queue.Count; i++)
+            {
+                var el = queue.ElementAt(i);
+                maxHeap.Enqueue(el, el);
+            }
+            ans.Add(maxHeap.Peek());
+            maxHeap.Clear();
+            return ans.ToArray();
+        }
     }
 }
