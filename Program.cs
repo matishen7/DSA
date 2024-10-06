@@ -1,6 +1,11 @@
-﻿using CrackingTheCodingInterview;
+﻿
 using Neetcode150;
-int[] list1 = [1, 2, 4], list2 = [1, 3, 5];
-var head1 = LinkedListProblems.ArrayToLinkedList(list1);
-var head2 = LinkedListProblems.ArrayToLinkedList(list2);
-Console.WriteLine(LinkedListProblems.MergeTwoLists(head1, head2));
+using static Neetcode150.TreeProblems;
+
+TreeProblems bst = new TreeProblems();
+int[] array = { 1, 2, 3, 4, 5, 6, 7 };
+TreeNode p = bst.CreateBSTFromArray(array);
+TreeNode q = bst.CreateBSTFromArray(array);
+bst.PrintBST(p);
+var same = bst.IsSameTree(p,q);
+Console.WriteLine("----------------------");

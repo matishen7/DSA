@@ -87,5 +87,184 @@ namespace Neetcode150
 
             return newList.next;
         }
+
+        public static int[] LinkedListToArray(ListNode head)
+        {
+            var list = new List<int>();
+            var tail = head;
+            while (tail != null)
+            {
+                list.Add(tail.val);
+                tail = tail.next;
+            }
+            return list.ToArray();
+        }
+
+        public static void Reorder(ListNode head)
+        {
+            ListNode fast = head;
+            ListNode slow = head;
+            while (fast != null && fast.next != null)
+            {
+                fast = fast.next.next;
+                slow = slow.next;
+            }
+
+            ListNode part1 = head;
+            ListNode part2 = slow.next;
+            part2 = ReverseList(part2);
+            // ListNode dummy = new ListNode();
+            while (part2 != null && part1 != null)
+            {
+                ListNode temp1 = part1.next;
+                ListNode temp2 = part2.next;
+                part1.next = part2;
+                part2.next = temp1;
+                temp1.next = temp2;
+
+                temp2 = temp2.next;
+                temp1 = temp2.next;
+
+                part1 = part1.next;
+                part2 = part2.next;
+            }
+        }
+
+        public static bool HasCycle(ListNode head)
+        {
+            ListNode fast = head;
+            ListNode slow = head;
+            while (fast != null && fast.next != null)
+            {
+                fast = fast.next.next;
+                slow = slow.next;
+                if (fast == slow) return true;
+            }
+            return false;
+        }
+
+        public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
+        {
+            var tail1 = l1;
+            var tail2 = l2;
+            ListNode dummy = new ListNode(-1);
+            var previous = dummy;
+            int carry = 0;
+            while (tail1 != null && tail2 != null)
+            {
+                int sum = tail1.val + tail2.val + carry;
+                var newNode = new ListNode(sum % 10);
+                previous.next = newNode;
+                previous = previous.next;
+                carry = sum / 10;
+                tail1 = tail1.next;
+                tail2 = tail2.next;
+            }
+
+            while (tail1 != null)
+            {
+                int sum = tail1.val + carry;
+                var newNode = new ListNode(sum % 10);
+                previous.next = newNode;
+                previous = previous.next;
+                carry = sum / 10;
+                tail1 = tail1.next;
+            }
+
+            while (tail2 != null)
+            {
+                int sum = tail2.val + carry;
+                var newNode = new ListNode(sum % 10);
+                previous.next = newNode;
+                previous = previous.next;
+                carry = sum / 10;
+                tail2 = tail2.next;
+            }
+            if (carry != 0)
+            {
+                var newNode = new ListNode(carry);
+                previous.next = newNode;
+                previous = previous.next;
+            }
+            return dummy.next;
+        }
+
+        public static ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            var dummy = new ListNode(-1, head);
+            var right = head;
+            while (n > 0)
+            {
+                right = right.next;
+                n--;
+            }
+
+            var left = dummy;
+            while (right != null)
+            {
+                left = left.next;
+                right = right.next;
+            }
+
+            left.next = left.next.next;
+            return dummy.next;
+        }
+
+        public static ListNode MergeKLists(ListNode[] lists)
+        {
+            var queue = new PriorityQueue<int, int>();
+            for (int i = 0; i < lists.Length; i++)
+            {
+                var head = lists[i];
+                if (head == null) continue;
+                var tail = head;
+                while (tail != null)
+                {
+                    queue.Enqueue(tail.val, tail.val);
+                    tail = tail.next;
+                }
+            }
+            var dummy = new ListNode(int.MinValue);
+            var previous = dummy;
+            while (queue.Count > 0)
+            {
+                var value = queue.Dequeue();
+                var newNode = new ListNode(value);
+                previous.next = newNode;
+                previous = previous.next;
+            }
+
+            return dummy.next;
+        }
+
+        public static ListNode[] ArrayToLinkedListArray(int[][] arr)
+        {
+            // Create an array of ListNode with the same length as the input 2D array
+            ListNode[] listNodes = new ListNode[arr.Length];
+
+            // Iterate over each sub-array in the 2D array
+            for (int i = 0; i < arr.Length; i++)
+            {
+                // Convert each sub-array to a linked list
+                if (arr[i].Length > 0)
+                {
+                    listNodes[i] = new ListNode(arr[i][0]); // Initialize the head
+                    ListNode current = listNodes[i];
+
+                    // Iterate through the rest of the sub-array
+                    for (int j = 1; j < arr[i].Length; j++)
+                    {
+                        current.next = new ListNode(arr[i][j]); // Create the next node
+                        current = current.next; // Move to the next node
+                    }
+                }
+                else
+                {
+                    listNodes[i] = null; // If the sub-array is empty, set the linked list to null
+                }
+            }
+
+            return listNodes; // Return the array of ListNode
+        }
     }
 }
