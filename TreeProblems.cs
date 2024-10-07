@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Neetcode150.TreeMap;
 
 namespace Neetcode150
 {
@@ -49,7 +50,86 @@ namespace Neetcode150
             return true;
         }
 
+        //public bool IsSubtree(TreeNode root, TreeNode subRoot)
+        //{
+        //    var foundNode = BfsTraversal(root, subRoot.val);
+        //    if (foundNode == null) return false;
+        //    return IsSameTree(foundNode, subRoot);
+        //}
 
+
+        public IList<IList<int>> LevelOrder(TreeNode root)
+        {
+            var list = new List<IList<int>>();
+            if (root == null) return list;
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                int levelLength = queue.Count;
+                var subList = new List<int>();
+                for (int i = 0; i < levelLength; i++)
+                {
+
+                    var curr = queue.Dequeue();
+                    subList.Add(curr.val);
+                    if (curr.left != null)
+                        queue.Enqueue(curr.left);
+                    if (curr.right != null)
+                        queue.Enqueue(curr.right);
+                }
+                list.Add(subList);
+            }
+            return list;
+        }
+
+        public List<int> BfsTraversal(TreeNode root)
+        {
+            var list = new List<int>();
+            if (root == null) return list;
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                int levelLength = queue.Count;
+                for (int i = 0; i < levelLength; i++)
+                {
+
+                    var curr = queue.Dequeue();
+                    list.Add(curr.val);
+                    if (curr.left != null)
+                        queue.Enqueue(curr.left);
+                    if (curr.right != null)
+                        queue.Enqueue(curr.right);
+                }
+            }
+            return list;
+        }
+
+        public int KthSmallest(TreeNode root, int k)
+        {
+            var list = InOrder(root, new List<int>());
+            return list[k - 1];
+        }
+
+        public List<int> InOrder(TreeNode root, List<int> list)
+        {
+            if (root == null) return list;
+            
+            InOrder(root.left, list);
+            list.Add(root.val);
+            InOrder(root.right, list);
+            
+            return list;
+        }
+
+        public bool IsValidBST(TreeNode root)
+        {
+            if (root == null) return true;
+            else if (root.left != null && root.left.val >= root.val) return false;
+            else if (root.right != null && root.right.val <= root.val) return false;
+            return (IsValidBST(root.left)&&IsValidBST(root.right));
+        }
 
         public class TreeNode
         {
