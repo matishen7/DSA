@@ -9,18 +9,18 @@ namespace Neetcode150
     public class Twitter
     {
         private Dictionary<int, HashSet<int>> follows;
-        private PriorityQueue<Tweet, int> tweets;
+        private PriorityQueue<Tweet, DateTime> tweets;
 
         public Twitter()
         {
             follows = new Dictionary<int, HashSet<int>>();
-            tweets = new PriorityQueue<Tweet, int>(Comparer<int>.Create((a, b) => b.CompareTo(a)));
+            tweets = new PriorityQueue<Tweet, DateTime>(Comparer<DateTime>.Create((a, b) => b.CompareTo(a)));
         }
 
         public void PostTweet(int userId, int tweetId)
         {
             var tweet = new Tweet(tweetId, userId);
-            tweets.Enqueue(tweet, tweetId);
+            tweets.Enqueue(tweet, tweet.created);
         }
 
         public List<int> GetNewsFeed(int userId)
@@ -42,13 +42,15 @@ namespace Neetcode150
             while (stack.Count > 0)
             {
                 var tweet = stack.Pop();
-                tweets.Enqueue(tweet, tweet.id);
+                tweets.Enqueue(tweet, tweet.created);
             }
             return list;
         }
 
         public void Follow(int followerId, int followeeId)
         {
+            if (followerId == followeeId) return;
+
             if (!follows.ContainsKey(followerId))
                 follows.Add(followerId, new HashSet<int>() { followeeId });
             else follows[followerId].Add(followeeId);
@@ -67,11 +69,13 @@ namespace Neetcode150
         {
             public int id;
             public int userId;
+            public DateTime created;
 
             public Tweet(int id, int userId )
             {
                 this.id = id;
                 this.userId = userId;
+                created = DateTime.Now;
             }
         }
 
