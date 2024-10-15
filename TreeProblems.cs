@@ -83,6 +83,86 @@ namespace Neetcode150
             return list;
         }
 
+        public List<int> RightSideView(TreeNode root)
+        {
+            var list = new List<IList<int>>();
+            if (root == null) return new List<int>();
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                int levelLength = queue.Count;
+                var subList = new List<int>();
+                for (int i = 0; i < levelLength; i++)
+                {
+
+                    var curr = queue.Dequeue();
+                    subList.Add(curr.val);
+                    if (curr.right != null)
+                        queue.Enqueue(curr.right);
+                    if (curr.left != null)
+                        queue.Enqueue(curr.left);
+                    
+                }
+                list.Add(subList);
+            }
+            var answer = new List<int>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                var curr = list[i];
+                answer.Add(curr[0]);
+            }
+            return answer;
+        }
+
+        public int DiameterOfBinaryTree(TreeNode root)
+        {
+            int res = 0;
+            DFS(root, ref res);
+            return res;
+        }
+
+        private int DFS(TreeNode root, ref int res)
+        {
+            if (root == null)
+            {
+                return 0;
+            }
+            int left = DFS(root.left, ref res);
+            int right = DFS(root.right, ref res);
+            res = Math.Max(res, left + right);
+            return 1 + Math.Max(left, right);
+        }
+
+        public bool IsBalanced(TreeNode root)
+        {
+            return BalancedDFS(root, 0);
+        }
+
+        private bool BalancedDFS(TreeNode root, int height)
+        {
+            if (root == null)
+            {
+                return true;
+            }
+            int left = HeightDFS(root.left, height);
+            int right = HeightDFS(root.right, height);
+
+            return (Math.Abs(left - right) <= 1 && BalancedDFS(root.left, left) && BalancedDFS(root.right, right));
+        }
+
+        private int HeightDFS(TreeNode root, int height)
+        {
+            if (root == null)
+            {
+                return 0;
+            }
+            int left = HeightDFS(root.left, height);
+            int right = HeightDFS(root.right, height);
+            return 1 + Math.Max(left, right);
+        }
+
+        
         public List<int> BfsTraversal(TreeNode root)
         {
             var list = new List<int>();
@@ -164,6 +244,39 @@ namespace Neetcode150
             return root;
         }
 
+        public TreeNode BuildTree(int?[] values)
+        {
+            if (values == null || values.Length == 0 || values[0] == null)
+                return null;
+
+            TreeNode root = new TreeNode(values[0].Value);
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+
+            int i = 1;
+            while (i < values.Length)
+            {
+                TreeNode current = queue.Dequeue();
+
+                // Left child
+                if (i < values.Length && values[i] != null)
+                {
+                    current.left = new TreeNode(values[i].Value);
+                    queue.Enqueue(current.left);
+                }
+                i++;
+
+                // Right child
+                if (i < values.Length && values[i] != null)
+                {
+                    current.right = new TreeNode(values[i].Value);
+                    queue.Enqueue(current.right);
+                }
+                i++;
+            }
+
+            return root;
+        }
         public TreeNode CreateBSTFromArray(int[] nums)
         {
             if (nums == null || nums.Length == 0)

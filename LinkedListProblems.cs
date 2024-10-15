@@ -19,6 +19,11 @@ namespace Neetcode150
             }
         }
 
+        public ListNode ReverseKGroup(ListNode head, int k)
+        {
+
+        }
+
         public static ListNode ArrayToLinkedList(int[] arr)
         {
             if (arr.Length == 0)
@@ -62,6 +67,8 @@ namespace Neetcode150
             }
             return reversed;
         }
+
+       
 
         public static ListNode MergeTwoLists(ListNode list1, ListNode list2)
         {

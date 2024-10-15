@@ -3,12 +3,18 @@ using Neetcode150;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-var sol = new Solution1();
-int?[] values = [5, 3, 8, 1, 4, 7, 9, null, 2];
-int?[] qValues = { 8, 7, 9 };
-int?[] pValues = { 3, 1, 4, null, 2 };
+var rp = new RandomPointer();
+var node1 = new DoubleNode(3);
+node1.random = null;
+var node2 = new DoubleNode(7);
+node1.next = node2;
+var node3 = new DoubleNode(4);
+node2.next = node3;
+var node4 = new DoubleNode(5);
+node3.next = node4;
 
-var root = sol.BuildTree(values);
-var p = sol.BuildTree(qValues);
-var q = sol.BuildTree(pValues);
-var res = sol.LowestCommonAncestor(root, p, q);
+node2.random = node4;
+node3.random = node1;
+node4.random = node2;
+rp.copyRandomList(node1);
+
