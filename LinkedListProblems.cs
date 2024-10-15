@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Neetcode150.TreeProblems;
 
 namespace Neetcode150
 {
@@ -19,9 +20,25 @@ namespace Neetcode150
             }
         }
 
-        public ListNode ReverseKGroup(ListNode head, int k)
+        public int MaxPathSum(TreeNode root)
         {
+            int res = root.val;
+            Dfs(root, ref res);
+            return res;
+        }
 
+        private int Dfs(TreeNode root, ref int res)
+        {
+            if (root == null)
+            {
+                return 0;
+            }
+
+            int leftMax = Math.Max(Dfs(root.left, ref res), 0);
+            int rightMax = Math.Max(Dfs(root.right, ref res), 0);
+
+            res = Math.Max(res, root.val + leftMax + rightMax);
+            return root.val + Math.Max(leftMax, rightMax);
         }
 
         public static ListNode ArrayToLinkedList(int[] arr)
@@ -68,7 +85,7 @@ namespace Neetcode150
             return reversed;
         }
 
-       
+
 
         public static ListNode MergeTwoLists(ListNode list1, ListNode list2)
         {
