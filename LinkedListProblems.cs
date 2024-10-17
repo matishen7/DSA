@@ -41,6 +41,29 @@ namespace Neetcode150
             return root.val + Math.Max(leftMax, rightMax);
         }
 
+        public int GoodNodes(TreeNode root)
+        {
+            int res = 0;
+            GoodNodesDfs(root, root.val, ref res);
+            return res;
+        }
+
+        public void GoodNodesDfs(TreeNode root, int pathMax, ref int res)
+        {
+            if (root == null) return;
+            if (pathMax <= root.val) res++;
+            pathMax = Math.Max(root.val, pathMax);
+            GoodNodesDfs(root.left, pathMax, ref res);
+            GoodNodesDfs(root.right, pathMax, ref res);
+        }
+
+        private bool CheckPath(int val, List<int> path)
+        {
+            for (int i = 0; i < path.Count; i++) 
+                if (path[i] > val) return false;
+            return true;
+        }
+
         public static ListNode ArrayToLinkedList(int[] arr)
         {
             if (arr.Length == 0)

@@ -103,13 +103,38 @@ namespace Neetcode150
                 if (result != -1) return result;
             }
             else
-            { 
-                result = Search(nums, 0, pivot - 1, target); 
+            {
+                result = Search(nums, 0, pivot - 1, target);
                 if (result != -1) return result;
                 result = Search(nums, pivot, nums.Length - 1, target);
                 if (result != -1) return result;
             }
             return result;
+        }
+
+        public static double FindMedianSortedArrays(int[] nums1, int[] nums2)
+        {
+            int[] arr = new int[nums1.Length + nums2.Length];
+            int i = 0;
+            while (i < nums1.Length)
+            {
+                arr[i] = nums1[i];
+                i++;
+            }
+            int j = 0;
+            while (j < nums2.Length)
+            {
+                arr[i] = nums2[j];
+                i++;
+                j++;
+            }
+            Array.Sort(arr);
+            if (arr.Length % 2 == 0)
+            {
+                double sum = arr[arr.Length/2] + arr[arr.Length/2 - 1];
+                return sum / 2.0;
+            }
+            return arr[arr.Length / 2];
         }
     }
 }
