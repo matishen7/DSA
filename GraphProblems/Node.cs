@@ -37,25 +37,49 @@ namespace Neetcode150.GraphProblems
             if (node.neighbors == null) return node;
             Dictionary<Node, Node> oldToCopy = new Dictionary<Node, Node>();
             Queue<Node> queue = new Queue<Node>();
-            HashSet<int> set = new HashSet<int>();
+            HashSet<Node> set = new HashSet<Node>();
             queue.Enqueue(node);
-            set.Add(node.val);
+            set.Add(node);
             while (queue.Any())
             {
                 var cur = queue.Dequeue();
                 Node copy = new Node(cur.val);
                 oldToCopy[cur] = copy;
-                foreach (var neighbor in node.neighbors)
+                foreach (var neighbor in cur.neighbors)
                 {
-                    if (!set.Contains(neighbor.val))
+                    if (!set.Contains(neighbor))
                     {
-                        set.Add(neighbor.val);
+                        set.Add(neighbor);
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+            set.Clear();
+            queue.Enqueue(node);
+            set.Add(node);
+            while (queue.Any())
+            {
+                var cur = queue.Dequeue();
+                Node copy = oldToCopy[cur];
+                if (cur.neighbors != null || cur.neighbors.Count != 0)
+                {
+                    foreach (var neighbor in cur.neighbors)
+                    {
+                        var neighBorNode = oldToCopy[neighbor];
+                        copy.neighbors.Add(neighBorNode);
+                    }
+                }
+                foreach (var neighbor in cur.neighbors)
+                {
+                    if (!set.Contains(neighbor))
+                    {
+                        set.Add(neighbor);
                         queue.Enqueue(neighbor);
                     }
                 }
             }
 
-            return node;
+            return oldToCopy[node];
         }
 
         public Node BuildGraph(List<List<int>> adjList)
