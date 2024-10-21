@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-List<List<int>> adjList = [[2], [1, 3], [2]];
-GraphSolution g = new GraphSolution();
-var node  = g.BuildGraph(adjList);
-g.CloneGraph(node);
+int[][] grid = [[1, 1, 0], [0, 1, 1], [0, 1, 2]];
+
+Graphs.OrangesRotting(grid);
 
