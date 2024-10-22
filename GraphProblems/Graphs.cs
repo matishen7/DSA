@@ -154,7 +154,7 @@ namespace Neetcode150.GraphProblems
                     if (grid[i][j] == 2)
                     {
                         queue.Enqueue((i, j));
-                        visit[i,j] = true;
+                        visit[i, j] = true;
                     }
                     else if (grid[i][j] == 1)
                     {
@@ -191,5 +191,39 @@ namespace Neetcode150.GraphProblems
             }
             return freshOranges == 0 ? min : -1;
         }
+
+        public static void Solve(char[][] board)
+        {
+            int ROWS = board.Length; int COLS = board[0].Length;
+            for (int i = 0; i < ROWS; i++)
+                for (int j = 0; j < COLS; j++)
+                    if (board[i][j] == 'O' && ( i == 0 || j ==0 || i == ROWS - 1|| j == COLS - 1))
+                    {
+                        Capture(i, j, board);
+                    }
+
+            for (int i = 0; i < ROWS; i++)
+                for (int j = 0; j < COLS; j++)
+                    if (board[i][j] == 'O') board[i][j] = 'X';
+
+            for (int i = 0; i < ROWS; i++)
+                for (int j = 0; j < COLS; j++)
+                    if (board[i][j] == 'T') board[i][j] = 'O';
+        }
+        public static void Capture(int row, int col, char[][] board)
+        {
+            if (row < 0 || col < 0 || row >= board.Length || col >= board[0].Length || board[row][col] != 'O') return;
+            board[row][col] = 'T';
+            Capture(row + 1, col, board);
+            Capture(row - 1, col, board);
+            Capture(row, col + 1, board);
+            Capture(row, col - 1, board);
+        }
+
+        public bool CanFinish(int numCourses, int[][] prerequisites)
+        {
+
+        }
+
     }
 }

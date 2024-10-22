@@ -2,7 +2,14 @@
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-int[][] grid = [[1, 1, 0], [0, 1, 1], [0, 1, 2]];
+char[][] board = new char[][]
+{
+    new char[] { 'X', 'X', 'X', 'X' },
+    new char[] { 'X', 'O', 'O', 'X' },
+    new char[] { 'X', 'O', 'O', 'X' },
+    new char[] { 'X', 'X', 'X', 'O' }
+};
 
-Graphs.OrangesRotting(grid);
+
+Graphs.Solve(board);
 
