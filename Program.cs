@@ -2,14 +2,9 @@
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-char[][] board = new char[][]
-{
-    new char[] { 'X', 'X', 'X', 'X' },
-    new char[] { 'X', 'O', 'O', 'X' },
-    new char[] { 'X', 'O', 'O', 'X' },
-    new char[] { 'X', 'X', 'X', 'O' }
-};
+int n = 6;
+int[][] edges = [[0, 1], [1, 2], [2, 3], [4, 5]];
 
 
-Graphs.Solve(board);
+Graphs.CountComponents(n, edges);
 

@@ -197,7 +197,7 @@ namespace Neetcode150.GraphProblems
             int ROWS = board.Length; int COLS = board[0].Length;
             for (int i = 0; i < ROWS; i++)
                 for (int j = 0; j < COLS; j++)
-                    if (board[i][j] == 'O' && ( i == 0 || j ==0 || i == ROWS - 1|| j == COLS - 1))
+                    if (board[i][j] == 'O' && (i == 0 || j == 0 || i == ROWS - 1 || j == COLS - 1))
                     {
                         Capture(i, j, board);
                     }
@@ -220,10 +220,97 @@ namespace Neetcode150.GraphProblems
             Capture(row, col - 1, board);
         }
 
-        public bool CanFinish(int numCourses, int[][] prerequisites)
+        public static int[] CanFinish(int numCourses, int[][] prerequisites)
         {
+            // Step 1: Build the adjacency list and in-degree array
+            Dictionary<int, List<int>> adjList = new();
+            int[] inDegree = new int[numCourses]; // Track how many prerequisites each course has
 
+            foreach (var pre in prerequisites)
+            {
+                int src = pre[1], dst = pre[0];
+
+                if (!adjList.ContainsKey(src))
+                    adjList[src] = new List<int>();
+
+                adjList[src].Add(dst);
+                inDegree[dst]++; // Increment in-degree for the destination course
+            }
+
+            // Step 2: Initialize the queue with courses having no prerequisites (in-degree 0)
+            Queue<int> q = new();
+            for (int i = 0; i < numCourses; i++)
+            {
+                if (inDegree[i] == 0)
+                    q.Enqueue(i);
+            }
+            var list = new List<int>();
+            // Step 3: Process the courses using BFS
+            int completedCourses = 0;
+            while (q.Any())
+            {
+                int course = q.Dequeue();
+                list.Add(course);
+                completedCourses++;
+
+                // Reduce the in-degree of neighboring courses
+                if (adjList.ContainsKey(course))
+                {
+                    foreach (var neighbor in adjList[course])
+                    {
+                        inDegree[neighbor]--;
+
+                        // If in-degree becomes 0, add to the queue
+                        if (inDegree[neighbor] == 0)
+                            q.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            // Step 4: Check if all courses have been completed
+            return (completedCourses == numCourses) ? list.ToArray() : new List<int>().ToArray();
         }
 
+        public static int CountComponents(int n, int[][] edges)
+        {
+            if (n == 1) return 1;
+            // Step 1: Build the adjacency list.
+            Dictionary<int, List<int>> adjList = new();
+            for (int i = 0; i < n; i++)
+            {
+                adjList[i] = new List<int>(); // Ensure all nodes are in the graph, even if isolated.
+            }
+
+            foreach (var edge in edges)
+            {
+                int src = edge[0], dst = edge[1];
+
+                adjList[src].Add(dst);
+                adjList[dst].Add(src);
+            }
+
+            int component = 0;
+            HashSet<int> visited = new();
+
+            for (int i = 0; i < n; i++)
+            {
+                if (!visited.Contains(i))
+                {
+                    component++;
+                    CountComponentsDfs(adjList, visited, i);
+                }
+            }
+
+            return component;
+        }
+
+        private static void CountComponentsDfs(Dictionary<int, List<int>> adjList, HashSet<int> visited, int start)
+        {
+            if (visited.Contains(start)) return;
+            visited.Add(start);
+            var neighbors = adjList[start];
+            foreach (var neighbor in neighbors)
+                CountComponentsDfs(adjList, visited, neighbor);
+        } 
     }
 }
