@@ -265,11 +265,29 @@ namespace Neetcode150
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
-                    if (board[i][j] == word[0])
-                        if (WordExistBFS(i, j, 0, word, board)) return true;
+
+                {
+                    var visited = new bool[board.Length, board[0].Length];
+                    if (WordExistDFS(i, j, 0, word, board, visited)) return true;
+                }
             }
 
             return false;
+        }
+
+        private static bool WordExistDFS(int r, int c, int i, string word, char[][] board, bool[,] visited)
+        {
+            if (i == word.Length) return true;
+            if (r < 0 || c < 0 || r >= board.Length || c >= board[0].Length || visited[r,c] == true || board[r][c] != word[i]) return false;
+            visited[r,c] = true;
+            var res = (
+                WordExistDFS(r + 1, c, i + 1, word, board, visited) ||
+                WordExistDFS(r - 1, c, i + 1, word, board, visited) ||
+                WordExistDFS(r , c + 1, i + 1, word, board, visited) ||
+                WordExistDFS(r , c - 1, i + 1, word, board, visited)
+                );
+            visited[r,c] = false;
+            return res;
         }
 
         private static bool WordExistBFS(int i, int j, int v, string word, char[][] board)
@@ -296,7 +314,7 @@ namespace Neetcode150
                     v++;
                 }
 
-                foreach(var d in directions)
+                foreach (var d in directions)
                 {
                     var newRow = row + d[0];
                     var newCol = col + d[1];
@@ -310,7 +328,7 @@ namespace Neetcode150
             foreach (var r in result)
                 if (r == false) return false;
             return true;
-    
+
         }
     }
 }
