@@ -1,10 +1,17 @@
-﻿using Neetcode150.GraphProblems;
+﻿using Neetcode150;
+using Neetcode150.GraphProblems;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-int n = 6;
-int[][] edges = [[0, 1], [1, 2], [2, 3], [4, 5]];
+char[][] board = new char[][]
+{
+    new char[] { 'C', 'A', 'A' },
+    new char[] { 'A', 'A', 'A' },
+    new char[] { 'B', 'C', 'D' }
+};
 
 
-Graphs.CountComponents(n, edges);
+string word = "AAB";
+
+BackTrackingProblems.WordExist(board, word);
 
