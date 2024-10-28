@@ -290,45 +290,40 @@ namespace Neetcode150
             return res;
         }
 
-        private static bool WordExistBFS(int i, int j, int v, string word, char[][] board)
+        public static List<string> LetterCombinations(string digits)
         {
-            int[][] directions = new int[][] {
-            new int[] {-1, 0},
-            new int[] {0, 1},
-            new int[] {1, 0},
-            new int[] {0, -1}};
+            if (digits.Length == 0) return new List<string> ();
+            var map = new Dictionary<char, List<char>>();
+            map.Add('2', new List<char>() { 'a', 'b', 'c' });
+            map.Add('3', new List<char>() { 'd', 'e', 'f' });
+            map.Add('4', new List<char>() { 'g', 'h', 'i' });
+            map.Add('5', new List<char>() { 'j', 'k', 'l' });
+            map.Add('6', new List<char>() { 'm', 'n', 'o' });
+            map.Add('7', new List<char>() { 'p', 'q', 'r' ,'s' });
+            map.Add('8', new List<char>() { 't', 'u', 'v' });
+            map.Add('9', new List<char>() { 'w', 'x', 'y','z' });
 
-            var result = new bool[word.Length];
-            int rows = board.Length, cols = board[0].Length;
-            var q = new Queue<(char character, int row, int col)>();
-            q.Enqueue((board[i][j], i, j));
-            var visited = new bool[rows, cols];
-            while (q.Count > 0)
+            var list = new List<string>();
+            LetterCombinationsDfs(0,digits, new StringBuilder(), list, map);
+            return list;
+        }
+
+        public static void LetterCombinationsDfs(int i, string digits, StringBuilder curr, List<string> list, Dictionary<char, List<char>> map)
+        {
+            if (i >= digits.Length || curr.Length == digits.Length)
             {
-                (char character, int row, int col) = q.Dequeue();
-                visited[row, col] = true;
-                if (v < word.Length)
-                {
-                    if (word[v] == character) result[v] = true;
-
-                    v++;
-                }
-
-                foreach (var d in directions)
-                {
-                    var newRow = row + d[0];
-                    var newCol = col + d[1];
-                    if (newRow < 0 || newCol < 0 || newRow >= rows || newCol >= cols || visited[newRow, newCol] == true)
-                        continue;
-                    if (v < word.Length && word[v] == board[newRow][newCol])
-                        q.Enqueue((board[newRow][newCol], newRow, newCol));
-                }
+                string c = curr.ToString();
+                list.Add(c);
+                return;
             }
 
-            foreach (var r in result)
-                if (r == false) return false;
-            return true;
-
+            var buttons = map[digits[i]];
+            for (int j = 0; j < buttons.Count; j++)
+            {
+               StringBuilder sb = curr.Append(buttons[j]);
+               LetterCombinationsDfs(i + 1, digits, sb, list, map);
+               sb.Remove(sb.Length - 1, 1);
+            }
         }
     }
 }

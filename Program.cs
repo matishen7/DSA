@@ -13,5 +13,5 @@ char[][] board = new char[][]
 
 string word = "AAB";
 
-BackTrackingProblems.WordExist(board, word);
+BackTrackingProblems.LetterCombinations("");
 
