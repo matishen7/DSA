@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Neetcode150
 {
-    class TrieNode
+    public class TrieNode
     {
         public bool isLeaf;   // isLeaf
         public Dictionary<char, TrieNode> children = new Dictionary<char, TrieNode>();
     }
 
-    public class Trie
+    public class PrefixTree
     {
 
         TrieNode root;
 
-        public Trie()
+        public PrefixTree()
         {
             root = new TrieNode();
         }
@@ -48,7 +48,7 @@ namespace Neetcode150
             return curr.isLeaf;
         }
 
-        public bool StartWith(string prefix)
+        public bool StartsWith(string prefix)
         {
             TrieNode curr = root;
             foreach (char c in prefix)

@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
 
-string word = "apple";
-
-var trie = new Trie();
-trie.Insert(word);
-Console.WriteLine(trie.Search("app"));
-Console.WriteLine(trie.StartWith("app"));
+WordDictionary wordDictionary = new WordDictionary();
+wordDictionary.AddWord("bay"); 
+wordDictionary.AddWord("day");
+wordDictionary.AddWord("may");
+Console.WriteLine(wordDictionary.Search("...")); // return false
+//Console.WriteLine(wordDictionary.Search("day")); // return true
+//Console.WriteLine(wordDictionary.Search(".ay")); // return true
+//Console.WriteLine(wordDictionary.Search("b..")); // return true
 
