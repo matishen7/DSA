@@ -257,6 +257,16 @@ namespace Neetcode150
             return resPerms;
         }
 
+        public static List<string> FindWords(char[][] board, string[] words)
+        {
+            var list = new List<string>();
+            foreach (var word in words)
+            {
+                if (WordExist(board, word)) list.Add(word);
+            }
+            return list;
+        }
+
         public static bool WordExist(char[][] board, string word)
         {
 
