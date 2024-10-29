@@ -3,15 +3,11 @@ using Neetcode150.GraphProblems;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-char[][] board = new char[][]
-{
-    new char[] { 'C', 'A', 'A' },
-    new char[] { 'A', 'A', 'A' },
-    new char[] { 'B', 'C', 'D' }
-};
 
+string word = "apple";
 
-string word = "AAB";
-
-BackTrackingProblems.SolveNQueens(4);
+var trie = new Trie();
+trie.Insert(word);
+Console.WriteLine(trie.Search("app"));
+Console.WriteLine(trie.StartWith("app"));
 
