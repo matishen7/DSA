@@ -288,33 +288,33 @@ namespace Neetcode150
         private static bool WordExistDFS(int r, int c, int i, string word, char[][] board, bool[,] visited)
         {
             if (i == word.Length) return true;
-            if (r < 0 || c < 0 || r >= board.Length || c >= board[0].Length || visited[r,c] == true || board[r][c] != word[i]) return false;
-            visited[r,c] = true;
+            if (r < 0 || c < 0 || r >= board.Length || c >= board[0].Length || visited[r, c] == true || board[r][c] != word[i]) return false;
+            visited[r, c] = true;
             var res = (
                 WordExistDFS(r + 1, c, i + 1, word, board, visited) ||
                 WordExistDFS(r - 1, c, i + 1, word, board, visited) ||
-                WordExistDFS(r , c + 1, i + 1, word, board, visited) ||
-                WordExistDFS(r , c - 1, i + 1, word, board, visited)
+                WordExistDFS(r, c + 1, i + 1, word, board, visited) ||
+                WordExistDFS(r, c - 1, i + 1, word, board, visited)
                 );
-            visited[r,c] = false;
+            visited[r, c] = false;
             return res;
         }
 
         public static List<string> LetterCombinations(string digits)
         {
-            if (digits.Length == 0) return new List<string> ();
+            if (digits.Length == 0) return new List<string>();
             var map = new Dictionary<char, List<char>>();
             map.Add('2', new List<char>() { 'a', 'b', 'c' });
             map.Add('3', new List<char>() { 'd', 'e', 'f' });
             map.Add('4', new List<char>() { 'g', 'h', 'i' });
             map.Add('5', new List<char>() { 'j', 'k', 'l' });
             map.Add('6', new List<char>() { 'm', 'n', 'o' });
-            map.Add('7', new List<char>() { 'p', 'q', 'r' ,'s' });
+            map.Add('7', new List<char>() { 'p', 'q', 'r', 's' });
             map.Add('8', new List<char>() { 't', 'u', 'v' });
-            map.Add('9', new List<char>() { 'w', 'x', 'y','z' });
+            map.Add('9', new List<char>() { 'w', 'x', 'y', 'z' });
 
             var list = new List<string>();
-            LetterCombinationsDfs(0,digits, new StringBuilder(), list, map);
+            LetterCombinationsDfs(0, digits, new StringBuilder(), list, map);
             return list;
         }
 
@@ -330,9 +330,9 @@ namespace Neetcode150
             var buttons = map[digits[i]];
             for (int j = 0; j < buttons.Count; j++)
             {
-               StringBuilder sb = curr.Append(buttons[j]);
-               LetterCombinationsDfs(i + 1, digits, sb, list, map);
-               sb.Remove(sb.Length - 1, 1);
+                StringBuilder sb = curr.Append(buttons[j]);
+                LetterCombinationsDfs(i + 1, digits, sb, list, map);
+                sb.Remove(sb.Length - 1, 1);
             }
         }
 
@@ -386,6 +386,36 @@ namespace Neetcode150
                 posDiag.Remove(r + c);
                 negDiag.Remove(r - c);
                 board[r][c] = '.';
+            }
+        }
+
+        public static List<string> GenerateParenthesis(int n)
+        {
+            var list = new List<string>();
+            GenerateParenthesisDFS(n, 0, 0, new StringBuilder(), list);
+            return list;
+        }
+
+        public static void GenerateParenthesisDFS(int n, int open, int closed, StringBuilder str, List<string> list)
+        {
+            if (open == n && closed == n)
+            {
+                var r = str.ToString();
+                list.Add(r);
+                return;
+            }
+
+            if (open < n)
+            {
+                var r = str.Append("(");
+                GenerateParenthesisDFS(n, open + 1, closed, r, list);
+                r.Remove(r.Length - 1, 1);
+            }
+            if (open > closed)
+            {
+                var r = str.Append(")");
+                GenerateParenthesisDFS(n, open, closed + 1, r, list);
+                r.Remove(r.Length - 1, 1);
             }
         }
     }
