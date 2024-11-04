@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Neetcode150.GraphProblems.GraphSolution;
 
 namespace Neetcode150.GraphProblems
 {
@@ -311,6 +313,45 @@ namespace Neetcode150.GraphProblems
             var neighbors = adjList[start];
             foreach (var neighbor in neighbors)
                 CountComponentsDfs(adjList, visited, neighbor);
-        } 
+        }
+
+        public static bool ValidTree(int n, int[][] edges)
+        {
+            Dictionary<int, List<int>> adjList = new();
+            for (int i = 0; i < n; i++)
+            {
+                adjList[i] = new List<int>();
+            }
+
+            foreach (var edge in edges)
+            {
+                int src = edge[0], dst = edge[1];
+
+                adjList[src].Add(dst);
+                adjList[dst].Add(src);
+            }
+
+            HashSet<int> visited = new HashSet<int>();
+            if (!ValidTreeDFS(adjList.Keys.ElementAt(0), -1, visited, adjList)) return false;
+            return visited.Count == n;
+        }
+
+        private static bool ValidTreeDFS(int currNode, int parent, HashSet<int> visited, Dictionary<int, List<int>> adjList)
+        {
+            if (visited.Contains(currNode)) return false;
+            visited.Add(currNode);
+            foreach (var nei in adjList[currNode])
+            {
+                if (nei == parent)
+                {
+                    continue;
+                }
+                if (!ValidTreeDFS(nei, currNode, visited, adjList))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

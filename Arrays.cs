@@ -273,5 +273,68 @@ namespace CrackingTheCodingInterview
             return longest;
         }
 
+        public static void PacificAtlantic(int[][] heights)
+        {
+            int rows = heights.Length;
+            int cols = heights[0].Length;
+            bool[,] pacific = new bool[rows, cols];
+            bool[,] atlantic = new bool[rows, cols];
+            for (int r = 0; r < rows; r++)
+            {
+                PacificToRightDfs(-1, r, 0, heights, pacific);
+            }
+            for (int c = 0; c < cols; c++)
+            {
+                PacificDownDfs(-1, 0, c, heights, pacific);
+            }
+
+            for (int r = 0; r < rows; r++)
+            {
+                AtlanticToLeftDfs(-1, r, cols - 1, heights, atlantic);
+            }
+            for (int c = 0; c < cols; c++)
+            {
+                PacificDownDfs(-1, rows - 1, c, heights, atlantic);
+            }
+            var res = new List<List<int>>();
+            for (int i = 0; i < rows; i++)
+                for (int j = 0; j < cols; j++)
+                {
+                    if (pacific[i, j] && atlantic[i, j])
+                    {
+                        var curr = new List<int>() { i, j };
+                        res.Add(curr);
+                    }
+                }
+        }
+
+        public static void PacificToRightDfs(int prev, int r, int c, int[][] heights, bool[,] pacific)
+        {
+            if (r < 0 || c < 0 || r >= heights.Length || c >= heights[0].Length) return;
+            if (prev <= heights[r][c]) pacific[r, c] = true;
+            PacificToRightDfs(heights[r][c], r, c + 1, heights, pacific);
+        }
+
+        public static void PacificDownDfs(int prev, int r, int c, int[][] heights, bool[,] pacific)
+        {
+            if (r < 0 || c < 0 || r >= heights.Length || c >= heights[0].Length) return;
+            if (prev <= heights[r][c]) pacific[r, c] = true;
+            PacificDownDfs(heights[r][c], r + 1, c, heights, pacific);
+        }
+
+        public static void AtlanticToLeftDfs(int prev, int r, int c, int[][] heights, bool[,] atlantic)
+        {
+            if (r < 0 || c < 0 || r >= heights.Length || c >= heights[0].Length) return;
+            if (prev <= heights[r][c]) atlantic[r, c] = true;
+            AtlanticToLeftDfs(heights[r][c], r, c - 1, heights, atlantic);
+        }
+
+        public static void AtlanticUpDfs(int prev, int r, int c, int[][] heights, bool[,] atlantic)
+        {
+            if (r < 0 || c < 0 || r >= heights.Length || c >= heights[0].Length) return;
+            if (prev <= heights[r][c]) atlantic[r, c] = true;
+            AtlanticUpDfs(heights[r][c], r - 1, c, heights, atlantic);
+        }
+
     }
 }

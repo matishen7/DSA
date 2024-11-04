@@ -131,10 +131,51 @@ namespace Neetcode150
             Array.Sort(arr);
             if (arr.Length % 2 == 0)
             {
-                double sum = arr[arr.Length/2] + arr[arr.Length/2 - 1];
+                double sum = arr[arr.Length / 2] + arr[arr.Length / 2 - 1];
                 return sum / 2.0;
             }
             return arr[arr.Length / 2];
+
+        }
+
+        public static int MinEatingSpeed(int[] piles, int h)
+        {
+            int max = piles.Max();
+            int l = 1;
+            int r = max;
+            int minK = max;
+
+            while (l <= r)
+            {
+                int k = (l + r) / 2;
+                int hours = 0;
+                for (int i = 0; i < piles.Length;i++)
+                    hours += (int)Math.Ceiling((double)piles[i] / k);
+
+                if (h >= hours)
+                {
+                    minK = k;
+                    r = k - 1;
+                }
+                else
+                {
+                    l = k + 1;
+                }
+            }
+            return minK;
+        }
+
+        public static int calculateHours(int[] arr, int k)
+        {
+            int total = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                var a = arr[i] / k;
+                var b = arr[i] % k;
+                if (b != 0) a += 1;
+                total += a;
+            }
+            return total;
         }
     }
 }
