@@ -102,7 +102,7 @@ namespace Neetcode150
 
             int c = sum / 2;
             var memo = new Dictionary<(int, int), bool>();
-            var r = CanPartitionHelper(0, nums, c,memo);
+            var r = CanPartitionHelper(0, nums, c, memo);
             return r;
 
         }
@@ -148,6 +148,29 @@ namespace Neetcode150
             cache[r, c] = (UniquePathsWithObstaclesHelper(obstacleGrid, r + 1, c, rows, cols, cache) +
                             UniquePathsWithObstaclesHelper(obstacleGrid, r, c + 1, rows, cols, cache));
             return cache[r, c];
+        }
+
+        public static int FindTargetSumWays(int[] nums, int target)
+        {
+            var memo = new Dictionary<(int, int), int>();
+            return FindTargetSumWaysHelper(0, 0, nums, target, memo);
+        }
+
+        public static int FindTargetSumWaysHelper(int i, int totalSum, int[] nums, int target, Dictionary<(int, int), int> memo)
+        {
+            if (i == nums.Length)
+            {
+                if (totalSum == target) return 1;
+                else return 0;
+            }
+
+            if (memo.ContainsKey((i, totalSum))) return memo[(i, totalSum)];
+
+            memo[(i, totalSum)] = FindTargetSumWaysHelper(i + 1, totalSum + nums[i], nums, target, memo) +
+            FindTargetSumWaysHelper(i + 1, totalSum - nums[i], nums, target, memo);
+
+            return memo[(i, totalSum)];
+
         }
     }
 }
