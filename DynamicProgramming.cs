@@ -1,0 +1,153 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Neetcode150
+{
+    internal class DynamicProgramming
+    {
+        public static int ClimbStairs(int n)
+        {
+            var memo = new Dictionary<int, int>();
+            return ClimbStairsHelper(n, memo);
+        }
+
+        public static int ClimbStairsHelper(int n, Dictionary<int, int> memo)
+        {
+            if (n == 0) return 1;
+            if (n == 1) return 1;
+            if (memo.ContainsKey(n)) return memo[n];
+            memo[n] = ClimbStairsHelper(n - 1, memo) + ClimbStairsHelper(n - 2, memo);
+            return memo[n];
+        }
+
+        public static int Rob(int[] nums)
+        {
+            int[] memo;
+            memo = new int[nums.Length];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                memo[i] = -1;
+            }
+            return Dfs(nums, 0, memo);
+        }
+
+        private static int Dfs(int[] nums, int i, int[] memo)
+        {
+            if (i >= nums.Length)
+            {
+                return memo[i % nums.Length];
+            }
+            if (memo[i] != -1)
+            {
+                return memo[i];
+            }
+            memo[i] = Math.Max(Dfs(nums, i + 1, memo),
+                             nums[i] + Dfs(nums, i + 2, memo));
+            return memo[i];
+        }
+
+        public static int MinCostClimbingStairs(int[] cost)
+        {
+            int sum = 0;
+            MinCostClimbingStairsHelper(cost, sum, cost.Length - 1);
+            return sum;
+        }
+
+        public static void MinCostClimbingStairsHelper(int[] cost, int sum, int n)
+        {
+            if (n <= 0) return;
+            sum = cost[n] + Math.Min(cost[n - 1], cost[n - 2]);
+            int i = (cost[n - 1] < cost[n - 2]) ? n - 1 : n - 2;
+            MinCostClimbingStairsHelper(cost, sum, i);
+        }
+
+        public static string LongestPalindrome(string s)
+        {
+            return LongestPalindromeHelper(s, 0, s.Length);
+        }
+
+        public static string LongestPalindromeHelper(string s, int start, int end)
+        {
+
+            var sub = s.Substring(start, end - start);
+            if (sub.Length == 1) return sub;
+            if (IsPalindrome(sub)) return sub;
+            var r1 = LongestPalindromeHelper(s, start, end - 1);
+            var r2 = LongestPalindromeHelper(s, start + 1, end);
+            return (r1.Length > r2.Length) ? r1 : r2;
+        }
+
+        private static bool IsPalindrome(string s)
+        {
+            int left = 0;
+            int right = s.Length - 1;
+            while (left < right)
+            {
+                if (s[left] != s[right]) return false;
+                left++;
+                right--;
+            }
+            return true;
+        }
+
+        public static bool CanPartition(int[] nums)
+        {
+            int sum = 0;
+            for (int i = 0; i < nums.Length; i++)
+                sum += nums[i];
+            if (sum % 2 == 1) return false;
+
+            int c = sum / 2;
+            var memo = new Dictionary<(int, int), bool>();
+            var r = CanPartitionHelper(0, nums, c,memo);
+            return r;
+
+        }
+
+        public static bool CanPartitionHelper(int i, int[] nums, int c, Dictionary<(int, int), bool> memo)
+        {
+            if (i == nums.Length) return c == 0;
+            if (c < 0) return false;
+
+            if (memo.ContainsKey((i, c))) return memo[(i, c)];
+
+            bool result = (CanPartitionHelper(i + 1, nums, c, memo) || CanPartitionHelper(i + 1, nums, c - nums[i], memo));
+            return result;
+
+        }
+
+        public static int UniquePathsWithObstacles(int[][] obstacleGrid)
+        {
+            int m = obstacleGrid.Length;
+            int n = obstacleGrid[0].Length;
+            var memo = new int[m, n];
+            for (int i = 0; i < m; i++)
+                for (int j = 0; j < n; j++)
+                    memo[i, j] = -1;
+            return UniquePathsWithObstaclesHelper(obstacleGrid, 0, 0, m, n, memo);
+        }
+
+        public static int UniquePathsWithObstaclesHelper(int[][] obstacleGrid, int r, int c, int rows, int cols, int[,] cache)
+        {
+
+            if (r == rows || c == cols || obstacleGrid[r][c] == 1)
+            {
+                return 0;
+            }
+            if (cache[r, c] > 0)
+            {
+                return cache[r, c];
+            }
+            if (r == rows - 1 && c == cols - 1)
+            {
+                return 1;
+            }
+            cache[r, c] = (UniquePathsWithObstaclesHelper(obstacleGrid, r + 1, c, rows, cols, cache) +
+                            UniquePathsWithObstaclesHelper(obstacleGrid, r, c + 1, rows, cols, cache));
+            return cache[r, c];
+        }
+    }
+}
