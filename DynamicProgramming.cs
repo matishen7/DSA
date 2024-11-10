@@ -172,5 +172,78 @@ namespace Neetcode150
             return memo[(i, totalSum)];
 
         }
+
+        public static int FindMaxForm(string[] strs, int m, int n)
+        {
+            var dic = new Dictionary<int, (int zeros, int ones)>();
+            for (int i = 0; i < strs.Length; i++)
+            {
+                var str = strs[i];
+                int zeros = 0;
+                int ones = 0;
+                for (int j = 0; j < str.Length; j++)
+                {
+                    if (str[j] == '0') zeros++;
+                    if (str[j] == '1') ones++;
+                }
+                dic.Add(i, (zeros, ones));
+            }
+
+            var memo = new Dictionary<(int, int, int), int>();
+
+            return FindMaxFormHelper(0, strs, m, n, dic, memo);
+        }
+
+        public static int FindMaxFormHelper(int i, string[] strs, int m, int n, Dictionary<int, (int zeros, int ones)> dic, Dictionary<(int, int, int), int> memo)
+        {
+            if (i == strs.Length)
+            {
+                if (m == 0 && n == 0) return 1;
+                else return 0;
+            }
+            if (memo.ContainsKey((i, m, n))) return memo[(i, m, n)];
+
+            int skip = FindMaxFormHelper(i + 1, strs, m, n, dic, memo);
+
+            int include = 0;
+            if (m >= dic[i].zeros && n >= dic[i].ones)
+            {
+                var newM = m - dic[i].zeros;
+                var newN = n - dic[i].ones;
+                FindMaxFormHelper(i + 1, strs, newM, newN, dic, memo);
+            }
+            memo[(i, m, n)] = Math.Max(include, skip);
+            return memo[(i, m, n)];
+
+        }
+        public static int CoinChange(int[] coins, int amount)
+        {
+            if (amount == 0) return 0;
+            var memo = new Dictionary<(int, int), int>();
+
+            var r = CoinChangeHelper(0, coins, amount, memo);
+            return (r == int.MaxValue) ? -1 : r;
+        }
+
+        public static int CoinChangeHelper(int i, int[] coins, int amount, Dictionary<(int, int), int> memo)
+        {
+            if (i >= coins.Length || amount < 0) return int.MaxValue;
+
+            if (amount == 0) return 0;
+
+            if (memo.ContainsKey((i,amount))) return memo[(i,amount)];
+
+            memo[(i,amount)] = CoinChangeHelper(i + 1, coins, amount, memo);
+            if (amount - coins[i] >= 0)
+            {
+                int include =  CoinChangeHelper(i, coins, amount - coins[i], memo);
+                if (include != int.MaxValue) include += 1;
+                memo[(i,amount)] = Math.Min(memo[(i,amount)], include);
+            }
+
+            return memo[(i, amount)];
+            
+        }
     }
 }
+
