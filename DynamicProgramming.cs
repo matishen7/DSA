@@ -231,18 +231,64 @@ namespace Neetcode150
 
             if (amount == 0) return 0;
 
-            if (memo.ContainsKey((i,amount))) return memo[(i,amount)];
+            if (memo.ContainsKey((i, amount))) return memo[(i, amount)];
 
-            memo[(i,amount)] = CoinChangeHelper(i + 1, coins, amount, memo);
+            memo[(i, amount)] = CoinChangeHelper(i + 1, coins, amount, memo);
             if (amount - coins[i] >= 0)
             {
-                int include =  CoinChangeHelper(i, coins, amount - coins[i], memo);
+                int include = CoinChangeHelper(i, coins, amount - coins[i], memo);
                 if (include != int.MaxValue) include += 1;
-                memo[(i,amount)] = Math.Min(memo[(i,amount)], include);
+                memo[(i, amount)] = Math.Min(memo[(i, amount)], include);
             }
 
             return memo[(i, amount)];
-            
+
+        }
+
+        public static int CoinChange2(int[] coins, int amount)
+        {
+            if (amount == 0) return 0;
+            var memo = new Dictionary<(int, int), int>();
+            var r = CoinChangeHelper2(0, coins, amount, memo);
+            return r;
+        }
+
+        private static int CoinChangeHelper2(int i, int[] coins, int amount, Dictionary<(int, int), int> memo)
+        {
+            if (i >= coins.Length || amount < 0) return 0;
+            if (amount == 0) return 1;
+
+            if (memo.ContainsKey((i, amount))) return memo[(i, amount)];
+
+            int skip = CoinChangeHelper2(i + 1, coins, amount, memo);
+
+            int include = CoinChangeHelper2(i, coins, amount - coins[i], memo);
+            memo[(i, amount)] = skip + include;
+            return memo[(i, amount)];
+        }
+
+        public static int LongestCommonSubsequence(string text1, string text2)
+        {
+            var memo = new Dictionary<(int, int), int>();
+            var r = LongestCommonSubsequenceHelper(text1, text2, 0, 0, memo);
+            return r;
+        }
+
+        public static int LongestCommonSubsequenceHelper(string text1, string text2, int i1, int i2, Dictionary<(int, int), int> memo)
+        {
+            if (i1 == text1.Length || i2 == text2.Length) return 0;
+            if (memo.ContainsKey((i1, i2))) return memo[(i1, i2)];
+
+            if (text1[i1] == text2[i2])
+            {
+                memo[(i1, i2)] = 1 + LongestCommonSubsequenceHelper(text1, text2, i1 + 1, i2 + 1, memo);
+            }
+            else
+            {
+                memo[(i1,i2)] =  Math.Max(LongestCommonSubsequenceHelper(text1, text2, i1 + 1, i2, memo),
+                    LongestCommonSubsequenceHelper(text1, text2, i1, i2 + 1, memo));
+            }
+            return memo[(i1, i2)];
         }
     }
 }
