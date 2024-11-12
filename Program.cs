@@ -1,8 +1,9 @@
 ﻿using CrackingTheCodingInterview;
 using Neetcode150;
 using Neetcode150.GraphProblems;
+using Neetcode150.ObjectOriented.ConnectFour;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
-string text1 = "cat", text2 = "crabt";
-Console.WriteLine(DynamicProgramming.LongestCommonSubsequence(text1, text2));
+var game = new ConnectFourGame();
+game.Start();
 
