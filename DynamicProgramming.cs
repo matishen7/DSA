@@ -285,10 +285,174 @@ namespace Neetcode150
             }
             else
             {
-                memo[(i1,i2)] =  Math.Max(LongestCommonSubsequenceHelper(text1, text2, i1 + 1, i2, memo),
+                memo[(i1, i2)] = Math.Max(LongestCommonSubsequenceHelper(text1, text2, i1 + 1, i2, memo),
                     LongestCommonSubsequenceHelper(text1, text2, i1, i2 + 1, memo));
             }
             return memo[(i1, i2)];
+        }
+
+        public static int MaxProfit(int[] prices)
+        {
+            var memo = new Dictionary<(int, char, int), int>();
+            var r = MaxProfitHelper(0, 'b', 0, prices, memo);
+            return r;
+        }
+
+        public static int MaxProfitHelper(int i, char status, int profit, int[] prices)
+        {
+            if (i >= prices.Length) return profit;
+
+            int skip = MaxProfitHelper(i + 1, status, profit, prices);
+
+            int include = 0;
+
+            if (status == 'b')
+            {
+                int p = profit - prices[i];
+                include = MaxProfitHelper(i + 1, 's', p, prices);
+            }
+
+            else
+            {
+                int p = profit + prices[i];
+                include = MaxProfitHelper(i + 2, 'b', p, prices);
+            }
+
+            return Math.Max(include, skip);
+        }
+
+        public static int MaxProfitHelper(int i, char status, int profit, int[] prices, Dictionary<(int, char, int), int> memo)
+        {
+            if (i >= prices.Length) return profit;
+
+            if (memo.ContainsKey((i, status, profit))) return memo[(i, status, profit)];
+
+            memo[(i, status, profit)] = MaxProfitHelper(i + 1, status, profit, prices, memo);
+
+            int include = 0;
+
+            if (status == 'b')
+            {
+                int p = profit - prices[i];
+                include = MaxProfitHelper(i + 1, 's', p, prices, memo);
+            }
+
+            else
+            {
+                int p = profit + prices[i];
+                include = MaxProfitHelper(i + 2, 'b', p, prices, memo);
+            }
+
+            memo[(i, status, profit)] = Math.Max(include, memo[(i, status, profit)]);
+            return memo[(i, status, profit)];
+        }
+
+        public static int MinDistance(string word1, string word2)
+        {
+            var memo = new Dictionary<(int, int), int>();
+            var r = MinDistanceHelper(0, 0, word1, word2, memo);
+            return r;
+        }
+
+        public static int MinDistanceHelper(int i, int j, string word, string target, Dictionary<(int, int), int> memo)
+        {
+            if (i == word.Length) return target.Length - j;
+            if (j == target.Length) return word.Length - i;
+
+            if (memo.ContainsKey((i, j))) return memo[(i, j)];
+
+            int p = int.MaxValue;
+            int skip = int.MaxValue;
+            if (word[i] == target[j])
+                skip = MinDistanceHelper(i + 1, j + 1, word, target, memo);
+            else
+            {
+
+                int remove = 1 + MinDistanceHelper(i + 1, j, word, target, memo);
+
+                int insert = 1 + MinDistanceHelper(i, j + 1, word, target, memo);
+
+                int replace = 1 + MinDistanceHelper(i + 1, j + 1, word, target, memo);
+
+
+                p = Math.Min(remove, Math.Min(insert, replace));
+
+            }
+
+            memo[(i, j)] = Math.Min(p, skip);
+            return memo[(i, j)];
+
+        }
+
+        public static int NumDistinct(string s, string t)
+        {
+            var memo = new Dictionary<(int, string), int>();
+            var r = NumDistinctHelper(0, "", s, t);
+            return r;
+        }
+
+        public static int NumDistinctHelper(int i, string v, string s, string t)
+        {
+            if (i == s.Length)
+            {
+                if (v.Equals(t)) return 1;
+                else return 0;
+            }
+
+            int skip = NumDistinctHelper(i + 1, v, s, t);
+
+            var sb = new StringBuilder(v);
+            sb.Append(s[i]);
+            int include = NumDistinctHelper(i + 1, sb.ToString(), s, t);
+
+            return include + skip;
+        }
+
+        public static int NumDistinctHelperMemo(int i, string v, string s, string t, Dictionary<(int, string), int> memo)
+        {
+            if (i == s.Length)
+            {
+                if (v.Equals(t)) return 1;
+                else return 0;
+            }
+
+            if (memo.ContainsKey((i, v))) return memo[(i, v)];
+
+            int skip = NumDistinctHelperMemo(i + 1, v, s, t, memo);
+
+            var sb = new StringBuilder(v);
+            sb.Append(s[i]);
+            int include = NumDistinctHelperMemo(i + 1, sb.ToString(), s, t, memo);
+
+            memo[(i, v)] = include + skip;
+            return memo[(i, v)];
+        }
+
+        public static int MaxCoins(int[] nums)
+        {
+            var list = new List<int>() { 1 };
+            list.AddRange(nums);
+            list.Add(1);
+
+            var r = MaxCoinsHelper(list);
+            return r;
+        }
+
+        public static int MaxCoinsHelper(List<int> nums)
+        {
+            if (nums.Count == 2) return 0;
+            int mxCoins = 0;
+            for (int i = 1; i < nums.Count - 1; i++)
+            {
+                int coins = nums[i - 1] * nums[i] * nums[i + 1];
+
+                var newNums = new List<int>(nums);
+                newNums.RemoveAt(i);
+                coins += MaxCoinsHelper(newNums);
+                mxCoins  = Math.Max(mxCoins, coins);
+            }
+
+            return mxCoins;
         }
     }
 }
