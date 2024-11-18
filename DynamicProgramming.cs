@@ -449,11 +449,42 @@ namespace Neetcode150
                 var newNums = new List<int>(nums);
                 newNums.RemoveAt(i);
                 coins += MaxCoinsHelper(newNums);
-                mxCoins  = Math.Max(mxCoins, coins);
+                mxCoins = Math.Max(mxCoins, coins);
             }
 
             return mxCoins;
         }
+
+
+        public static int LongestIncreasingPath(int[][] matrix)
+        {
+            int max = 0;
+            var memo = new Dictionary<(int, int), int>();
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                for (int j = 0; j < matrix[i].Length; j++)
+                    LongestIncreasingPathHelper(i, j, -1, matrix, memo, matrix.Length, matrix[0].Length, ref max);
+            }
+
+            return max;
+        }
+        public static int LongestIncreasingPathHelper(int r, int c, int prev, int[][] matrix, Dictionary<(int, int), int> memo, int rows, int cols, ref int max)
+        {
+            if (r < 0 || c < 0 || r >= rows || c >= cols || prev >= matrix[r][c]) return 0;
+
+            if (memo.ContainsKey((r, c))) return memo[(r, c)];
+
+            int right = 1 + LongestIncreasingPathHelper(r, c + 1, matrix[r][c], matrix, memo, rows, cols, ref max);
+            int left = 1 + LongestIncreasingPathHelper(r, c - 1, matrix[r][c], matrix, memo, rows, cols, ref max);
+            int up = 1 + LongestIncreasingPathHelper(r - 1, c, matrix[r][c], matrix, memo, rows, cols, ref max);
+            int down = 1 + LongestIncreasingPathHelper(r + 1, c, matrix[r][c], matrix, memo, rows, cols, ref max);
+
+            memo[(r, c)] = Math.Max(down, Math.Max(up, Math.Max(right, left)));
+            max = Math.Max(memo[(r, c)], max);
+            return memo[(r, c)];
+
+        }
+
     }
 }
 

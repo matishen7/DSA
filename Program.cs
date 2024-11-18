@@ -4,6 +4,13 @@ using Neetcode150.GraphProblems;
 using Neetcode150.ObjectOriented.ConnectFour;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
-int[] arr = [9, 1, 4, 2, 3, 3, 7];
-DP1DimensionProblems.LengthOfLIS(arr);
+int[][] jaggedArray = new int[][]
+{
+    new int[] { 1, 2, 3 },
+    new int[] { 2, 1, 4 },
+    new int[] { 7, 6, 5 }
+};
+
+
+DynamicProgramming.LongestIncreasingPath(jaggedArray);
 

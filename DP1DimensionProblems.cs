@@ -25,7 +25,7 @@ namespace Neetcode150
                 }
 
                 //even
-                l = i;  r = i + 1;
+                l = i; r = i + 1;
 
                 while (l >= 0 && r < s.Length && s[l] == s[r])
                 {
@@ -59,7 +59,7 @@ namespace Neetcode150
             return Math.Max(include, skip);
         }
 
-        public static int LengthOfLISHelperMemo(int i, int count, int previous, int[] nums, Dictionary<(int, int, int),int> memo)
+        public static int LengthOfLISHelperMemo(int i, int count, int previous, int[] nums, Dictionary<(int, int, int), int> memo)
         {
             if (i == nums.Length) return count;
 
@@ -72,8 +72,81 @@ namespace Neetcode150
             if (previous < nums[i])
                 include = LengthOfLISHelperMemo(i + 1, count + 1, nums[i], nums, memo);
 
-            memo[(i,count,previous)] = Math.Max(include, skip);
+            memo[(i, count, previous)] = Math.Max(include, skip);
             return memo[(i, count, previous)];
         }
+
+        public static int MaxProduct(int[] nums)
+        {
+            if (nums.Length == 1) return nums[0];
+            int maxProduct = int.MinValue;
+            int max = 1;
+            int min = 1;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == 0)
+                {
+                    max = 1;
+                    min = 1;
+                }
+
+                else
+                {
+                    max = max * nums[i];
+                    min = min * -nums[i];
+                }
+                maxProduct = Math.Max(min, Math.Max(max, nums[i]));
+
+            }
+            return maxProduct;
+        }
+
+
+        public static int MaxProductBruteForce(int[] nums)
+        {
+            int max = nums[0];
+            if (nums.Length == 1) return nums[0];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int max2 = nums[i];
+                int product = 1;
+                for (int j = i; j < nums.Length; j++)
+                {
+                    product *= nums[j];
+                    max2 = Math.Max(max2, product);
+                }
+                max = Math.Max(max, max2);
+            }
+
+            return max;
+        }
+
+        public static int NumDecodings(string s)
+        {
+            var list = new List<string>();
+            NumDecodingsHelper(0, s, list);
+            return 0;
+        }
+
+        public static void NumDecodingsHelper(int i, string s, List<string> list)
+        {
+            if (i == s.Length)
+            {
+                list.Add(s);
+                return;
+            }
+
+            //skip
+            NumDecodingsHelper(i + 1, s, list);
+
+            //include
+            var sb = new StringBuilder(s);
+            sb.Insert(i, ',');
+            NumDecodingsHelper(i + 1, sb.ToString(), list);
+
+        }
+
+
     }
 }
