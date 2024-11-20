@@ -526,7 +526,30 @@ namespace Neetcode150
             return memo[(i, j)];
         }
 
-       
+        public class NumArray
+        {
+            private int[] array;
+
+            public NumArray(int[] nums)
+            {
+               array = new int[nums.Length];
+                int sum = 0;
+               for (int i = 0; i < nums.Length; i++)
+                {
+                    sum += nums[i];
+                    array[i] = sum;
+                }
+            }
+
+            public int SumRange(int left, int right)
+            {
+                int prefixRight = array[right];
+
+                int prefixLeft = (left - 1 < 0) ? 0 : array[left - 1];
+
+                return prefixRight - prefixLeft;
+            }
+        }
     }
 }
 
