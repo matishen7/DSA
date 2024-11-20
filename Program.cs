@@ -4,13 +4,7 @@ using Neetcode150.GraphProblems;
 using Neetcode150.ObjectOriented.ConnectFour;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
-int[][] jaggedArray = new int[][]
-{
-    new int[] { 1, 2, 3 },
-    new int[] { 2, 1, 4 },
-    new int[] { 7, 6, 5 }
-};
+string s1 = "xyz", s2 = ".*z";
 
-
-DynamicProgramming.LongestIncreasingPath(jaggedArray);
+DynamicProgramming.IsMatch(s1, s2);
 

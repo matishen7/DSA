@@ -485,6 +485,48 @@ namespace Neetcode150
 
         }
 
+
+        public static bool IsInterleave(string s1, string s2, string s3)
+        {
+            if (s1.Length + s2.Length != s3.Length) return false;
+
+            var memo = new Dictionary<(int, int), bool>();
+
+            var r = IsInterleaveHelper(0, 0, 0, s1, s2, s3, memo);
+            return r;
+        }
+
+        private static bool IsInterleaveHelper(int i, int j, int k, string s1, string s2, string s3, Dictionary<(int, int), bool> memo)
+        {
+            if (k == s3.Length)
+            {
+                return (i == s1.Length) && (j == s2.Length);
+            }
+
+            if (memo.ContainsKey((i, j))) return memo[(i, j)];
+
+            bool res = false;
+            if (i < s1.Length && s1[i] == s3[k])
+            {
+                if (IsInterleaveHelper(i + 1, j, k + 1, s1, s2, s3, memo))
+                {
+                    res = true;
+                }
+            }
+
+            if (j < s2.Length && s2[j] == s3[k])
+            {
+                if (IsInterleaveHelper(i, j + 1, k + 1, s1, s2, s3, memo))
+                {
+                    res = true;
+                }
+            }
+
+            memo[(i, j)] = res;
+            return memo[(i, j)];
+        }
+
+       
     }
 }
 
