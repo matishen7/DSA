@@ -127,16 +127,66 @@ namespace Neetcode150
                 {
                     max = h; break;
                 }
-                
+
 
                 if (r - 1 >= 0 && !visit.Contains((r - 1, c))) pq.Enqueue((Math.Max(h, grid[r - 1][c]), r - 1, c), Math.Max(h, grid[r - 1][c]));
-                if (c - 1 >= 0 && !visit.Contains((r , c - 1))) pq.Enqueue((Math.Max(h, grid[r][c - 1]), r , c - 1), Math.Max(h, grid[r][c - 1]));
-                if (c + 1 < cols && !visit.Contains((r , c + 1))) pq.Enqueue((Math.Max(h, grid[r][c + 1]), r , c + 1), Math.Max(h, grid[r][c + 1]));
-                if (r + 1 < rows && !visit.Contains((r + 1 , c))) pq.Enqueue((Math.Max(h, grid[r + 1][c]), r + 1 , c ), Math.Max(h, grid[r + 1][c]));
+                if (c - 1 >= 0 && !visit.Contains((r, c - 1))) pq.Enqueue((Math.Max(h, grid[r][c - 1]), r, c - 1), Math.Max(h, grid[r][c - 1]));
+                if (c + 1 < cols && !visit.Contains((r, c + 1))) pq.Enqueue((Math.Max(h, grid[r][c + 1]), r, c + 1), Math.Max(h, grid[r][c + 1]));
+                if (r + 1 < rows && !visit.Contains((r + 1, c))) pq.Enqueue((Math.Max(h, grid[r + 1][c]), r + 1, c), Math.Max(h, grid[r + 1][c]));
 
             }
 
             return max;
+        }
+
+        public static double MaxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node)
+        {
+            var adjList = new Dictionary<int, (int[] neighbors, double weight)>();
+
+            for (int i = 0; i < n; i++)
+            {
+                adjList.Add(i, (new int[0], -1)); // Initialize with an empty array and a default weight of 0.0
+            }
+
+
+            for (int i = 0; i < edges.Length; i++)
+            {
+                var s = edges[i][0];
+                var d = edges[i][1];
+                var w = succProb[i];
+
+                adjList[s] = (new int[] { s, d }, w);
+            }
+
+            var pq = new PriorityQueue<(double w, int d), double>();
+            pq.Enqueue((1, start_node), -1);
+
+            var visit = new Dictionary<int, double>();
+
+            while (pq.Count > 0)
+            {
+                var curr = pq.Dequeue();
+                var w = curr.w;
+                var d = curr.d;
+
+                if (!visit.ContainsKey(d)) visit.Add(d, w);
+                else
+                {
+                    visit[d] = Math.Max(visit[d], w);
+                }
+
+                var node = adjList[d];
+                var neighbors = node.neighbors;
+                var weight = node.weight;
+
+                for (int i = 0; i < neighbors.Length; i++)
+                {
+                    pq.Enqueue((weight * w, neighbors[i]), -1 * weight * w);
+                }
+
+            }
+
+            return (visit.Count == n) ? visit[end_node] : 0;
         }
     }
 }
