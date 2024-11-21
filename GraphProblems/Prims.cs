@@ -75,7 +75,7 @@ namespace Neetcode150.GraphProblems
                 {
                     if (i == j) continue;
                     int w = CalculateCost(points, i, j);
-                    if (!adjList[i].Contains((j,w))) adjList[i].Add((j, w));
+                    if (!adjList[i].Contains((j, w))) adjList[i].Add((j, w));
                     if (!adjList[j].Contains((i, w))) adjList[j].Add((i, w));
                 }
 
