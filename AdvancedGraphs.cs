@@ -58,6 +58,52 @@ namespace Neetcode150
             return shortest;
         }
 
+        public static int FindCheapestPrice(int n, int[][] flights, int src, int dst, int k)
+        {
+            var adjList = new Dictionary<int, List<List<int>>>();
+
+            for (int i = 0; i < n; i++)
+            {
+                adjList.Add(i, new List<List<int>>());
+            }
+
+            foreach (var edge in flights)
+            {
+                var s = edge[0];
+                var d = edge[1];
+                var w = edge[2];
+
+                adjList[s].Add(new List<int>() { d, w });
+            }
+
+
+            var pq = new PriorityQueue<(int cost, int node, int stops), int>();
+
+            pq.Enqueue((0, src, 0), 0);
+
+            while (pq.Count > 0)
+            {
+                var curr = pq.Dequeue();
+                var cost = curr.cost;
+                var d1 = curr.node;
+                var stops = curr.stops;
+                if (d1 == dst)
+                    return cost;
+
+                if (stops > k) continue;
+
+                foreach (var edge in adjList[d1])
+                {
+                    var d2 = edge[0];
+                    var cost2 = edge[1];
+
+                    pq.Enqueue((cost2 + cost, d2, stops + 1), cost2 + cost);
+                }
+            }
+
+            return -1;
+        }
+
 
         public static int NetworkDelayTime(int[][] times, int n, int k)
         {
