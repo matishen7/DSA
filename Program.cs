@@ -6,10 +6,13 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-int[][] points = [[0, 0], [2, 2], [3, 3], [2, 4], [4, 2]];
+var tickets = new List<List<string>>
+        {
+              new List<string> { "BUF", "HOU" },
+            new List<string> { "HOU", "SEA" },
+            new List<string> { "JFK", "BUF" } };
 
 
 
 
-
-Prims.MinCostConnectPoints(points);
+Prims.FindItinerary(tickets);

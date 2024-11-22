@@ -121,5 +121,50 @@ namespace Neetcode150.GraphProblems
             int cost = Math.Abs(coordinates1[0] - coordinates2[0]) + Math.Abs(coordinates1[1] - coordinates2[1]);
             return cost;
         }
+
+        public static List<string> FindItinerary(List<List<string>> tickets)
+        {
+            Dictionary<string, List<string>> adjList = new();
+            for (int i = 0; i < tickets.Count; i++)
+            {
+                var from = tickets[i][0];
+                var to = tickets[i][1];
+                adjList[from] = new List<string>();
+            }
+
+            for (int i = 0; i < tickets.Count; i++)
+            {
+                var from = tickets[i][0];
+                var to = tickets[i][1];
+                adjList[from].Add(to);
+            }
+            var path = new List<string>();
+            string start = "JFK";
+            HashSet<(string,string)> visited = new();
+            var pq = new PriorityQueue<(string src, string dst), string>();
+
+            foreach (var neighbor in adjList[start])
+            {
+                pq.Enqueue((start, neighbor), start + neighbor);
+                visited.Add((start, neighbor));
+            }
+            path.Add(start);
+            while (pq.Count > 0)
+            {
+                var curr = pq.Dequeue();
+                path.Add(curr.dst);
+                visited.Add((curr.src, curr.dst));
+
+                if (adjList.ContainsKey(curr.dst))
+                foreach (var nei in adjList[curr.dst])
+                {
+                    if (!visited.Contains((curr.dst, nei)))
+                        pq.Enqueue((curr.dst, nei), curr.dst + nei);
+                }
+            }
+
+            return path;
+
+        }
     }
 }
