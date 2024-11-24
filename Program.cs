@@ -6,9 +6,9 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-string[] dic = ["hrn", "hrf", "er", "enn", "rfnn"];
+int[] arr = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
 
 
 
 
-TopologicalSort.foreignDictionary(dic);
+Greedy.MaxSubArray(arr);
