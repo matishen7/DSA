@@ -61,5 +61,31 @@ namespace Neetcode150
             return result.ToArray();
         }
 
+        public static bool CanAttendMeetings(List<Interval> intervals)
+        {
+            if (intervals.Count <= 1) return true;
+            var minH = new PriorityQueue<Interval, int>();
+            for (var i = 0; i < intervals.Count; i++)
+                minH.Enqueue(intervals[i], intervals[i].start);
+            var current = minH.Dequeue();
+            while (minH.Count > 0)
+            {
+                var interval = minH.Dequeue();
+                if (current.end > interval.start) return false;
+                current = interval;
+            }
+
+            return true;
+        }
+
+        public class Interval
+        {
+            public int start, end;
+            public Interval(int start, int end)
+            {
+                this.start = start;
+                this.end = end;
+            }
+        }
     }
 }
