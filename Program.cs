@@ -6,9 +6,9 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-int[] arr = [2, 3, 0, 1, 4];
+int[][] arr = [[1, 2, 3], [7, 1, 1]]; int[] target = [7, 2, 3];
 
 
 
 
-Console.WriteLine(Greedy.Jump2(arr));
+Console.WriteLine(Greedy.MergeTriplets(arr, target));
