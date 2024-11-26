@@ -6,9 +6,9 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static Neetcode150.TreeProblems;
 
-int[][] arr = [[1, 2, 3], [7, 1, 1]]; int[] target = [7, 2, 3];
+int[][] intervals = [[2, 3], [2, 2], [3, 3], [1, 3], [5, 7], [2, 2], [4, 6]];
 
 
 
 
-Console.WriteLine(Greedy.MergeTriplets(arr, target));
+Console.WriteLine(Intervals.Merge(intervals));
