@@ -78,6 +78,33 @@ namespace Neetcode150
             return true;
         }
 
+        public static int MinMeetingRooms(List<Interval> intervals)
+        {
+            if (intervals.Count <= 1) return 1;
+            var minH = new PriorityQueue<Interval, int>();
+            for (var i = 0; i < intervals.Count; i++)
+                minH.Enqueue(intervals[i], intervals[i].start);
+            var current = minH.Dequeue();
+            var answer = new List<List<Interval>>();
+            while (minH.Count > 0)
+            {
+                var interval = minH.Dequeue();
+                var list = new List<Interval>();
+
+                while (minH.Count > 0 && current.end <= interval.start)
+                {
+                    list.Add(current);
+                    current = interval;
+                    interval = minH.Dequeue();
+                }
+                list.Add(current);
+                answer.Add(list);
+                current = interval;
+            }
+
+            return answer.Count;
+        }
+
         public class Interval
         {
             public int start, end;
@@ -87,5 +114,29 @@ namespace Neetcode150
                 this.end = end;
             }
         }
+
+        public static int[] MinInterval(int[][] intervals, int[] queries)
+        {
+            var res = new int[queries.Length];
+            Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+            //Array.Sort(queries);
+            for (int i = 0; i < queries.Length; i++)
+            {
+                var q = queries[i];
+
+                var minHeap = new PriorityQueue<int, int>();
+                for (int j = 0; j < intervals.Length; j++)
+                {
+                    if ( intervals[j][0] <= q && q <= intervals[j][1])
+                        minHeap.Enqueue(intervals[j][1] - intervals[j][0] + 1, intervals[j][1] - intervals[j][0] + 1);
+                }
+                if (minHeap.Count > 0)
+                    res[i] = minHeap.Peek();
+                else res[i] = -1;
+            }
+            return res;
+        }
+
+
     }
 }

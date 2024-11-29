@@ -4,11 +4,12 @@ using Neetcode150.GraphProblems;
 using Neetcode150.ObjectOriented.ConnectFour;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using static Neetcode150.Intervals;
 using static Neetcode150.TreeProblems;
 
-int[][] intervals = [[2, 3], [2, 2], [3, 3], [1, 3], [5, 7], [2, 2], [4, 6]];
+int[][] intervals = [[1, 3], [2, 3], [3, 7], [6, 6]]; int[] queries = [2, 3, 1, 7, 6, 8];
 
 
 
 
-Console.WriteLine(Intervals.Merge(intervals));
+Console.WriteLine(Intervals.MinInterval(intervals, queries));
