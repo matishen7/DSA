@@ -145,7 +145,7 @@ namespace Neetcode150
             int p = 0;
             string sum = "0";
             int carry = 0;
-            var list = new List<string>();
+           // var list = new List<string>();
             for (int j = num2.Length - 1; j >= 0; j--)
             {
                 StringBuilder b = new StringBuilder();
@@ -161,7 +161,7 @@ namespace Neetcode150
                 for (int k = 0; k < p; k++)
                     b.Append(0);
                 p++;
-                list.Add(b.ToString());
+                //list.Add(b.ToString());
                 sum = BigSum(sum, b.ToString());
             }
 
@@ -194,6 +194,44 @@ namespace Neetcode150
             }
             if (carry > 0) b.Insert(0, carry);
             return b.ToString();
+        }
+
+        public class CountSquares
+        {
+            private List<(int, int)> pts;
+            private Dictionary<(int, int), int> count;
+            public CountSquares()
+            {
+                pts = new List<(int, int)> ();
+                count = new Dictionary<(int, int), int>();
+            }
+
+            public void Add(int[] point)
+            {
+                pts.Add((point[0], point[1]));
+                if (count.ContainsKey((point[0], point[1])))
+                    count[(point[0], point[1])]++;
+                else count.Add((point[0], point[1]), 1);
+            }
+
+            public int Count(int[] point)
+            {
+                int res = 0;
+                int px = point[0];
+                int py = point[1];
+
+                foreach (var pt in pts)
+                {
+                    (int x, int y)  = pt;
+
+                    if (Math.Abs(py - y) != Math.Abs(px - x) || x == px || y == py)
+                        continue;
+
+                    res += (count.GetValueOrDefault((x, py)) *
+                           count.GetValueOrDefault((px, y)));
+                }
+                return res;
+            }
         }
     }
 }
