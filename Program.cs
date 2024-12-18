@@ -8,10 +8,6 @@ using static Neetcode150.Intervals;
 using static Neetcode150.MathAndGeometry;
 using static Neetcode150.TreeProblems;
 
-var list = new List<List<int>>()
-{
-    new List<int>(){-1},
-    new List<int>(){2,3},
-    new List<int>(){1,-1,-3},
-};
-NeedCode500.MinimumTotal(list);
+int[][] grid = [[0, 0, 0], [1, 1, 0], [1, 1, 0]];
+
+Console.WriteLine(NeedCode500.ShortestPathBinaryMatrix(grid));
