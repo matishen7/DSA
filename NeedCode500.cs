@@ -175,5 +175,121 @@ namespace Neetcode150
             return directions;
         }
 
+        public static int CalPoints(string[] operations)
+        {
+            Stack<int> stack = new Stack<int>();
+            for (int i = 0; i < operations.Length; i++)
+            {
+                if (operations[i] == "C") stack.Pop();
+                else if (operations[i] == "+")
+                {
+                    int prev1 = stack.Pop();
+                    int prev2 = stack.Pop();
+                    int res = prev1 + prev2;
+                    stack.Push(prev2);
+                    stack.Push(prev1);
+                    stack.Push(res);
+
+                }
+                else if (operations[i] == "D")
+                {
+                    int prev1 = stack.Pop();
+                    int res = prev1 * 2;
+                    stack.Push(prev1);
+                    stack.Push(res);
+                }
+                else stack.Push(int.Parse(operations[i]));
+            }
+
+            int sum = 0;
+            while (stack.Count > 0)
+            {
+                sum += stack.Pop();
+            }
+            return sum;
+        }
+
+        public static string MakeGood(string s)
+        {
+            var stack = new Stack<char>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (stack.Count == 0) stack.Push(s[i]);
+
+                else
+                {
+                    var cc = stack.Peek();
+                    if (Math.Abs(cc - s[i]) == 32) stack.Pop();
+                    else stack.Push(s[i]);
+                }
+            }
+            string res = "";
+            while (stack.Count > 0)
+            {
+                res = stack.Pop() + res;
+            }
+
+            return res;
+        }
+
+        public static bool ValidateStackSequences(int[] pushed, int[] popped)
+        {
+            int j = 0;
+            var stack = new Stack<int>();
+            int i = 0;
+            while (i < pushed.Length || j < popped.Length)
+            {
+                if (stack.Count == 0 || stack.Peek() != popped[j])
+                {
+                    stack.Push(pushed[i]);
+                    i++;
+                }
+                else
+                {
+                    while (stack.Count != 0 && j < popped.Length && stack.Peek() == popped[j])
+                    {
+                        stack.Pop();
+                        j++;
+                    }
+                }
+            }
+
+            return stack.Count == 0;
+        }
+
+        public class StockSpanner
+        {
+            private Stack<int> prices;
+
+            public StockSpanner()
+            {
+                prices = new Stack<int>();
+            }
+
+            public int Next(int price)
+            {
+                prices.Push(price);
+                int res = 0;
+                var temp = new Stack<int>();
+                while (prices.Count > 0 && price >= prices.Peek())
+                {
+                    res++;
+                    temp.Push(prices.Pop());
+                }
+
+                while (temp.Count > 0)
+                {
+                    prices.Push(temp.Pop());
+                }
+
+                return res;
+            }
+        }
+
+        public int CombinationSum4(int[] nums, int target)
+        {
+
+        }
+
     }
 }
