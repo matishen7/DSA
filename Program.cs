@@ -8,6 +8,6 @@ using static Neetcode150.Intervals;
 using static Neetcode150.MathAndGeometry;
 using static Neetcode150.TreeProblems;
 
-int[] pushed = [1, 2, 3, 4, 5], popped = [4, 5, 3, 2, 1];
+int[] nums = [1, 2, 3]; int target = 4;
 
-Console.Write(NeedCode500.ValidateStackSequences(pushed, popped));
+Console.Write(NeedCode500.CombinationSum4(nums,target));

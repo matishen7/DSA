@@ -286,10 +286,28 @@ namespace Neetcode150
             }
         }
 
-        public int CombinationSum4(int[] nums, int target)
+        public static int CombinationSum4(int[] nums, int target)
         {
-
+            var memo = new Dictionary<int, int>();
+            int comb = CombinationSum4Helper(0, nums, target, memo);
+            return comb;
         }
 
+        public static int CombinationSum4Helper(int i, int[] nums, int target,Dictionary<int, int> memo)
+        {
+            if (target == 0) return 1;
+            if (target < 0) return 0;
+
+            if (memo.ContainsKey(target)) return memo[target];
+
+            int ways = 0;
+            for (int j = 0; j < nums.Length; j++)
+            {
+                ways += CombinationSum4Helper(nums[j], nums, target - nums[j], memo);
+            }
+
+            memo[target] = ways;
+            return ways;
+        }
     }
 }
