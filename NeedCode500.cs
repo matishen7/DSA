@@ -293,7 +293,7 @@ namespace Neetcode150
             return comb;
         }
 
-        public static int CombinationSum4Helper(int i, int[] nums, int target,Dictionary<int, int> memo)
+        public static int CombinationSum4Helper(int i, int[] nums, int target, Dictionary<int, int> memo)
         {
             if (target == 0) return 1;
             if (target < 0) return 0;
@@ -308,6 +308,68 @@ namespace Neetcode150
 
             memo[target] = ways;
             return ways;
+        }
+
+        public static int[] GetConcatenation(int[] nums)
+        {
+            var ans = new int[2 * nums.Length];
+            int i = 0, j = 0;
+            while (i < ans.Length)
+            {
+                if (j >= nums.Length) j = 0;
+                ans[i] = nums[j];
+                i++;
+                j++;
+            }
+
+
+            return ans;
+        }
+
+        public class NumMatrix
+        {
+
+            private List<List<int>> prefixSum = new List<List<int>>();
+
+            public NumMatrix(int[][] matrix)
+            {
+                for (int i = 0; i < matrix.Length; i++)
+                {
+                    var row = GetPrefixSum(matrix[i]);
+                    prefixSum.Add(row);
+                }
+            }
+
+            private List<int> GetPrefixSum(int[] grid)
+            {
+                List<int> prefix = new List<int>();
+                int total = 0;
+                for (int i = 0; i < grid.Length; i++)
+                {
+                    total += grid[i];
+                    prefix.Add(total);
+                }
+                return prefix;
+            }
+
+            private int RangeSum(int row, int left, int right)
+            {
+                int preRight = prefixSum[row][right];
+                int preLeft = 0;
+                if (left > 0) preLeft = prefixSum[row][left - 1];
+
+                return (preRight - preLeft);
+            }
+
+            public int SumRegion(int row1, int col1, int row2, int col2)
+            {
+                int sum = 0;
+                for (int i = row1; i <= row2; i++)
+                {
+                    sum += RangeSum(i, col1, col2);
+                }
+                return sum;
+            }
         }
     }
 }
