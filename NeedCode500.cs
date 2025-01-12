@@ -370,6 +370,104 @@ namespace Neetcode150
                 }
                 return sum;
             }
+
+            public static int MaxProfit(int[] prices)
+            {
+                int profit = 0;
+                for (int i = 1; i < prices.Length; i++)
+                {
+                    if (prices[i] > prices[i - 1]) profit += prices[i] - prices[i - 1];
+                }
+                return profit;
+            }
+
+
+        }
+
+        public static int SubarraySum(int[] nums, int k)
+        {
+            int c = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int sum = 0;
+                for (int j = i; j < nums.Length; j++)
+                {
+                    sum += nums[j];
+
+                    if (sum == k) c++;
+                }
+            }
+            return c;
+        }
+
+        public static void Merge(int[] nums1, int m, int[] nums2, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                nums1[i + m] = nums2[i];
+            }
+
+            Array.Sort(nums1);
+        }
+
+        public static void Rotate(int[] nums, int k)
+        {
+            var arr = new int[nums.Length];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                arr[(i + k) % nums.Length] = nums[i];
+            }
+
+            for (int i = 0; i < nums.Length; i++)
+                nums[i] = arr[i];
+
+        }
+
+        public static bool ContainsNearbyDuplicate(int[] nums, int k)
+        {
+            var cache = new Dictionary<int, int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (cache.ContainsKey(nums[i]))
+                {
+                    int closestIndex = cache[nums[i]];
+                    if (Math.Abs(closestIndex - i) <= k) return true;
+                    else cache[nums[i]] = i;
+                }
+                else cache.Add(nums[i], i);
+            }
+            return false;
+        }
+
+        public static int MinSubArrayLen(int target, int[] nums)
+        {
+            int sum = 0;
+            int[] prefix = new int[nums.Length];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum += nums[i];
+                prefix[i] = sum;
+            }
+
+            int left = 0;
+            int right = 0;
+            int min = int.MaxValue;
+            int total = 0;
+            while (right < prefix.Length)
+            {
+                int preleft = 0;
+                if (left > 0) preleft = prefix[left - 1];
+                    
+                total = prefix[right] - preleft;
+                if (total < target) right++;
+                else
+                {
+                    min = Math.Min(min, right - left + 1);
+                    left++;
+                }
+            }
+
+            return (min == int.MaxValue) ? 0 : min;
         }
     }
 }
