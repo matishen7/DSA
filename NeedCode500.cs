@@ -457,7 +457,7 @@ namespace Neetcode150
             {
                 int preleft = 0;
                 if (left > 0) preleft = prefix[left - 1];
-                    
+
                 total = prefix[right] - preleft;
                 if (total < target) right++;
                 else
@@ -469,5 +469,66 @@ namespace Neetcode150
 
             return (min == int.MaxValue) ? 0 : min;
         }
+
+        public class MyStack
+        {
+
+            private Queue<int> queue;
+
+            public MyStack()
+            {
+                queue = new Queue<int>();
+            }
+
+            public void Push(int x)
+            {
+                queue.Enqueue(x);
+            }
+
+            public int Pop()
+            {
+                Queue<int> temp = new Queue<int>();
+                while (queue.Count > 1)
+                {
+                    temp.Enqueue(queue.Dequeue());
+                }
+
+                int value = queue.Dequeue();
+
+                while (temp.Count > 0)
+                    queue.Enqueue(temp.Dequeue());
+                return value;
+            }
+
+            public int Top()
+            {
+                Queue<int> temp = new Queue<int>();
+                while (queue.Count > 1)
+                {
+                    temp.Enqueue(queue.Dequeue());
+                }
+
+                int value = queue.Peek();
+                temp.Enqueue(queue.Dequeue());
+
+                while (temp.Count > 0)
+                    queue.Enqueue(temp.Dequeue());
+                return value;
+            }
+
+            public bool Empty()
+            {
+                return queue.Count == 0;
+            }
+        }
+
+        /**
+         * Your MyStack object will be instantiated and called as such:
+         * MyStack obj = new MyStack();
+         * obj.Push(x);
+         * int param_2 = obj.Pop();
+         * int param_3 = obj.Top();
+         * bool param_4 = obj.Empty();
+         */
     }
 }
