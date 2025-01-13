@@ -102,7 +102,7 @@ namespace Neetcode150
                         queue.Enqueue(curr.right);
                     if (curr.left != null)
                         queue.Enqueue(curr.left);
-                    
+
                 }
                 list.Add(subList);
             }
@@ -162,7 +162,7 @@ namespace Neetcode150
             return 1 + Math.Max(left, right);
         }
 
-        
+
         public List<int> BfsTraversal(TreeNode root)
         {
             var list = new List<int>();
@@ -195,11 +195,11 @@ namespace Neetcode150
         public List<int> InOrder(TreeNode root, List<int> list)
         {
             if (root == null) return list;
-            
+
             InOrder(root.left, list);
             list.Add(root.val);
             InOrder(root.right, list);
-            
+
             return list;
         }
 
@@ -208,10 +208,10 @@ namespace Neetcode150
             if (root == null) return true;
             else if (root.left != null && root.left.val >= root.val) return false;
             else if (root.right != null && root.right.val <= root.val) return false;
-            return (IsValidBST(root.left)&&IsValidBST(root.right));
+            return (IsValidBST(root.left) && IsValidBST(root.right));
         }
 
-        
+
 
         public class TreeNode
         {
@@ -241,6 +241,50 @@ namespace Neetcode150
             {
                 root.left = Insert(root.left, val);
             }
+            return root;
+        }
+
+        public TreeNode Remove(TreeNode root, int value)
+        {
+            return RemoveDFS(root, value);
+        }
+
+        public TreeNode RemoveDFS(TreeNode node, int val)
+        {
+            if (node == null) return node;
+            if (val > node.val)
+            {
+                node.right = RemoveDFS(node.right, val);
+            }
+            else if (val < node.val)
+            {
+                node.left = RemoveDFS(node.left, val);
+            }
+            else
+            {
+                if (node.right == null) return node.left;
+                if (node.left == null) return node.right;
+
+                var cur = node.right;
+                while (cur.left != null)
+                {
+                    cur = cur.left;
+                }
+                node.val = cur.val;
+                node.right = RemoveDFS(node.right, node.val);
+            }
+            return node;
+        }
+
+        public TreeNode RemoveLeafNodes(TreeNode root, int target)
+        {
+            if (root == null) return null;
+
+            root.left = RemoveLeafNodes(root.left, target);
+            root.right = RemoveLeafNodes(root.right, target);
+
+            if (root.val == target && root.left == null && root.right == null) return null;
+
             return root;
         }
 
