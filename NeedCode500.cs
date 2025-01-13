@@ -522,13 +522,68 @@ namespace Neetcode150
             }
         }
 
+        public class FreqStack
+        {
+            private Stack<int> stack;
+            private Dictionary<int, int> count;
+            private int max = 0;
+            public FreqStack()
+            {
+                stack = new Stack<int>();
+                count = new Dictionary<int, int>();
+            }
+
+            public void Push(int val)
+            {
+                stack.Push(val);
+                if (count.ContainsKey(val))
+                    count[val]++;
+                else count.Add(val, 1);
+
+                max = Math.Max(max, count[val]);
+
+            }
+
+            public int Pop()
+            {
+                HashSet<int> set = new HashSet<int>();
+
+                foreach (var pair in count)
+                {
+                    var val = pair.Key;
+                    var freq = pair.Value;
+                    if (freq == max) set.Add(val);
+                }
+
+                if (set.Count == 1) max--;
+
+                Stack<int> temp = new Stack<int>();
+                int result = 0;
+                while (stack.Count > 0)
+                {
+                    int v = stack.Pop();
+                    if (set.Contains(v))
+                    {
+                        result = v;
+                        count[v]--;
+                        break;      
+                    }
+                    temp.Push(v); 
+                }
+
+
+                while (temp.Count > 0)
+                    stack.Push(temp.Pop());
+
+                return result;
+            }
+        }
+
         /**
-         * Your MyStack object will be instantiated and called as such:
-         * MyStack obj = new MyStack();
-         * obj.Push(x);
+         * Your FreqStack object will be instantiated and called as such:
+         * FreqStack obj = new FreqStack();
+         * obj.Push(val);
          * int param_2 = obj.Pop();
-         * int param_3 = obj.Top();
-         * bool param_4 = obj.Empty();
          */
     }
 }
