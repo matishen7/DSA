@@ -288,6 +288,26 @@ namespace Neetcode150
             return root;
         }
 
+        public int Rob(TreeNode root)
+        {
+            var result = RobDfs(root);
+            return Math.Max(result.Item2, result.Item1);
+        }
+
+        public (int, int) RobDfs(TreeNode root)
+        {
+            if (root == null) return (0, 0);
+
+            var leftPair = RobDfs(root.left);
+            var rightPair = RobDfs(root.right);
+
+            var withRoot = root.val + leftPair.Item2 + rightPair.Item2;
+            var withoutRoot = Math.Max(leftPair.Item1, leftPair.Item2) + Math.Max(rightPair.Item1, rightPair.Item1);
+
+            return (withRoot, withoutRoot);
+
+        }
+
         public TreeNode BuildTree(int?[] values)
         {
             if (values == null || values.Length == 0 || values[0] == null)
