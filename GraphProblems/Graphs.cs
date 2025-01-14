@@ -354,6 +354,70 @@ namespace Neetcode150.GraphProblems
             return true;
         }
 
+        public static List<List<string>> AccountsMerge(List<List<string>> accounts)
+        {
+            var adjList = new Dictionary<string, List<string>>();
 
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                for (int j = 1; j < accounts[i].Count; j++)
+                {
+                    var email = accounts[i][j];
+                    if (!adjList.ContainsKey(email))
+                        adjList.Add(email, new List<string>());
+                }
+            }
+
+            return null;
+        }
+
+        public static List<int> FindMinHeightTrees(int n, int[][] edges)
+        {
+            var adjList = new Dictionary<int, List<int>>();
+
+            for (int i = 0; i < n; i++)
+                adjList[i] = new List<int>();
+
+            for (int i = 0; i < edges.Length; i++)
+            {
+                var src = edges[i][0];
+                var dst = edges[i][1];
+                adjList[src].Add(dst);
+                adjList[dst].Add(src);
+            }
+
+            var answer = new List<int>();
+
+            int min = n;
+            var heights = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                int curHgt = HeightDfs(i, -1, adjList);
+                if (curHgt == min)
+                {
+                    answer.Add(i);
+                }
+                else if (curHgt < min)
+                {
+                    answer = new List<int>();
+                    answer.Add(i);
+                    min = curHgt;
+                }
+            }
+
+            return answer;
+        }
+
+        private static int HeightDfs(int node, int parent, Dictionary<int, List<int>> adjList)
+        {
+            int height = 0;
+            foreach (var nei in adjList[node])
+            {
+                if (nei == parent) continue;
+                height = Math.Max(height, 1 + HeightDfs(nei, node, adjList));
+            }
+            return height;
+        }
     }
 }

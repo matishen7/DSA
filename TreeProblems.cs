@@ -302,7 +302,7 @@ namespace Neetcode150
             var rightPair = RobDfs(root.right);
 
             var withRoot = root.val + leftPair.Item2 + rightPair.Item2;
-            var withoutRoot = Math.Max(leftPair.Item1, leftPair.Item2) + Math.Max(rightPair.Item1, rightPair.Item1);
+            var withoutRoot = Math.Max(leftPair.Item1, leftPair.Item2) + Math.Max(rightPair.Item1, rightPair.Item2);
 
             return (withRoot, withoutRoot);
 

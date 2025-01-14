@@ -1,15 +1,5 @@
 ﻿using Neetcode150._250;
-
-MyCircularQueue myCircularQueue = new MyCircularQueue(3);
-myCircularQueue.EnQueue(1);
-myCircularQueue.EnQueue(2);
-myCircularQueue.EnQueue(3);
-myCircularQueue.EnQueue(4);
-Console.WriteLine(myCircularQueue.Rear());     // return 3
-Console.WriteLine(myCircularQueue.IsFull());   // return True
-Console.WriteLine(myCircularQueue.DeQueue());  // return True
-Console.WriteLine(myCircularQueue.DeQueue());  // return True
-Console.WriteLine(myCircularQueue.DeQueue());  // return True
-Console.WriteLine(myCircularQueue.DeQueue());  // return True
-Console.WriteLine(myCircularQueue.EnQueue(4)); // return True
-Console.WriteLine(myCircularQueue.Rear());
+using Neetcode150.GraphProblems;
+List<List<string>> accounts = [["John", "johnsmith@mail.com", "john_newyork@mail.com"], ["John", "johnsmith@mail.com", "john00@mail.com"], ["Mary", "mary@mail.com"], ["John", "johnnybravo@mail.com"]];
+int[][] edges = [[3, 0], [3, 1], [3, 2], [3, 4], [5, 4]];
+Graphs.FindMinHeightTrees(6, edges);
