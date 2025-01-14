@@ -8,6 +8,31 @@ namespace Neetcode150
 {
     internal class DynamicProgramming
     {
+        public static int MinPathSum(int[][] grid)
+        {
+            var memo = new Dictionary<(int, int), int>();
+
+            var result = MinPathSumDfs(0, 0, grid.Length, grid[0].Length, grid, memo);
+            return result;
+        }
+
+        public static int MinPathSumDfs(int i , int j, int rows, int cols, int[][] grid, Dictionary<(int, int), int> memo)
+        {
+            if (i == rows || j == cols) return int.MaxValue;
+
+            if (i == grid.Length - 1 && j == grid[0].Length - 1) return grid[i][j];
+
+            if (memo.ContainsKey((i, j))) return memo[(i, j)];
+
+            int result = grid[i][j] + Math.Min(
+                MinPathSumDfs(i, j + 1, rows, cols, grid, memo),
+                MinPathSumDfs(i + 1, j, rows, cols, grid, memo));
+
+            memo[(i,j)]= result;
+            return result;
+
+        }
+
         public static int ClimbStairs(int n)
         {
             var memo = new Dictionary<int, int>();
