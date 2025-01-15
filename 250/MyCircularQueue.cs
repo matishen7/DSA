@@ -109,7 +109,44 @@ namespace Neetcode150._250
 
             while (stack.Count > 0)
                 result = stack.Pop() + result;
-            
+
+            return result;
+        }
+
+        public static string LongestDiverseString(int a, int b, int c)
+        {
+            PriorityQueue<(char cc, int count), int> queue = new PriorityQueue<(char cc, int count), int>();
+            if (a > 0)
+                queue.Enqueue(('a', a), -a);
+            if (b > 0)
+                queue.Enqueue(('b', b), -b);
+            if (c > 0)
+                queue.Enqueue(('c', c), -c);
+
+            string result = "";
+
+            while (queue.Count > 0)
+            {
+                var first = queue.Dequeue();
+                if (result.Length > 1 && result[result.Length - 1] == first.cc && result[result.Length - 2] == first.cc)
+                {
+                    if (queue.Count == 0) break;
+                    var second = queue.Dequeue();
+                    result = result + second.cc;
+                    int newCount2 = second.count - 1;
+                    if (newCount2 > 0)
+                        queue.Enqueue((second.cc, newCount2), -newCount2);
+                    queue.Enqueue((first.cc, first.count), -first.count);
+                }
+                else
+                {
+                    result = result + first.cc;
+                    int newCount = first.count - 1;
+                    if (newCount > 0)
+                        queue.Enqueue((first.cc, newCount), -newCount);
+                }
+
+            }
             return result;
         }
     }
