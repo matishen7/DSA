@@ -26,9 +26,9 @@ namespace Neetcode150._250
                 count++;
                 return true;
             }
-                
+
             Node? current = root;
-            
+
             if (count < k)
             {
                 while (current.Next != null)
@@ -49,7 +49,7 @@ namespace Neetcode150._250
             root = root.Next;
             count--;
             return true;
-            
+
 
         }
 
@@ -77,16 +77,40 @@ namespace Neetcode150._250
         {
             return count == k;
         }
-    }
 
-    /**
-     * Your MyCircularQueue object will be instantiated and called as such:
-     * MyCircularQueue obj = new MyCircularQueue(k);
-     * bool param_1 = obj.EnQueue(value);
-     * bool param_2 = obj.DeQueue();
-     * int param_3 = obj.Front();
-     * int param_4 = obj.Rear();
-     * bool param_5 = obj.IsEmpty();
-     * bool param_6 = obj.IsFull();
-     */
+        public static string DecodeString(string s)
+        {
+            Stack<char> stack = new Stack<char>();
+            string result = "";
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] != ']') stack.Push(s[i]);
+                else
+                {
+                    string current = "";
+                    while (stack.Count > 0 && stack.Peek() != '[')
+                    {
+                        char cc = stack.Pop();
+                        current = cc + current;
+                    }
+                    string number = "";
+                    while (stack.Count > 0 && stack.Peek() == '[') stack.Pop();
+                    while (stack.Count > 0 && Char.IsNumber(stack.Peek()))
+                        number = stack.Pop() + number;
+                    string str = "";
+                    int times = int.Parse(number);
+                    for (int j = 1; j <= times; j++)
+                        str = current + str;
+
+                    for (int k = 0; k < str.Length; k++)
+                        stack.Push(str[k]);
+                }
+            }
+
+            while (stack.Count > 0)
+                result = stack.Pop() + result;
+            
+            return result;
+        }
+    }
 }
