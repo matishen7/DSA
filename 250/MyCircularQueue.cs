@@ -149,5 +149,47 @@ namespace Neetcode150._250
             }
             return result;
         }
+
+        public static string ReorganizeString(string s)
+        {
+            var freq = new Dictionary<char, int>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (!freq.ContainsKey(s[i]))
+                    freq.Add(s[i], 1);
+                else freq[s[i]]++;
+            }
+            PriorityQueue<(char cc, int count), int> queue = new PriorityQueue<(char cc, int count), int>();
+            foreach (var pair in freq)
+            {
+                var count = pair.Value;
+                var character = pair.Key;
+                queue.Enqueue((character, count), -count);
+            }
+
+            StringBuilder res = new StringBuilder();
+            while (queue.Count > 0)
+            {
+                var first = queue.Dequeue();
+                if (res.Length > 0 && res[res.Length - 1] == first.cc)
+                {
+                    if (queue.Count == 0) break;
+                    var second = queue.Dequeue();
+                    res.Append(second.cc);
+                    int newCount2 = second.count - 1;
+                    if (newCount2 > 0)
+                        queue.Enqueue((second.cc, newCount2), -newCount2);
+                    queue.Enqueue((first.cc, first.count), -first.count);
+                }
+                else
+                {
+                    res.Append(first.cc);
+                    int newCount = first.count - 1;
+                    if (newCount > 0)
+                        queue.Enqueue((first.cc, newCount), -newCount);
+                }
+            }
+            return (s.Length == res.Length) ? res.ToString() : "";
+        }
     }
 }
