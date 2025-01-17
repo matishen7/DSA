@@ -213,5 +213,41 @@ namespace Neetcode150._250
 
             return true;
         }
+
+        public static int[] GetOrder(int[][] tasks)
+        {
+            List<int> result = new List<int>();
+            PriorityQueue<(int index, int enqTime, int procTime), int> available = new PriorityQueue<(int index, int enqTime, int procTime), int>();
+            PriorityQueue<(int index, int enqTime, int procTime), int> pending = new PriorityQueue<(int index, int enqTime, int procTime), int>();
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                pending.Enqueue((i, tasks[i][0], tasks[i][1]), tasks[i][0]);
+            }
+
+            int time = 0;
+            while (pending.Count > 0 || available.Count > 0)
+            {
+                while (pending.Count > 0 && pending.Peek().enqTime <= time)
+                {
+
+                    var task = pending.Dequeue();
+                    available.Enqueue(task, task.procTime);
+
+                }
+
+                if (available.Count == 0)
+                {
+                    time = pending.Peek().enqTime;
+                    continue;
+                }
+
+                var avtask = available.Dequeue();
+                time += avtask.procTime;
+                result.Add(avtask.index);
+            }
+
+            return result.ToArray();
+        }
+
     }
 }
