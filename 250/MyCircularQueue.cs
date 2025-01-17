@@ -249,5 +249,33 @@ namespace Neetcode150._250
             return result.ToArray();
         }
 
+        public static int FindMaximizedCapital(int k, int w, int[] profits, int[] capitals)
+        {
+            PriorityQueue<(int capital, int profit), int> minCapitalHeap = new PriorityQueue<(int capital, int profit), int>();
+            PriorityQueue<(int capital, int profit), int> maxProfitHeap = new PriorityQueue<(int capital, int profit), int>();
+
+            for (int i = 0; i < profits.Length; i++)
+            {
+                minCapitalHeap.Enqueue((capitals[i], profits[i]), capitals[i]);
+            }
+            int count = 0;
+            while (count < k)
+            {
+                while (minCapitalHeap.Count > 0 && minCapitalHeap.Peek().capital <= w)
+                {
+                    var minProject = minCapitalHeap.Dequeue();
+                    maxProfitHeap.Enqueue(minProject, -minProject.profit);
+                }
+
+                if (maxProfitHeap.Count == 0) break;
+
+                var project = maxProfitHeap.Dequeue();
+                count++;
+                w += project.profit;
+
+            }
+            return w;
+        }
+
     }
 }
