@@ -191,5 +191,27 @@ namespace Neetcode150._250
             }
             return (s.Length == res.Length) ? res.ToString() : "";
         }
+
+        public static bool CarPooling(int[][] trips, int capacity)
+        {
+            int[] arr = new int[1001];
+            for (int i = 0; i < trips.Length; i++)
+            {
+                var from = trips[i][1];
+                var to = trips[i][2];
+                var passenger = trips[i][0];
+                arr[from] += passenger;
+                arr[to] -= passenger;
+            }
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (i > 0)
+                    arr[i] += arr[i - 1];
+                if (arr[i] > capacity) return false;
+            }
+
+            return true;
+        }
     }
 }
