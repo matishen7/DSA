@@ -291,12 +291,52 @@ namespace Neetcode150._250
                 {
                     left++;
                 }
-               
+
                 result++;
 
             }
             return result;
 
+        }
+
+        public bool LemonadeChange(int[] bills)
+        {
+            var changes = new Dictionary<int, int>();
+            changes.Add(5, 0);
+            changes.Add(10, 0);
+            changes.Add(20, 0);
+            for (int i = 0; i < bills.Length; i++)
+            {
+                if (bills[i] == 5)
+                    changes[5]++;
+                else if (bills[i] == 10)
+                {
+                    if (changes[5] == 0) return false;
+                    else
+                    {
+                        changes[5]--;
+                        changes[10]++;
+                    }
+                }
+
+                else
+                {
+                    if (changes[10] >= 1 && changes[5] >= 1)
+                    {
+                        changes[10]--;
+                        changes[5]--;
+                        changes[20]++;
+                    }
+                    else if (changes[5] >= 3)
+                    {
+                        changes[5] -= 3;
+                        changes[20]++;
+                    }
+                    else return false;
+                }
+
+            }
+            return true;
         }
 
     }
