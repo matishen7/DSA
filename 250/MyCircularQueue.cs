@@ -277,5 +277,27 @@ namespace Neetcode150._250
             return w;
         }
 
+        public static int NumRescueBoats(int[] people, int limit)
+        {
+            int result = 0;
+            Array.Sort(people);
+            int left = 0;
+            int right = people.Length - 1;
+            while (left <= right)
+            {
+                int remain = limit - people[right];
+                right--;
+                if (left <= right && remain >= people[left])
+                {
+                    left++;
+                }
+               
+                result++;
+
+            }
+            return result;
+
+        }
+
     }
 }
