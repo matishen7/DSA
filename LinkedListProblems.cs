@@ -20,6 +20,49 @@ namespace Neetcode150
             }
         }
 
+
+        public static ListNode ReverseBetween(ListNode head, int left, int right)
+        {
+            if (left == right) return head;
+            ListNode dummy = new ListNode(0, head);
+            ListNode current = head;
+            ListNode leftHead = current;
+            ListNode prev = dummy;
+            int index = 1;
+            while (current != null && index < left)
+            {
+                prev = current;
+                current = current.next;
+                leftHead = current;
+                index++;
+            }
+
+            if (prev != null) prev.next = null;
+            ListNode rightHead = null;
+            while (current != null && index < right)
+            {
+                current = current.next;
+                rightHead = current;
+                index++;
+            }
+            if (rightHead == null) return head;
+            
+            ListNode tail = null;
+            if (rightHead.next != null) tail = rightHead.next;
+            rightHead.next = null;
+
+            var reversed = ReverseList(leftHead);
+
+            current = reversed;
+            while (current.next != null)
+            {
+                current = current.next;
+            }
+            current.next = tail;
+            prev.next = reversed;
+            return dummy.next;
+        }
+
         public int MaxPathSum(TreeNode root)
         {
             int res = root.val;

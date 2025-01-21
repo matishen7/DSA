@@ -301,36 +301,35 @@ namespace Neetcode150._250
 
         public bool LemonadeChange(int[] bills)
         {
-            var changes = new Dictionary<int, int>();
-            changes.Add(5, 0);
-            changes.Add(10, 0);
-            changes.Add(20, 0);
+            int fives = 0;
+            int tens = 0;
+            int twenty = 0;
             for (int i = 0; i < bills.Length; i++)
             {
                 if (bills[i] == 5)
-                    changes[5]++;
+                    fives++;
                 else if (bills[i] == 10)
                 {
-                    if (changes[5] == 0) return false;
+                    if (fives == 0) return false;
                     else
                     {
-                        changes[5]--;
-                        changes[10]++;
+                        fives--;
+                        tens++;
                     }
                 }
 
                 else
                 {
-                    if (changes[10] >= 1 && changes[5] >= 1)
+                    if (tens >= 1 && fives >= 1)
                     {
-                        changes[10]--;
-                        changes[5]--;
-                        changes[20]++;
+                        tens--;
+                        fives--;
+                        twenty++;
                     }
-                    else if (changes[5] >= 3)
+                    else if (fives >= 3)
                     {
-                        changes[5] -= 3;
-                        changes[20]++;
+                        fives -= 3;
+                        twenty++;
                     }
                     else return false;
                 }
@@ -339,5 +338,57 @@ namespace Neetcode150._250
             return true;
         }
 
+        public int MaxTurbulenceSize(int[] arr)
+        {
+            int len = 0;
+            int result = 0;
+            for (int i = 0; i < arr.Length -1 ; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    if (arr[i] < arr[i + 1])
+                    {
+                        len++;
+                        result = Math.Max(result, len);
+                    }
+                    else len = 0;
+                }
+                else
+                {
+                    if (arr[i] > arr[i + 1])
+                    {
+                        len++;
+                        result = Math.Max(result, len);
+                    }
+                    else len = 0;
+                }
+
+            }
+            len = 0;
+            for (int i = 0; i < arr.Length - 1; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    if (arr[i] > arr[i + 1])
+                    {
+                        len++;
+                        result = Math.Max(result, len);
+                    }
+                    else len = 0;
+                }
+                else
+                {
+                    if (arr[i] < arr[i + 1])
+                    {
+                        len++;
+                        result = Math.Max(result, len);
+                    }
+                    else len = 0;
+                }
+
+            }
+
+            return result ;
+        }
     }
 }
