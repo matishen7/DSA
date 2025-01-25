@@ -2,5 +2,5 @@
 using Neetcode150._250;
 using Neetcode150.GraphProblems;
 using Neetcode150.ObjectOriented.ConnectFour;
-int[] piles = [5, 3, 4, 5];
-DPProblems.StoneGame(piles);
+string s = "01"; int minJump = 1, maxJump = 1;
+Console.WriteLine(DPProblems.CanReach(s,minJump, maxJump));
