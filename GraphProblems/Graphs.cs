@@ -354,7 +354,7 @@ namespace Neetcode150.GraphProblems
             return true;
         }
 
-        public static List<List<string>> AccountsMerge(List<List<string>> accounts)
+        public static IList<IList<string>> AccountsMerge(IList<IList<string>> accounts)
         {
             var adjList = new Dictionary<string, List<string>>();
 
@@ -368,7 +368,51 @@ namespace Neetcode150.GraphProblems
                 }
             }
 
-            return null;
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                for (int j = 1; j < accounts[i].Count - 1; j++)
+                {
+                    var src = accounts[i][j];
+                    var dst = accounts[i][j + 1];
+                    adjList[src].Add(dst);
+                    adjList[dst].Add(src);
+                }
+            }
+
+            var result = new List<IList<string>>();
+            HashSet<string> visited = new HashSet<string>();
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                var name = accounts[i][0];
+                var emails = new List<string>();
+                emails.Add(name);
+
+                for (int j = 1; j < accounts[i].Count; j++)
+                {
+                    var queue = new Queue<string>();
+                    var email = accounts[i][j];
+                    queue.Enqueue(email);
+
+                    while (queue.Count > 0)
+                    {
+                        var current = queue.Dequeue();
+                        if (visited.Contains(current)) continue;
+                        emails.Add(current);
+                        visited.Add(current);
+                        foreach (var nei in adjList[current])
+                        {
+                            if (!visited.Contains(nei))
+                                queue.Enqueue(nei);
+                        }
+                    }
+
+                }
+                if (emails.Count > 1)
+                    result.Add(emails);
+
+            }
+
+            return result;
         }
 
         public static List<int> FindMinHeightTrees(int n, int[][] edges)
