@@ -385,7 +385,7 @@ namespace Neetcode150.GraphProblems
             {
                 var name = accounts[i][0];
                 var emails = new List<string>();
-                emails.Add(name);
+                //emails.Add(name);
 
                 for (int j = 1; j < accounts[i].Count; j++)
                 {
@@ -407,8 +407,13 @@ namespace Neetcode150.GraphProblems
                     }
 
                 }
-                if (emails.Count > 1)
+                if (emails.Count > 0)
+                {
+                    
+                    emails.Sort((left, right) => String.CompareOrdinal(left, right));
+                    emails.Insert(0, name);
                     result.Add(emails);
+                }
 
             }
 
