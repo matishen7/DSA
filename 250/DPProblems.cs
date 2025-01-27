@@ -49,19 +49,19 @@ namespace Neetcode150._250
             return result;
         }
 
-        public static bool CanReachDfs(int i, string s, int minJump, int maxJump, Dictionary<(int,int), bool> memo)
+        public static bool CanReachDfs(int i, string s, int minJump, int maxJump, Dictionary<(int, int), bool> memo)
         {
 
-            if (i >= s.Length - 1 && s[i]=='0')
+            if (i >= s.Length - 1 && s[i] == '0')
                 return true;
-            
+
             if (s[i] != '0') return false;
 
 
             int min = i + minJump;
             int max = i + maxJump;
 
-            if (memo.ContainsKey((min,max))) return memo[(min,max)];
+            if (memo.ContainsKey((min, max))) return memo[(min, max)];
 
 
             for (int j = min; j <= max; j++)
@@ -79,6 +79,43 @@ namespace Neetcode150._250
 
             memo[(min, max)] = false;
             return false;
+        }
+
+        public static int StoneGameII(int[] piles)
+        {
+            var result = StoneGameIIDfs(0, piles, 1, true, 0, 0);
+            return result;
+        }
+
+        public static int StoneGameIIDfs(int left, int[] piles, int m, bool turn, int alice, int bob)
+        {
+            if (left >= piles.Length-1) return alice;
+            int from = 1;
+            int to = 2 * m;
+            int alice2 = 0;
+            if (turn)
+            {
+                for (int x = from; x <= to; x++)
+                {
+                    int sum = 0;
+                    sum += piles[left];
+                    left++;
+                    alice2 = StoneGameIIDfs(left, piles, x, false, alice + sum, bob);
+                    alice2 = Math.Max(alice2, alice);
+                };
+            }
+            else
+            {
+                for (int x = from; x <= to; x++)
+                {
+                    int sum = 0;
+                    sum += piles[left];
+                    left++;
+                    var bob2 = StoneGameIIDfs(left, piles, x, true, alice, bob + sum);
+                    bob2 = Math.Max(bob2, bob);
+                };
+            }
+            return alice2;
         }
     }
 }
