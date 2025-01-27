@@ -94,7 +94,7 @@ namespace Neetcode150
         public static int[] CountMentions(int numberOfUsers, IList<IList<string>> events)
         {
             PriorityQueue<IList<string>, int> queue = new PriorityQueue<IList<string>, int>();
- 
+
             for (int i = 0; i < events.Count; i++)
             {
                 queue.Enqueue(events[i], Int32.Parse(events[i][1]));
@@ -177,6 +177,32 @@ namespace Neetcode150
             }
 
             return arr.ToArray();
+        }
+
+        public static string PredictPartyVictory(string senate)
+        {
+            var Rqueue = new Queue<int>();
+            var Dqueue = new Queue<int>();
+           
+            for (int i = 0; i < senate.Length; i++)
+                if (senate[i]=='R') Rqueue.Enqueue(i);
+            else Dqueue.Enqueue(i);
+
+            while (Rqueue.Count > 0 && Dqueue.Count > 0)
+            {
+                var rr = Rqueue.Dequeue();
+                var dd = Dqueue.Dequeue();
+                if (rr < dd)
+                {
+                    Rqueue.Enqueue(rr + senate.Length);
+                }
+                else
+                {
+                    Rqueue.Enqueue(dd + senate.Length);
+                }
+            }
+
+            if (Rqueue.Count > 0) return "Radiant"; else return "Dire";
         }
 
     }
