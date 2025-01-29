@@ -409,7 +409,7 @@ namespace Neetcode150.GraphProblems
                 }
                 if (emails.Count > 0)
                 {
-                    
+
                     emails.Sort((left, right) => String.CompareOrdinal(left, right));
                     emails.Insert(0, name);
                     result.Add(emails);
@@ -418,6 +418,54 @@ namespace Neetcode150.GraphProblems
             }
 
             return result;
+        }
+
+        public static int OpenLock(string[] deadends, string target)
+        {
+            HashSet<string> visited = new HashSet<string>(deadends);
+            if (visited.Contains("0000")) return -1;
+
+            var queue = new Queue<string>();
+            queue.Enqueue("0000");
+            int turns = 0;
+            while (queue.Count > 0)
+            {
+                int size = queue.Count;
+                for (int i = 0; i < size; i++)
+                {
+                    var current = queue.Dequeue();
+                    if (current.Equals(target)) return turns;
+
+                    var children = GetEdgesLock(current);
+                    foreach (var child in children)
+                    {
+                        if (!visited.Contains(child))
+                        { 
+                            queue.Enqueue(child);
+                            visited.Add(child);
+                        }
+                    }
+                }
+                turns++;
+            }
+
+            return -1;
+        }
+
+        private static List<string> GetEdgesLock(string currentLock)
+        {
+            var res = new List<string>();
+            for (int i = 0; i < 4; i++)
+            {
+                char[] arr = currentLock.ToCharArray();
+                arr[i] = (char)(((arr[i] - '0' + 1) % 10) + '0');
+                res.Add(new String(arr));
+
+                arr = currentLock.ToCharArray();
+                arr[i] = (char)(((arr[i] - '0' - 1 + 10) % 10) + '0');
+                res.Add(new String(arr));
+            }
+            return res;
         }
 
         public static List<int> FindMinHeightTrees(int n, int[][] edges)
