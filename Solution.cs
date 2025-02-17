@@ -87,7 +87,7 @@ namespace Neetcode150
 
         private static int CalculateDays(int possibleCapacity, int targetDays, int[] weights)
         {
-            int days = 1; 
+            int days = 1;
             int sum = 0;
 
             for (int i = 0; i < weights.Length; i++)
@@ -98,8 +98,8 @@ namespace Neetcode150
                 }
                 else
                 {
-                    days++; 
-                    sum = weights[i]; 
+                    days++;
+                    sum = weights[i];
                 }
             }
 
@@ -212,6 +212,146 @@ namespace Neetcode150
             }
 
             return days;
+        }
+
+        class MountainArray
+        {
+            private int[] arr;
+            public MountainArray()
+            {
+                arr = new int[]
+                {
+                    1,2,3,4,5,3,1
+                };
+            }
+            public int Get(int index)
+            {
+                return arr[index];
+            }
+            public int Length()
+            {
+                return arr.Length;
+            }
+        }
+
+        public static int[] ReplaceElements(int[] arr)
+        {
+            int max = arr[arr.Length - 1];
+            arr[arr.Length - 1] = -1;
+
+            for (int i = arr.Length - 2; i >= 0; i--)
+            {
+                int temp = arr[i];
+                arr[i] = max;
+                if (temp > max)
+                {
+                    max = temp;
+                }
+
+            }
+            return arr;
+        }
+
+        public static int NumUniqueEmails(string[] emails)
+        {
+            var set = new HashSet<string>();
+            for (int i = 0; i < emails.Length; i++)
+            {
+                var email = emails[i];
+                var parts = email.Split('@');
+                StringBuilder result1 = new StringBuilder();
+                for (int j = 0; j < parts[0].Length; j++)
+                {
+                    if (parts[0][j] == '.') continue;
+                    else if (parts[0][j] == '+') break;
+                    else result1.Append(parts[0][j]);
+                }
+
+                set.Add(result1.ToString() + '@' + parts[1]);
+            }
+
+            return set.Count;
+        }
+
+        public static bool IsIsomorphic(string s, string t)
+        {
+            var set = new HashSet<char>();
+            var map = new Dictionary<char, char>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (!map.ContainsKey(s[i]))
+                {
+                    map.Add(s[i], t[i]);
+                    set.Add(t[i]);
+                }
+                else
+                {
+                    if (map[s[i]] != t[i])
+                        return false;
+                }
+            }
+            if (set.Count != map.Count) return false;
+            return true;
+        }
+
+        public static int LadderLength(string beginWord, string endWord, IList<string> wordList)
+        {
+            var adjList = new Dictionary<string, List<string>>();
+
+            foreach (var word in wordList)
+            {
+                if (InterWord(beginWord, word))
+                    if (adjList.ContainsKey(beginWord)) adjList[beginWord].Add(word);
+                    else adjList[beginWord] = new List<string>() { word };
+
+                if (InterWord(endWord, word))
+                    if (adjList.ContainsKey(endWord)) adjList[endWord].Add(word);
+                    else adjList[endWord] = new List<string>() { word };
+            }
+
+            foreach (var word in wordList)
+            {
+                foreach (var word2 in wordList)
+                {
+                    if (InterWord(word, word2))
+                        if (adjList.ContainsKey(word)) adjList[word].Add(word2);
+                        else adjList[word] = new List<string>() { word2 };
+                }
+
+            }
+
+
+            var queue = new Queue<(string word, int depth)>();
+            queue.Enqueue((beginWord, 1));
+            var visit = new HashSet<string>();
+
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                if (current.word.Equals(endWord)) return current.depth;
+                visit.Add(current.word);
+
+                foreach (var nei in adjList[current.word])
+                {
+                    if (!visit.Contains(nei))
+                        queue.Enqueue((nei, current.depth + 1));
+                }
+
+            }
+
+            return 0;
+        }
+
+        private static bool InterWord(string word, string endWord)
+        {
+            int count = 0;
+            for (int i = 0; i < word.Length; i++)
+            {
+                if (word[i] != endWord[i]) count++;
+                if (count >= 2) return false;
+            }
+
+            return true;
         }
     }
 
