@@ -353,7 +353,118 @@ namespace Neetcode150
 
             return true;
         }
+
+        public static List<int> Diff(int[] arrA, int[] arrB)
+        {
+            var setA = new HashSet<int>(arrA);
+            var setB = new HashSet<int>(arrB);
+
+            var diff = new List<int>();
+            for (int i = 0; i < arrA.Length; i++)
+            {
+                if (!setB.Contains(arrA[i])) diff.Add(arrA[i]);
+            }
+            for (int i = 0; i < arrB.Length; i++)
+            {
+                if (!setA.Contains(arrB[i])) diff.Add(arrB[i]);
+            }
+
+            return diff;
+        }
+
+        public static int[][] Merge(int[][] intervals)
+        {
+            var result = new List<int[]>();
+            Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+            var current = intervals[0];
+
+            for (int i = 1; i < intervals.Length; i++)
+            {
+                if (current[1] < intervals[i][0])
+                {
+                    result.Add(current);
+                    current = intervals[i];
+                }
+                else
+                {
+                    int start = Math.Min(current[0], intervals[i][0]);
+                    int end = Math.Max(current[1], intervals[i][1]);
+                    current = new int[2] { start, end };
+                }
+            }
+            result.Add(current);
+            return result.ToArray();
+        }
+
+        public static bool CanPlaceFlowers(int[] flowerbed, int n)
+        {
+            int[] flowerbed2 = new int[flowerbed.Length + 2];
+
+            for (int i = 0; i < flowerbed.Length; i++)
+                flowerbed2[i + 1] = flowerbed[i];
+
+            for (int i = 1; i < flowerbed2.Length - 1; i++)
+            {
+
+                if (flowerbed2[i] == 0 && flowerbed2[i - 1] == 0 && flowerbed2[i + 1] == 0)
+                {
+                    n--;
+                    flowerbed2[i] = 1;
+                }
+            }
+
+            return n <= 0;
+        }
+
+        public static int MaxNumberOfBalloons(string text)
+        {
+            var dic = new Dictionary<char, int>();
+            dic.Add('b', 0);
+            dic.Add('a', 0);
+            dic.Add('l', 0);
+            dic.Add('o', 0);
+            dic.Add('n', 0);
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (dic.ContainsKey(text[i])) dic[text[i]]++;
+            }
+
+            dic['l'] = dic['l'] / 2;
+            dic['o'] = dic['o'] / 2;
+            int max = int.MaxValue;
+            foreach (var pair in dic)
+            {
+                max = Math.Min(max, pair.Value);
+            }
+
+            return (max == int.MaxValue) ? 0 : max;
+        }
+
+        public static bool WordPattern(string pattern, string s)
+        {
+            var words = s.Split(' ');
+            if (words.Length != pattern.Length) return false;
+            var map = new Dictionary<char, string>();
+            var map2 = new Dictionary<string, char>();
+            int i = 0;
+            foreach (var letter in pattern)
+            {
+                if (!map.ContainsKey(letter))
+                {
+                    map.Add(letter, words[i]);
+                    if (map2.ContainsKey(words[i])) return false; else map2.Add(words[i], letter);
+                }
+                else
+                {
+                    var expectedWord = map[letter];
+                    if (!expectedWord.Equals(words[i])) return false;
+                    var expectedLetter = map2[expectedWord];
+                    if (expectedLetter != letter) return false;
+                }
+                i++;
+            }
+            return true;
+        }
     }
-
-
 }
+

@@ -10,6 +10,27 @@ namespace Neetcode150
 {
     public class Codec
     {
+        private Dictionary<string, string> tinyUrls = new Dictionary<string, string>();
+        private Dictionary<string, string> longUrls = new Dictionary<string, string>();
+        // Encodes a URL to a shortened URL
+        public string encode(string longUrl)
+        {
+            if (tinyUrls.ContainsKey(longUrl)) { return tinyUrls[longUrl]; }
+            else
+            {
+                var hashKey = longUrl.GetHashCode().ToString();
+                tinyUrls.Add(longUrl, hashKey);
+                longUrls.Add(hashKey, longUrl);
+                return tinyUrls[longUrl];
+            }
+        }
+
+        // Decodes a shortened URL to its original URL.
+        public string decode(string shortUrl)
+        {
+            return longUrls[shortUrl];
+        }
+
 
         public static string serialize(TreeNode root)
         {
