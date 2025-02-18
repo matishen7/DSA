@@ -489,6 +489,49 @@ namespace Neetcode150
             return true;
            
         }
+
+        public static int CountCharacters(string[] words, string chars)
+        {
+            int sum = 0;
+            var dic = new Dictionary<char, int>();
+            for (int i = 0; i < chars.Length; i++)
+            {
+                if (!dic.ContainsKey(chars[i]))
+                    dic.Add(chars[i], 1);
+                else dic[chars[i]]++;
+            }
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (CanBeFormed(words[i], dic)) sum += words[i].Length; 
+            }
+            return sum;
+        }
+
+        private static bool CanBeFormed(string word, Dictionary<char, int> dic)
+        {
+            var map = new Dictionary<char, int>();
+            for (int i = 0; i < word.Length; i++)
+            {
+                if (!map.ContainsKey(word[i]))
+                    map.Add(word[i], 1);
+                else map[word[i]]++;
+            }
+
+            foreach (var pair in map)
+            {
+                var cc = pair.Key;
+                var count = pair.Value;
+
+                if (!dic.ContainsKey(cc)) return false;
+                else if (dic[cc] < count) return false;
+            }
+            return true;
+        }
+
+        public IList<string> FindRepeatedDnaSequences(string s)
+        {
+
+        }
     }
 }
 
