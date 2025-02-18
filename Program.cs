@@ -1,4 +1,4 @@
 ﻿using Neetcode150;
 
-string pattern = "abba", s = "dog cat cat fish";
-Console.WriteLine(Solution.WordPattern(pattern, s));
+int[] nums = [1, 2, 2, 3];
+Console.WriteLine(Solution.IsMonotonic(nums));

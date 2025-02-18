@@ -465,6 +465,30 @@ namespace Neetcode150
             }
             return true;
         }
+
+        public static bool IsMonotonic(int[] nums)
+        {
+            if (nums.Length <= 1) return true;
+            int[] diff  = new int[nums.Length - 1];
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                diff[i] = nums[i + 1] - nums[i];
+            }
+
+            bool minus = false;
+            bool plus = false;
+
+            for (int i = 0; i < diff.Length; i++)
+            {
+                if (diff[i] > 0) plus = true;
+                if (diff[i] < 0) minus = true;
+
+                if (minus && plus) return false;
+            }
+
+            return true;
+           
+        }
     }
 }
 
