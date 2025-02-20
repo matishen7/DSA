@@ -1,4 +1,4 @@
 ﻿using Neetcode150;
 
-string[] words = ["cat", "bt", "hat", "tree"]; string chars = "atach";
-Console.WriteLine(Solution.CountCharacters(words, chars));
+int[] nums = [-1, 0, 1, 2, -1, -4]; int k = 9;
+Console.WriteLine(Solution.CountVowelSubstrings("unicornarihan"));

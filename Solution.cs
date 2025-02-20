@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Neetcode150.LinkedListProblems;
+using static Neetcode150.TreeProblems;
 
 namespace Neetcode150
 {
@@ -469,7 +471,7 @@ namespace Neetcode150
         public static bool IsMonotonic(int[] nums)
         {
             if (nums.Length <= 1) return true;
-            int[] diff  = new int[nums.Length - 1];
+            int[] diff = new int[nums.Length - 1];
             for (int i = 0; i < nums.Length - 1; i++)
             {
                 diff[i] = nums[i + 1] - nums[i];
@@ -487,7 +489,7 @@ namespace Neetcode150
             }
 
             return true;
-           
+
         }
 
         public static int CountCharacters(string[] words, string chars)
@@ -502,7 +504,7 @@ namespace Neetcode150
             }
             for (int i = 0; i < words.Length; i++)
             {
-                if (CanBeFormed(words[i], dic)) sum += words[i].Length; 
+                if (CanBeFormed(words[i], dic)) sum += words[i].Length;
             }
             return sum;
         }
@@ -528,10 +530,254 @@ namespace Neetcode150
             return true;
         }
 
-        public IList<string> FindRepeatedDnaSequences(string s)
+        public static IList<string> FindRepeatedDnaSequences(string s)
         {
+            if (s.Length <= 10)
+                return new List<string>();
+
+            var list = new List<string>();
+            var count = new Dictionary<string, int>();
+            for (int i = 0; i < s.Length - 10 + 1; i++)
+            {
+                var sub = s.Substring(i, 10);
+                if (count.ContainsKey(sub)) count[sub]++;
+                else count.Add(sub, 1);
+            }
+
+            foreach (var pair in count)
+            {
+                if (count[pair.Key] > 1) list.Add(pair.Key);
+            }
+
+            return list;
+        }
+
+        public static bool CheckSubarraySum(int[] nums, int k)
+        {
+            if (nums.Length <= 1) return false;
+
+            var map = new Dictionary<int, int>();
+            map.Add(0, -1);
+            int total = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                total += nums[i];
+                int r = total % k;
+                if (!map.ContainsKey(r)) map.Add(r, i);
+                else if (i - map[r] > 1) return true;
+            }
+            return false;
+        }
+
+        public static string identifyAdjacent(string s, int k)
+        {
+            Stack<(char cc, int count)> stack = new Stack<(char, int)>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                char cc = s[i];
+                if (stack.Count == 0) stack.Push((cc, 1));
+                else if (stack.Peek().cc != cc) stack.Push((cc, 1));
+                else
+                {
+                    if (stack.Peek().count == k - 1) stack.Pop();
+                    else
+                    {
+                        var current = stack.Pop();
+                        stack.Push((current.cc, current.count + 1));
+                    }
+                }
+            }
+            string result = string.Empty;
+            while (stack.Count > 0)
+            {
+                var current = stack.Pop();
+                for (int i = 0; i < current.count; i++)
+                    result = current.cc + result;
+            }
+
+            return result;
+        }
+
+        public static int[] FindLargest(int[] input, int m)
+        {
+            var maxheap = new PriorityQueue<int, int>();
+            for (int i = 0; i < input.Length; i++)
+                maxheap.Enqueue(input[i], -input[i]);
+
+            var answer = new List<int>();
+            for (int i = 1; i <= m; i++)
+                answer.Insert(0, maxheap.Dequeue());
+
+            return answer.ToArray();
+        }
+
+        public static int[] TwoSum(int[] nums, int target)
+        {
+            var map = new Dictionary<int, int>();
+            int[] answer = new int[2];
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int diff = target - nums[i];
+                if (map.ContainsKey(diff))
+                {
+                    answer[0] = map[diff];
+                    answer[1] = i;
+                    return answer;
+                }
+                else if (!map.ContainsKey(nums[i])) map.Add(nums[i], i);
+            }
+
+            return answer;
+        }
+
+        public static List<int> TwoSum2(int from, int[] nums, int target)
+        {
+            var map = new Dictionary<int, int>();
+            var answer = new List<int>();
+
+            for (int i = from; i < nums.Length; i++)
+            {
+                int diff = target - nums[i];
+                if (map.ContainsKey(diff))
+                {
+                    answer.Add(diff);
+                    answer.Add(nums[i]);
+                    return answer;
+                }
+                else if (!map.ContainsKey(nums[i])) map.Add(nums[i], i);
+            }
+
+            return answer;
+        }
+
+        public static IList<IList<int>> ThreeSum(int[] nums)
+        {
+            var ans = new List<IList<int>>();
+            Array.Sort(nums);
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int diff = -nums[i];
+                var twoSumList = TwoSum2(i + 1, nums, diff);
+                if (twoSumList.Count > 0)
+                {
+                    twoSumList.Add(nums[i]);
+                    ans.Add(twoSumList);
+                }
+                //while (i < nums.Length - 1 && nums[i] == nums[i + 1]) i++;
+            }
+
+            return ans;
 
         }
+
+        public int RangeSumBST(TreeNode root, int low, int high)
+        {
+            int sum = 0;
+
+            RangeSumBSTHelper(root, low, high, ref sum);
+
+            return sum;
+        }
+
+        public void RangeSumBSTHelper(TreeNode root, int low, int high, ref int sum)
+        {
+            if (root == null) return;
+
+            if (root.val >= low && root.val <= high) sum += root.val;
+
+            RangeSumBSTHelper(root.left, low, high, ref sum);
+            RangeSumBSTHelper(root.right, low, high, ref sum);
+
+        }
+
+        public static int CountVowelSubstrings(string word)
+        {
+            var set = new HashSet<char>() { 'a','o','i','e','u'};
+            int count = 0;
+            for (int i = 0; i < word.Length; i++)
+            {
+                if (!set.Contains(word[i])) continue;
+                int start = i;
+                var dic = new Dictionary<char, int>();
+                dic.Add('a', 0);
+                dic.Add('o', 0);
+                dic.Add('i', 0);
+                dic.Add('e', 0);
+                dic.Add('u', 0);
+                while (start < word.Length && set.Contains(word[start]))
+                {
+                    dic[word[start]]++;
+                    if (checkVowels(dic)) count++;
+                    start++;
+                }
+            }
+
+            return count;
+        }
+
+        public static bool checkVowels(Dictionary<char, int> dic)
+        {
+            if (dic['a'] >= 1 
+                && dic['o'] >=1
+                && dic['e'] >=1
+                && dic['u'] >=1
+                && dic['i'] >=1
+                ) return true;
+            return false;
+        }
+
+        public ListNode MergeKLists(ListNode[] lists)
+        {
+            var minHeap = new PriorityQueue<int , int>();
+            for (int i = 0; i < lists.Length; i++)
+            {
+                var head = lists[i];
+                var current = head;
+                while (current != null)
+                {
+                    minHeap.Enqueue(current.val, current.val);
+                    current = current.next;
+                }
+            }
+
+            var dummy = new ListNode(0);
+            var prev = dummy;
+            while (minHeap.Count > 0)
+            {
+                var value = minHeap.Dequeue();
+                var newNode =  new ListNode(value);
+                prev.next = newNode;
+                prev = prev.next;
+            }
+
+            return dummy.next;
+        }
+
+        public static int FindBusiestPeriod(int[,] data)
+        {
+            int total = data[0, 1];
+            int max = data[0, 1];
+            int time = data[0, 0];
+
+            for (int i = 0; i < data.GetLength(0); i++)
+            {
+                int currTime = data[i, 0];
+                int people = data[i, 1];
+                int enter = data[i, 2];
+                if (enter == 1)
+                    total += people;
+                else total -= people;
+                if (max <= total)
+                {
+                    max = total;
+                    time = currTime;
+                }
+            }
+
+            return time;
+        }
+
     }
 }
 
