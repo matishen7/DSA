@@ -671,6 +671,55 @@ namespace Neetcode150
 
         }
 
+        public static string MinRemoveToMakeValid(string s)
+        {
+            var dict = new Dictionary<char, int>();
+            dict.Add('(', 0);
+            dict.Add(')', 0);
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                if (c == '(')
+                {
+                    result.Append(c);
+                    dict[c]++;
+                }
+                else if (c == ')')
+                {
+                    if (dict['('] >= dict[')']+1)
+                    {
+                        result.Append(c);
+                        dict[c]++;
+                    }
+                }
+                else result.Append(c);
+            }
+            StringBuilder answer = new StringBuilder();
+            dict.Clear();
+            dict.Add('(', 0);
+            dict.Add(')', 0);
+            for (int i = result.Length - 1; i >=0; i--)
+            {
+                char c = result[i];
+                if (c == ')')
+                {
+                    answer.Insert(0, c);
+                    dict[c]++;
+                }
+                else if (c == '(')
+                {
+                    if (dict[')'] >= dict['(']+1)
+                    {
+                        answer.Insert(0, c);
+                        dict[c]++;
+                    }
+                }
+                else answer.Insert(0, c);
+            }
+            return answer.ToString();
+        }
+
         public int RangeSumBST(TreeNode root, int low, int high)
         {
             int sum = 0;
@@ -693,7 +742,7 @@ namespace Neetcode150
 
         public static int CountVowelSubstrings(string word)
         {
-            var set = new HashSet<char>() { 'a','o','i','e','u'};
+            var set = new HashSet<char>() { 'a', 'o', 'i', 'e', 'u' };
             int count = 0;
             for (int i = 0; i < word.Length; i++)
             {
@@ -718,18 +767,18 @@ namespace Neetcode150
 
         public static bool checkVowels(Dictionary<char, int> dic)
         {
-            if (dic['a'] >= 1 
-                && dic['o'] >=1
-                && dic['e'] >=1
-                && dic['u'] >=1
-                && dic['i'] >=1
+            if (dic['a'] >= 1
+                && dic['o'] >= 1
+                && dic['e'] >= 1
+                && dic['u'] >= 1
+                && dic['i'] >= 1
                 ) return true;
             return false;
         }
 
         public ListNode MergeKLists(ListNode[] lists)
         {
-            var minHeap = new PriorityQueue<int , int>();
+            var minHeap = new PriorityQueue<int, int>();
             for (int i = 0; i < lists.Length; i++)
             {
                 var head = lists[i];
@@ -746,7 +795,7 @@ namespace Neetcode150
             while (minHeap.Count > 0)
             {
                 var value = minHeap.Dequeue();
-                var newNode =  new ListNode(value);
+                var newNode = new ListNode(value);
                 prev.next = newNode;
                 prev = prev.next;
             }
