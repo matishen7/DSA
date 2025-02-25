@@ -10,6 +10,7 @@ namespace Neetcode150
 {
     class Solution
     {
+
         public static int[] ArrayOfArrayProducts(int[] arr)
         {
             Stack<char> stack = new Stack<char>();
