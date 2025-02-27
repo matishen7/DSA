@@ -3,11 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Neetcode150.LinkedListProblems;
+using static Neetcode150.TreeProblems;
 
 namespace Neetcode150
 {
     public class Meta
     {
+
+        public static ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            var dummy = new ListNode(0,head);
+            var fast = dummy.next;
+            var slow = dummy;
+
+            while (n > 0)
+            {
+                n--;
+                fast = fast.next;
+            }
+
+            while (fast != null)
+            {
+                fast = fast.next;
+                slow = slow.next;
+            }
+
+            slow.next = slow.next.next;
+            return dummy.next;
+        }
         public static int getMaximumEatenDishCount(int N, int[] D, int K)
         {
             HashSet<int> lastKDishes = new HashSet<int>(); // Tracks last K dishes
@@ -51,7 +75,7 @@ namespace Neetcode150
         public bool ValidPalindrome(string s)
         {
             int left = 0;
-            int right = s.Length-1;
+            int right = s.Length - 1;
             int c = 0;
             while (left < right)
             {
@@ -91,18 +115,68 @@ namespace Neetcode150
                         arr.Add(i, nums[i]);
             }
 
-            public int dotProduct(int[] nums)
+            public int dotProduct(SparseVector vec)
             {
                 int sum = 0;
-                foreach(var pair in arr)
+
+                if (arr.Count < vec.arr.Count)
                 {
-                    var ind = pair.Key;
-                    var value = pair.Value;
-                    var product = value * nums[ind];
-                    sum += product;
+                    foreach (var pair in arr)
+                    {
+                        var ind = pair.Key;
+                        var value = pair.Value;
+                        if (vec.arr.ContainsKey(ind))
+                            sum += value * vec.arr[ind];
+                    }
                 }
+                else
+                {
+                    foreach (var pair in vec.arr)
+                    {
+                        var ind = pair.Key;
+                        var value = pair.Value;
+                        if (arr.ContainsKey(ind))
+                            sum += value * arr[ind];
+                    }
+                }
+
                 return sum;
             }
+        }
+
+        public static IList<IList<int>> VerticalTraversal(TreeNode root)
+        {
+            int r = 0;
+            int c = 0;
+            int min = int.MaxValue;
+            int max = int.MinValue;
+            Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
+            VerticalTraversal(root, r, c, dict, ref min, ref max);
+
+            var answered = new List<IList<int>>();
+
+            return answered;
+
+        }
+
+        public static void VerticalTraversal(TreeNode root, int r, int c, Dictionary<int, List<int>> dict, ref int min, ref int max)
+        {
+            if (root == null)
+                return;
+
+            Console.Write(r + " " + c + " " + root.val + " | ");
+
+            min = Math.Min(min, c);
+            max = Math.Max(max, c);
+
+            if (dict.ContainsKey(c))
+            {
+                dict[c].Add(root.val);
+            }
+            else dict.Add(c, new List<int>() { root.val });
+
+            VerticalTraversal(root.left, r + 1, c - 1, dict, ref min, ref max);
+            VerticalTraversal(root.right, r + 1, c + 1, dict, ref min, ref max);
         }
     }
 }

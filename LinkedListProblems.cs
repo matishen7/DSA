@@ -7,7 +7,7 @@ using static Neetcode150.TreeProblems;
 
 namespace Neetcode150
 {
-    internal class LinkedListProblems
+    public class LinkedListProblems
     {
         public class ListNode
         {

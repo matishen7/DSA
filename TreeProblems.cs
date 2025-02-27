@@ -308,7 +308,7 @@ namespace Neetcode150
 
         }
 
-        public TreeNode BuildTree(int?[] values)
+        public static TreeNode BuildTree(int?[] values)
         {
             if (values == null || values.Length == 0 || values[0] == null)
                 return null;
@@ -377,7 +377,7 @@ namespace Neetcode150
             return root;
         }
 
-        public void PrintBST(TreeNode root)
+        public static void PrintBST(TreeNode root)
         {
             if (root == null)
             {
@@ -439,7 +439,7 @@ namespace Neetcode150
         }
 
         // Method to calculate the height of the tree
-        private int GetHeight(TreeNode node)
+        private static int GetHeight(TreeNode node)
         {
             if (node == null)
             {
@@ -449,7 +449,7 @@ namespace Neetcode150
         }
 
         // Helper method to print a specific number of spaces
-        private void PrintSpaces(int count)
+        private static void PrintSpaces(int count)
         {
             for (int i = 0; i < count; i++)
             {
