@@ -25,13 +25,16 @@ namespace Neetcode150
 
         public static bool CanPartitionHelper(int i, int[] nums, int c, Dictionary<(int, int), bool> memo)
         {
-            if (i == nums.Length) return c == 0;
-            if (c < 0) return false;
+            if (c == 0) return true;  // Base case: subset sum found
+            if (i == nums.Length || c < 0) return false;  // No more elements or invalid sum
 
-            if (memo.ContainsKey((i, c))) return memo[(i, c)];
+            if (memo.TryGetValue((i, c), out bool result)) return result;
 
-            bool result = (CanPartitionHelper(i + 1, nums, c, memo) || CanPartitionHelper(i + 1, nums, c - nums[i], memo));
-            memo[(i,c)] = result;
+            // Try including nums[i] first for early exit
+            result = CanPartitionHelper(i + 1, nums, c - nums[i], memo) ||
+                     CanPartitionHelper(i + 1, nums, c, memo);
+
+            memo[(i, c)] = result;
             return result;
 
         }
