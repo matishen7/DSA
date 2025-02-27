@@ -10,7 +10,31 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public bool CanPartition(int[] nums)
+        {
+            int sum = 0;
+            for (int i = 0; i < nums.Length; i++)
+                sum += nums[i];
+            if (sum % 2 == 1) return false;
 
+            int c = sum / 2;
+            var memo = new Dictionary<(int, int), bool>();
+            var r = CanPartitionHelper(0, nums, c, memo);
+            return r;
+        }
+
+        public static bool CanPartitionHelper(int i, int[] nums, int c, Dictionary<(int, int), bool> memo)
+        {
+            if (i == nums.Length) return c == 0;
+            if (c < 0) return false;
+
+            if (memo.ContainsKey((i, c))) return memo[(i, c)];
+
+            bool result = (CanPartitionHelper(i + 1, nums, c, memo) || CanPartitionHelper(i + 1, nums, c - nums[i], memo));
+            memo[(i,c)] = result;
+            return result;
+
+        }
         public static ListNode RemoveNthFromEnd(ListNode head, int n)
         {
             var dummy = new ListNode(0, head);

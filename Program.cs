@@ -2,5 +2,5 @@
 using static Neetcode150.LinkedListProblems;
 using static Neetcode150.Meta;
 
-int[] example = { 0, 1, 0, 3, 12 };
-Meta.moveZerosToEnd(example);
+int[] nums = [1,2,3,4,5];
+Meta.CanPartition(nums);
