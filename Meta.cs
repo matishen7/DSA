@@ -13,7 +13,7 @@ namespace Neetcode150
 
         public static ListNode RemoveNthFromEnd(ListNode head, int n)
         {
-            var dummy = new ListNode(0,head);
+            var dummy = new ListNode(0, head);
             var fast = dummy.next;
             var slow = dummy;
 
@@ -32,6 +32,26 @@ namespace Neetcode150
             slow.next = slow.next.next;
             return dummy.next;
         }
+        public static int[] moveZerosToEnd(int[] arr)
+        {
+            if (arr.Length < 2) return arr;
+            int count = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] != 0)
+                {
+                    arr[count] = arr[i];
+                    count++;
+                }
+            }
+
+            for (int i = count; i < arr.Length; i++)
+            {
+                arr[i] = 0;
+            }
+            return arr;
+        }
+
         public static int getMaximumEatenDishCount(int N, int[] D, int K)
         {
             HashSet<int> lastKDishes = new HashSet<int>(); // Tracks last K dishes
