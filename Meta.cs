@@ -10,6 +10,48 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public static int[] SearchRange(int[] nums, int target)
+        {
+            int[] range = { -1, -1 };
+            var firstPos = BinarySearch(nums, target, 0, nums.Length - 1);
+            if (firstPos == -1) return range;
+            int startPos = firstPos, endPos = firstPos, temp1 = 0, temp2 = 0;
+            while (startPos != -1)
+            {
+                temp1 = startPos;
+                startPos = BinarySearch(nums, target, 0, startPos - 1);
+            }
+            startPos = temp1;
+
+            while (endPos != -1)
+            {
+                temp2 = endPos;
+                endPos = BinarySearch(nums, target, endPos + 1, nums.Length - 1);
+            }
+            endPos = temp2;
+
+            range[0] = startPos;
+            range[1] = endPos;
+
+            return range;
+        }
+
+        public static int BinarySearch(int[] nums, int target, int start, int end)
+        {
+            int left = start;
+            int right = end;
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+                if (nums[mid] == target)
+                    return mid;
+                else if (nums[mid] <= target)
+                    left = mid + 1;
+                else right = mid - 1;
+            }
+            return -1;
+        }
+
         public static string SimplifyPath(string path)
         {
             var stack = new Stack<string>();
