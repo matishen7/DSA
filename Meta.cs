@@ -10,6 +10,33 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public static int[] FindDiagonalOrder(int[][] mat)
+        {
+            var arr = new List<int>();
+            int i = 0;
+            int j = 0;
+            while (i < mat.Length && j != mat[0].Length)
+            {
+                Console.WriteLine($"i={i},j={j}");
+                arr.Add(mat[i][j]);
+                if ((i + j) % 2 == 0)
+                {
+                    i = i - 1;
+                    j = j + 1;
+                    if (i < 0) i = 0;
+                }
+                else
+                {
+                    i = i + 1;
+                    j = j - 1;
+                    if (j < 0) j = 0;
+                }
+
+            }
+
+            return arr.ToArray();
+
+        }
         public static string CustomSortString(string order, string s)
         {
             var dict = new Dictionary<char, int>();
