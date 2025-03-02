@@ -10,6 +10,29 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public static string SimplifyPath(string path)
+        {
+            var stack = new Stack<string>();
+            var paths = path.Split("/");
+            foreach (var curr in paths)
+            {
+                if (curr.Equals(".."))
+                {
+                    if (stack.Count > 0)
+                        stack.Pop();
+                }
+                else if (curr != string.Empty && !curr.Equals(".")) stack.Push(curr);
+            }
+
+            if (stack.Count == 0) return "/";
+            var result = new StringBuilder();
+            while (stack.Count > 0)
+            {
+                var curr = stack.Pop();
+                result.Insert(0, "/" + curr);
+            }
+            return result.ToString();
+        }
         public static bool ValidWordAbbreviation(string word, string abbr)
         {
             int i = 0;
