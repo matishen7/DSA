@@ -10,6 +10,110 @@ namespace Neetcode150
 {
     public class Meta
     {
+
+        public static int MaximumSwap(int num)
+        {
+            int maxIndex = -1, swap1 = -1, swap2 = -1;
+            char[] nums = num.ToString().ToCharArray();
+            int n = nums.Length;
+
+            for (int i = n - 1; i >= 0; i--)
+            {
+                if (maxIndex == -1 || nums[i] > nums[maxIndex])
+                {
+                    maxIndex = i;
+                }
+                else if (nums[i] < nums[maxIndex])
+                {
+                    swap1 = i;
+                    swap2 = maxIndex;
+                }
+            }
+
+            if (swap1 != -1 && swap2 != -1)
+            {
+                char temp = nums[swap1];
+                nums[swap1] = nums[swap2];
+                nums[swap2] = temp;
+            }
+            return int.Parse(new String(nums));
+        } 
+
+        public static void Merge(int[] nums1, int m, int[] nums2, int n)
+        {
+            int last = m + n - 1;
+            while (m > 0 && n > 0)
+            {
+                if (nums1[m - 1] > nums2[n - 1])
+                {
+                    nums1[last] = nums1[m - 1];
+                    m -= 1;
+                }
+                else
+                {
+                    nums1[last] = nums2[n - 1];
+                    n -= 1;
+                }
+
+                last -= 1;
+            }
+
+            while (n > 0)
+            {
+                nums1[last] = nums2[n - 1];
+                n -= 1;
+                last -= 1;
+            }
+        }
+
+        public int[][] Merge(int[][] intervals)
+        {
+            var result = new List<int[]>();
+            Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+            var current = intervals[0];
+
+            for (int i = 1; i < intervals.Length; i++)
+            {
+                if (current[1] < intervals[i][0])
+                {
+                    result.Add(current);
+                    current = intervals[i];
+                }
+                else
+                {
+                    int start = Math.Min(current[0], intervals[i][0]);
+                    int end = Math.Max(current[1], intervals[i][1]);
+                    current = new int[2] { start, end };
+                }
+            }
+
+            result.Add(current);
+            return result.ToArray();
+        }
+
+        public int[][] Merge2(int[][] intervals, int[][] intervals2)
+        {
+            var merged = Merge(intervals);
+            var merged2 = Merge(intervals2);
+            var result = new List<int[]>();
+            for (int i = 0; i < merged.Length; i++)
+            {
+                if (merged[i][1] < merged2[i][0])
+                {
+                    result.Add(merged[i]);
+                }
+                else
+                {
+                    int start = Math.Min(merged[i][0], merged2[i][0]);
+                    int end = Math.Max(merged[i][1], merged2[i][1]);
+                    var current = new int[2] { start, end };
+                    result.Add(current);
+                }
+            }
+
+            return result.ToArray();
+        }
+
         public bool CanPartition(int[] nums)
         {
             int sum = 0;
@@ -193,37 +297,33 @@ namespace Neetcode150
 
         public static IList<IList<int>> VerticalTraversal(TreeNode root)
         {
-            int r = 0;
-            int c = 0;
-            int min = int.MaxValue;
-            int max = int.MinValue;
-            Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
-            VerticalTraversal(root, r, c, dict, ref min, ref max);
-
-            var answered = new List<IList<int>>();
-
-            return answered;
-
-        }
-
-        public static void VerticalTraversal(TreeNode root, int r, int c, Dictionary<int, List<int>> dict, ref int min, ref int max)
-        {
-            if (root == null)
-                return;
-
-            Console.Write(r + " " + c + " " + root.val + " | ");
-
-            min = Math.Min(min, c);
-            max = Math.Max(max, c);
-
-            if (dict.ContainsKey(c))
+            if (root == null) return new List<IList<int>>();
+            var queue = new Queue<(int col, TreeNode node)>();
+            queue.Enqueue((0, root));
+            int min = 0;
+            int max = 0;
+            var dict = new Dictionary<int, List<int>>();
+            while (queue.Count > 0)
             {
-                dict[c].Add(root.val);
-            }
-            else dict.Add(c, new List<int>() { root.val });
+                var curr = queue.Dequeue();
+                if (min > curr.col) min = curr.col;
+                if (max < curr.col) max = curr.col;
 
-            VerticalTraversal(root.left, r + 1, c - 1, dict, ref min, ref max);
-            VerticalTraversal(root.right, r + 1, c + 1, dict, ref min, ref max);
+                if (dict.ContainsKey(curr.col)) dict[curr.col].Add(curr.node.val);
+                else dict.Add(curr.col, new List<int>() { curr.node.val });
+
+                if (curr.node.left != null) queue.Enqueue((curr.col - 1, curr.node.left));
+                if (curr.node.right != null) queue.Enqueue((curr.col + 1, curr.node.right));
+            }
+
+            var ans = new List<IList<int>>();
+            for (int i = min; i <= max; i++)
+            {
+                var values = dict[i];
+                ans.Add(values);
+            }
+
+            return ans;
         }
     }
 }
