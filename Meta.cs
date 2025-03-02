@@ -10,6 +10,40 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public static string CustomSortString(string order, string s)
+        {
+            var dict = new Dictionary<char, int>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (dict.ContainsKey(s[i])) dict[s[i]]++;
+                else dict.Add(s[i], 1);
+            }
+
+            var sb = new StringBuilder();
+            for (int i = 0; i < order.Length; i++)
+            {
+                if (dict.ContainsKey(order[i]))
+                {
+                    var times = dict[order[i]];
+                    for (int j = 1; j <= times; j++)
+                    {
+                        sb.Append(order[i]);
+                        dict[order[i]]--;
+                    }
+                }
+            }
+
+            foreach (var pair in dict)
+            {
+                var times = pair.Value;
+                for (int j = 1; j <= times; j++)
+                {
+                    sb.Append(pair.Key);
+                }
+            }
+
+            return sb.ToString();
+        }
         public static int[] SearchRange(int[] nums, int target)
         {
             int[] range = { -1, -1 };

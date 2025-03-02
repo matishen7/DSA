@@ -3,5 +3,5 @@ using Neetcode150.MetaQuestions;
 using static Neetcode150.LinkedListProblems;
 using static Neetcode150.Meta;
 
-string word = "/../";
-Console.WriteLine(Meta.SimplifyPath(word));
+string order = "hucw", s = "utzoampdgkalexslxoqfkdjoczajxtuhqyxvlfatmptqdsochtdzgypsfkgqwbgqbcamdqnqztaqhqanirikahtmalzqjjxtqfnh";
+Console.WriteLine(Meta.CustomSortString(order, s));
