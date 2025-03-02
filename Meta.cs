@@ -10,6 +10,36 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public static bool ValidWordAbbreviation(string word, string abbr)
+        {
+            int i = 0;
+            int j = 0;
+            var digits = new HashSet<int>() { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+            while (i < abbr.Length && j < word.Length)
+            {
+                if (!digits.Contains(abbr[i]))
+                {
+                    if (abbr[i] != word[j]) return false;
+                    i += 1;
+                    j += 1;
+                }
+                else
+                {
+                    var sb = new StringBuilder();
+                    while (i < abbr.Length && digits.Contains(abbr[i]))
+                    {
+                        sb.Append(abbr[i]);
+                        i += 1;
+                    }
+                    if (sb[0] == '0') return false;
+                    var times = int.Parse(sb.ToString());
+                    for (int k = 1; k <= times; k++)
+                        j += 1;
+                }
+            }
+            if (j == word.Length && i == abbr.Length) return true;
+            return false;
+        }
         public static TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
         {
             return LowestCommonAncestorDfs(root, p, q);
@@ -54,7 +84,7 @@ namespace Neetcode150
                 nums[swap2] = temp;
             }
             return int.Parse(new String(nums));
-        } 
+        }
 
         public static void Merge(int[] nums1, int m, int[] nums2, int n)
         {
