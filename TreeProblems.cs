@@ -308,6 +308,17 @@ namespace Neetcode150
 
         }
 
+        public static TreeNode FindNode(TreeNode root, int value)
+        {
+            if (root == null) return null;
+            if (root.val == value) return root;
+
+            TreeNode leftSearch = FindNode(root.left, value);
+            if (leftSearch != null) return leftSearch;
+
+            return FindNode(root.right, value);
+        }
+
         public static TreeNode BuildTree(int?[] values)
         {
             if (values == null || values.Length == 0 || values[0] == null)

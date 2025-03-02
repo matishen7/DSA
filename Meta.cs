@@ -10,6 +10,23 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public static TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        {
+            return LowestCommonAncestorDfs(root, p, q);
+        }
+
+        public static TreeNode LowestCommonAncestorDfs(TreeNode root, TreeNode p, TreeNode q)
+        {
+            if (root == null || root == p || root == q) return root;
+
+            var l = LowestCommonAncestorDfs(root.left, p, q);
+            var r = LowestCommonAncestorDfs(root.right, p, q);
+
+            if (l != null && r != null) return root;
+
+            else if (l == null) return r;
+            else return l;
+        }
 
         public static int MaximumSwap(int num)
         {
