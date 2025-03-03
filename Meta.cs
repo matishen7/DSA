@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Neetcode150.ObjectOriented.ConnectFour;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,33 +11,220 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public static bool IsToeplitzMatrix(int[][] matrix)
+        {
+            int ROWS = matrix.Length;
+            int COLS = matrix[0].Length;
+            if (ROWS == 1) return true;
+
+            Queue<(int, int)> queue = new Queue<(int, int)>();
+            queue.Enqueue((0, 0));
+            var visited = new HashSet<(int, int)>();
+            visited.Add((0, 0));
+            while (queue.Count > 0)
+            {
+                var (row, col) = queue.Dequeue();
+                if (row - 1 >= 0 && col - 1 >= 0)
+                    if (matrix[row - 1][col - 1] != matrix[row][col]) return false;
+                if (row + 1 < ROWS && col + 1 < COLS)
+                    if (matrix[row + 1][col + 1] != matrix[row][col]) return false;
+
+                if (row + 1 < ROWS && !visited.Contains((row + 1, col)))
+                {
+                    queue.Enqueue((row + 1, col));
+                    visited.Add((row + 1, col));
+                }
+                if (col + 1 < COLS && !visited.Contains((row, col + 1)))
+                {
+                    queue.Enqueue((row, col + 1));
+                    visited.Add((row, col + 1));
+                }
+            }
+            return true;
+        }
+
+        private static List<(int, int)> GetDirections()
+        {
+            List<(int r, int c)> directions = new List<(int, int)>();
+            directions.Add((-1, -1));
+            directions.Add((-1, 0));
+            directions.Add((-1, 1));
+            directions.Add((0, -1));
+            directions.Add((0, 1));
+            directions.Add((1, -1));
+            directions.Add((1, 0));
+            directions.Add((1, 1));
+
+            return directions;
+        }
+        public static int FindKthPositiveBF(int[] arr, int k)
+        {
+            var set = new HashSet<int>(arr);
+            int count = 0;
+            int max = int.MaxValue;
+            for (int i = 1; i <= max; i++)
+            {
+                if (!set.Contains(i))
+                {
+                    count++;
+                    if (count == k) return i;
+                }
+            }
+            return max;
+        }
+
+        public static int FindKthPositive(int[] arr, int k)
+        {
+            int left = 0;
+            int right = arr.Length - 1;
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+                if (arr[mid] - mid - 1 < k)
+                    left = mid + 1;
+                else right = mid - 1;
+            }
+
+            return left + k;
+        }
+        public static int[] NextPermutation(int[] num)
+        {
+            int n = num.Length;
+            int swap1 = -1;
+            int swap2 = -1;
+            int maxIndex = n - 1;
+
+            for (int i = n - 2; i >= 0; i--)
+            {
+                if (num[i] < num[i + 1])
+                {
+                    swap1 = i;
+                    int max = num[i];
+                    for (int j = n - 1; j > swap1; j--)
+                    {
+                        if (num[j] > max)
+                        {
+                            //max = num[j];
+                            swap2 = j;
+                            break;
+                        }
+                    }
+
+                    int temp = num[swap1];
+                    num[swap1] = num[swap2];
+                    num[swap2] = temp;
+
+                    SortArr(num, swap1 + 1, n - 1);
+                    break;
+                }
+            }
+
+            int h = n - 1;
+            if (swap1 == -1 && swap2 == -1)
+            {
+                for (int i = 0; i < n / 2; i++)
+                {
+                    int temp = num[i];
+                    num[i] = num[h];
+                    num[h] = temp;
+                    h--;
+                }
+            }
+
+            return num;
+        }
+
+        public static void SortArr(int[] arr, int start, int end)
+        {
+            for (int write = start; write <= end; write++)
+            {
+                for (int sort = start; sort <= end - 1; sort++)
+                {
+                    if (arr[sort] > arr[sort + 1])
+                    {
+                        int temp = arr[sort + 1];
+                        arr[sort + 1] = arr[sort];
+                        arr[sort] = temp;
+                    }
+                }
+                Console.Write("{0} ", arr[write]);
+            }
+        }
+        public static double MyPow(double x, int n)
+        {
+            if (n == 0) return 1;
+            if (x == 1) return 1;
+            double res = 1;
+            n = LossyAbs(n);
+            for (int i = 0; i < n; i++)
+                res *= x;
+
+            if (n > 0) return res;
+            else return 1 / res;
+        }
+
+        public static int LossyAbs(int value)
+        {
+            if (value >= 0) return value;
+            if (value == int.MinValue) return int.MaxValue;
+            return -value;
+        }
+
         public static int[] FindDiagonalOrder(int[][] mat)
         {
-            var arr = new List<int>();
-            int i = 0;
-            int j = 0;
-            while (i < mat.Length && j != mat[0].Length)
+            if (mat == null || mat.Length == 0 || mat[0].Length == 0)
+                return new int[0];
+
+            int m = mat.Length, n = mat[0].Length;
+            int[] result = new int[m * n];
+            int i = 0, j = 0, index = 0;
+            bool up = true;  // Direction flag: true -> up-right, false -> down-left
+
+            while (index < m * n)
             {
-                Console.WriteLine($"i={i},j={j}");
-                arr.Add(mat[i][j]);
-                if ((i + j) % 2 == 0)
+                result[index++] = mat[i][j];
+
+                if (up)
                 {
-                    i = i - 1;
-                    j = j + 1;
-                    if (i < 0) i = 0;
+                    if (j == n - 1) // If we reach the last column, move down
+                    {
+                        i++;
+                        up = false;
+                    }
+                    else if (i == 0) // If we reach the first row, move right
+                    {
+                        j++;
+                        up = false;
+                    }
+                    else
+                    {
+                        i--;
+                        j++;
+                    }
                 }
                 else
                 {
-                    i = i + 1;
-                    j = j - 1;
-                    if (j < 0) j = 0;
+                    if (i == m - 1) // If we reach the last row, move right
+                    {
+                        j++;
+                        up = true;
+                    }
+                    else if (j == 0) // If we reach the first column, move down
+                    {
+                        i++;
+                        up = true;
+                    }
+                    else
+                    {
+                        i++;
+                        j--;
+                    }
                 }
-
             }
 
-            return arr.ToArray();
-
+            return result;
         }
+
         public static string CustomSortString(string order, string s)
         {
             var dict = new Dictionary<char, int>();
