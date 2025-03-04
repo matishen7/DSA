@@ -11,6 +11,23 @@ namespace Neetcode150
 {
     public class Meta
     {
+        public static int[] FindBuildings(int[] heights)
+        {
+            var result = new List<int>();
+            int n = heights.Length;
+            int max = heights[n - 1];
+            result.Add(n - 1);
+            for (int i = n - 2; i >= 0; i--)
+            {
+                if (heights[i] > max)
+                {
+                    result.Insert(0, i);
+                    max = heights[i];
+                }
+            }
+
+            return result.ToArray();
+        }
         public static bool IsToeplitzMatrix(int[][] matrix)
         {
             int ROWS = matrix.Length;
