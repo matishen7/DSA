@@ -9,8 +9,58 @@ using static Neetcode150.TreeProblems;
 
 namespace Neetcode150
 {
+   
     public class Meta
     {
+        public static bool IsNumber(string s)
+        {
+            bool seenDigit = false, seenDot = false, seenExp = false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (Char.IsDigit(s[i])) seenDigit = true;
+                else if (s[i] == '+' || s[i] == '-')
+                {
+                    if (i == 0) continue;
+                    if (s[i - 1] == 'E' || s[i - 1] == 'e') continue;
+                    return false;
+                }
+                else if (s[i] == 'e' || s[i] == 'E')
+                {
+                    if (seenExp || seenDigit == false) return false;
+                    seenDigit = false;
+                    seenExp = true;
+                }
+                else if (s[i] == '.')
+                {
+                    if (seenDot || seenExp) return false;
+                    seenDot = true;
+                }
+                else return false;
+            }
+
+            return seenDigit;
+        }
+
+        public static int SumNumbers(TreeNode root)
+        {
+            return SumNumbersDfs(root, 0);
+        }
+
+        private static int SumNumbersDfs(TreeNode root, int currSum)
+        {
+            if (root == null)
+                return 0;
+
+            currSum = currSum * 10 + root.val;
+
+            // If it's a leaf node, return the current sum.
+            if (root.left == null && root.right == null)
+                return currSum;
+
+            // Recursive sum of left and right subtrees.
+            return SumNumbersDfs(root.left, currSum) + SumNumbersDfs(root.right, currSum);
+        }
+
         public static int[] FindBuildings(int[] heights)
         {
             var result = new List<int>();
@@ -169,15 +219,16 @@ namespace Neetcode150
         }
         public static double MyPow(double x, int n)
         {
-            if (n == 0) return 1;
-            if (x == 1) return 1;
-            double res = 1;
-            n = LossyAbs(n);
-            for (int i = 0; i < n; i++)
-                res *= x;
+            return MyPowDfs(x, n);
+        }
 
-            if (n > 0) return res;
-            else return 1 / res;
+        public static double MyPowDfs(double x, int n)
+        {
+            if (n == 0) return 1;
+            if (n < 0) return 1 / MyPowDfs(x, -n);
+            if (n % 2 == 1)
+                return x * MyPowDfs(x * x, (n - 1) / 2);
+            else return MyPowDfs(x * x, n / 2);
         }
 
         public static int LossyAbs(int value)

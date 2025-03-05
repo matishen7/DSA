@@ -352,7 +352,7 @@ namespace Neetcode150
 
             return root;
         }
-        public TreeNode CreateBSTFromArray(int[] nums)
+        public static TreeNode CreateBSTFromArray(int[] nums)
         {
             if (nums == null || nums.Length == 0)
             {
