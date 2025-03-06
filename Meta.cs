@@ -9,9 +9,104 @@ using static Neetcode150.TreeProblems;
 
 namespace Neetcode150
 {
-   
+
     public class Meta
     {
+        public static long KthLargestLevelSum(TreeNode root, int k)
+        {
+            var maxHeap = new PriorityQueue<long, long>();
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            int currSum = 0;
+            while (queue.Count > 0)
+            {
+                int size = queue.Count;
+
+                for (int i = 0; i < size; i++)
+                {
+                    var currNode = queue.Dequeue();
+                    currSum += currNode.val;
+
+                    if (currNode.left != null) queue.Enqueue(currNode.left);
+                    if (currNode.right != null) queue.Enqueue(currNode.right);
+                }
+                maxHeap.Enqueue(currSum, -currSum);
+                currSum = 0;
+            }
+            if (k > maxHeap.Count) return -1;
+            for (int i = 0; i < k - 1;i++)
+            {
+                maxHeap.Dequeue();
+            }
+            return maxHeap.Dequeue();
+        }
+        public static int[] FindDiagonalOrder(IList<IList<int>> nums)
+        {
+            var result = new List<int>();
+            int n = nums.Count;
+            var queue = new Queue<(int row, int col)>();
+            queue.Enqueue((0, 0));
+            var visit = new HashSet<(int, int)>();
+            while (queue.Count > 0)
+            {
+                var curr = queue.Dequeue();
+
+                result.Add(nums[curr.row][curr.col]);
+
+                if (!visit.Contains((curr.row + 1, curr.col)) && curr.col == 0 && curr.row + 1 < n)
+                {
+                    queue.Enqueue((curr.row + 1, curr.col));
+                    visit.Add((curr.row + 1, curr.col));
+                }
+                if (!visit.Contains((curr.row, curr.col + 1)) && curr.col + 1 < nums[curr.row].Count)
+                {
+                    queue.Enqueue((curr.row, curr.col + 1));
+                    visit.Add((curr.row, curr.col + 1));
+                }
+            }
+
+            return result.ToArray();
+        }
+        public static int CalculateDFS(string s)
+        {
+            int currNum = 0;
+            char operation = '+';
+            int result = 0;
+            var stack = new Stack<int>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (Char.IsDigit(s[i]))
+                {
+                    currNum = (currNum * 10) + (s[i] - '0');
+                }
+                if (!Char.IsDigit(s[i]) && s[i] != ' ' || i == s.Length - 1)
+                {
+                    if (operation == '+')
+                        stack.Push(currNum);
+                    else if (operation == '-')
+                        stack.Push(-currNum);
+                    else if (operation == '*')
+                    {
+                        var last = stack.Pop();
+                        stack.Push(currNum * last);
+                    }
+                    else if (operation == '/')
+                    {
+                        var last = stack.Pop();
+                        stack.Push(last / currNum);
+                    }
+                    operation = s[i];
+                    currNum = 0;
+                }
+            }
+
+            while (stack.Count > 0)
+            {
+                result += stack.Pop();
+            }
+
+            return result;
+        }
         public static IList<int> DistanceK(TreeNode root, TreeNode target, int k)
         {
             var adjList = new Dictionary<int, List<int>>();
@@ -54,7 +149,7 @@ namespace Neetcode150
             else
             {
                 adjList[parent] = new List<int>() { root.val };
-                
+
                 if (adjList.ContainsKey(root.val)) adjList[root.val].Add(parent);
                 else adjList[root.val] = new List<int>() { parent };
             }
