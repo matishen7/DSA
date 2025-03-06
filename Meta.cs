@@ -12,6 +12,55 @@ namespace Neetcode150
    
     public class Meta
     {
+        public static IList<int> DistanceK(TreeNode root, TreeNode target, int k)
+        {
+            var adjList = new Dictionary<int, List<int>>();
+            DistanceKDfs(root, -1, adjList);
+
+            var answer = new List<int>();
+            var queue = new Queue<(int val, int depth)>();
+            queue.Enqueue((target.val, 0));
+            var visited = new HashSet<int>();
+            visited.Add(target.val);
+            while (queue.Count > 0)
+            {
+                var curr = queue.Dequeue();
+                if (k == curr.depth && curr.val != -1) answer.Add(curr.val);
+
+                foreach (var nei in adjList[curr.val])
+                {
+                    if (!visited.Contains(nei))
+                    {
+                        queue.Enqueue((nei, curr.depth + 1));
+                        visited.Add(nei);
+                    }
+                }
+
+            }
+
+            return answer;
+        }
+        public static void DistanceKDfs(TreeNode root, int parent, Dictionary<int, List<int>> adjList)
+        {
+            if (root == null)
+                return;
+            if (adjList.ContainsKey(parent))
+            {
+                adjList[parent].Add(root.val);
+
+                if (adjList.ContainsKey(root.val)) adjList[root.val].Add(parent);
+                else adjList[root.val] = new List<int>() { parent };
+            }
+            else
+            {
+                adjList[parent] = new List<int>() { root.val };
+                
+                if (adjList.ContainsKey(root.val)) adjList[root.val].Add(parent);
+                else adjList[root.val] = new List<int>() { parent };
+            }
+            DistanceKDfs(root.left, root.val, adjList);
+            DistanceKDfs(root.right, root.val, adjList);
+        }
         public static bool IsNumber(string s)
         {
             bool seenDigit = false, seenDot = false, seenExp = false;
