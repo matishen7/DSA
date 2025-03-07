@@ -12,10 +12,85 @@ namespace Neetcode150
 
     public class Meta
     {
+        public string MinRemoveToMakeValid(string s)
+        {
+            int open = 0;
+            int close = 0;
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                if (c == '(')
+                {
+                    result.Append(c);
+                    open++;
+                }
+                else if (c == ')')
+                {
+                    if (open >= close + 1)
+                    {
+                        result.Append(c);
+                        close++;
+                    }
+                }
+                else result.Append(c);
+            }
+            StringBuilder answer = new StringBuilder();
+            open = 0;
+            close = 0;
+            for (int i = result.Length - 1; i >= 0; i--)
+            {
+                char c = result[i];
+                if (c == ')')
+                {
+                    answer.Insert(0, c);
+                    close++;
+                }
+                else if (c == '(')
+                {
+                    if (close >= open + 1)
+                    {
+                        answer.Insert(0, c);
+                        open++;
+                    }
+                }
+                else answer.Insert(0, c);
+            }
+            return answer.ToString();
+        }
+        public bool CanAttendMeetings(int[][] intervals)
+        {
+            if (intervals.Length == 1) return true;
+            Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+            var current = intervals[0];
+            for (int i = 1; i < intervals.Length; i++)
+            {
+                var start = intervals[i][0];
+                var end = intervals[i][1];
+                if (current[1] > start) return false;
+                else current = intervals[i];
+            }
+
+            return true;
+        }
+        public static int MinMeetingRooms(int[][] intervals)
+        {
+            if (intervals.Length == 1) return 1;
+            var minHeap = new PriorityQueue<int, int>();
+            Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+            for (int i = 0; i < intervals.Length; i++)
+            {
+                if (minHeap.Count != 0 && minHeap.Peek() <= intervals[i][0])
+                    minHeap.Dequeue();
+                minHeap.Enqueue(intervals[i][1], intervals[i][1]);
+            }
+
+            return minHeap.Count;
+        }
         public static int ClosestValue(TreeNode root, double target)
         {
             int result = root.val;
-            double currDiff = int.MaxValue; 
+            double currDiff = int.MaxValue;
             ClosestValueDFS(root, target, ref result, ref currDiff);
             return result;
         }
