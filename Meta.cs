@@ -12,6 +12,91 @@ namespace Neetcode150
 
     public class Meta
     {
+        public static int ClosestValue(TreeNode root, double target)
+        {
+            int result = root.val;
+            double currDiff = int.MaxValue; 
+            ClosestValueDFS(root, target, ref result, ref currDiff);
+            return result;
+        }
+
+        public static void ClosestValueDFS(TreeNode root, double target, ref int result, ref double currDiff)
+        {
+            if (root == null) return;
+
+            double diff = Math.Abs(target - root.val);
+
+            if (diff < currDiff)
+            {
+                result = root.val;
+                currDiff = diff;
+            }
+            else if (diff == currDiff)
+                result = Math.Min(result, root.val);
+
+            ClosestValueDFS(root.left, target, ref result, ref currDiff);
+            ClosestValueDFS(root.right, target, ref result, ref currDiff);
+        }
+        public static int LongestOnes(int[] nums, int k)
+        {
+            int left = 0;
+            int right = 0;
+            int zeros = 0;
+            int max = 0;
+            while (right < nums.Length)
+            {
+                if (nums[right] == 0) zeros++;
+
+                while (zeros > k)
+                {
+                    if (nums[left] == 0)
+                        zeros--;
+                    left++;
+                }
+
+                max = Math.Max(max, right - left + 1);
+                right++;
+            }
+            return max;
+        }
+        public static int FindMaxConsecutiveOnes2(int[] nums)
+        {
+            int left = 0;
+            int right = 0;
+            int zeros = 0;
+            int max = 0;
+            while (right < nums.Length)
+            {
+                if (nums[right] == 0) zeros++;
+
+                while (zeros == 2)
+                {
+                    if (nums[left] == 0)
+                        zeros--;
+                    left++;
+                }
+
+                max = Math.Max(max, right - left + 1);
+                right++;
+            }
+            return max;
+        }
+        public static int FindMaxConsecutiveOnes(int[] nums)
+        {
+            int max = 0;
+            int curr = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == 1) curr++;
+                else
+                {
+                    max = Math.Max(max, curr);
+                    curr = 0;
+                }
+            }
+            max = Math.Max(max, curr);
+            return max;
+        }
         public static long KthLargestLevelSum(TreeNode root, int k)
         {
             var maxHeap = new PriorityQueue<long, long>();
@@ -34,7 +119,7 @@ namespace Neetcode150
                 currSum = 0;
             }
             if (k > maxHeap.Count) return -1;
-            for (int i = 0; i < k - 1;i++)
+            for (int i = 0; i < k - 1; i++)
             {
                 maxHeap.Dequeue();
             }
