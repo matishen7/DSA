@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using static Neetcode150.LinkedListProblems;
@@ -12,6 +13,82 @@ namespace Neetcode150
 
     public class Meta
     {
+        public TreeNode LowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q)
+        {
+            if ( BinaryTreeDFS(root, q) == false 
+                || BinaryTreeDFS(root,p) == false) return null;
+
+            var lca = LowestCommonAncestorDFS2(root, p, q);
+           
+            return lca;
+        }
+        public TreeNode LowestCommonAncestorDFS2(TreeNode root, TreeNode p, TreeNode q)
+        {
+            if (root == null || root == p || root == q) return root;
+
+            var l = LowestCommonAncestorDFS2(root.left, p, q);
+            var r = LowestCommonAncestorDFS2(root.right, p, q);
+
+            if (l != null && r != null) return root;
+            else if (l != null) return l;
+            else return r;
+        }
+
+        public static bool BinaryTreeDFS(TreeNode root, TreeNode target)
+        {
+            if (root == null) return false;
+            if (root == target) return true;
+
+            return (BinaryTreeDFS(root.left, target) 
+                || BinaryTreeDFS(root.right, target));
+        }
+
+        public class Node
+        {
+            public int val;
+            public Node next;
+            public Node random;
+
+            public Node(int _val)
+            {
+                val = _val;
+                next = null;
+                random = null;
+            }
+            public Node(int _val, Node _next)
+            {
+                val = _val;
+                next = _next;
+                random = null;
+            }
+        }
+        public static Node CopyRandomList(Node head)
+        {
+            var curr = head;
+            var prev = head;
+            var oldNodes = new Dictionary<Node, Node>();
+            while (curr != null)
+            {
+                if (!oldNodes.ContainsKey(curr))
+                {
+                    var newNode = new Node(curr.val);
+                    oldNodes.Add(curr, newNode);
+
+                }
+                curr = curr.next;
+            }
+
+            curr = head;
+            while (curr != null)
+            {
+                Node copy = oldNodes[curr];
+                copy.next = curr.next != null ? oldNodes[curr.next] : null;
+                copy.random = curr.random != null ? oldNodes[curr.random] : null;
+                curr = curr.next;
+            }
+
+            return head != null ? oldNodes[head] : null;
+        }
         public string MinRemoveToMakeValid(string s)
         {
             int open = 0;
