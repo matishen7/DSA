@@ -13,6 +13,34 @@ namespace Neetcode150
 
     public class Meta
     {
+        public static string AddStrings(string num1, string num2)
+        {
+            var sb1 = new StringBuilder(num1);
+            var sb2 = new StringBuilder(num2);
+
+            if (num1.Length > num2.Length)
+            {
+                for (int i = 0; i < num1.Length - num2.Length; i++)
+                    sb2.Insert(0, '0');
+            }
+            else if (num1.Length < num2.Length)
+            {
+                for (int i = 0; i < num2.Length - num1.Length; i++)
+                    sb1.Insert(0, '0');
+            }
+            int n = sb1.Length;
+            int carry = 0;
+            var result = new StringBuilder();
+            for (int i = n - 1; i >= 0; i--)
+            {
+                var sum = (sb1[i] - '0') + (sb2[i] - '0') + carry;
+                carry = sum / 10;
+                int digit = sum % 10;
+                result.Insert(0, digit);
+            }
+            if (carry > 0) result.Insert(0, carry);
+            return result.ToString();
+        }
         public static int SubarraySum(int[] nums, int k)
         {
             int count = 0;
