@@ -13,13 +13,36 @@ namespace Neetcode150
 
     public class Meta
     {
+        public static int MyAtoi(string s)
+        {
+            s = s.Trim();
+            int num = 0;
+            bool negative = false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (i == 0 && s[i] == '-') negative = true;
+                else if (i == 0 && s[i] == '+') continue;
+                else if (Char.IsDigit(s[i]))
+                {
+                    if (num > int.MaxValue / 10
+                        || (num == int.MaxValue / 10 && s[i] - '0' > int.MaxValue % 10))
+                    {
+                        return (negative == false) ? int.MaxValue : int.MinValue;
+                    }
+                    num = num * 10 + (s[i] - '0');
+                }
+                else break;
+            }
+            if (negative) return -num;
+            else return num;
+        }
         public TreeNode LowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q)
         {
-            if ( BinaryTreeDFS(root, q) == false 
-                || BinaryTreeDFS(root,p) == false) return null;
+            if (BinaryTreeDFS(root, q) == false
+                || BinaryTreeDFS(root, p) == false) return null;
 
             var lca = LowestCommonAncestorDFS2(root, p, q);
-           
+
             return lca;
         }
         public TreeNode LowestCommonAncestorDFS2(TreeNode root, TreeNode p, TreeNode q)
@@ -39,7 +62,7 @@ namespace Neetcode150
             if (root == null) return false;
             if (root == target) return true;
 
-            return (BinaryTreeDFS(root.left, target) 
+            return (BinaryTreeDFS(root.left, target)
                 || BinaryTreeDFS(root.right, target));
         }
 
