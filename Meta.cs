@@ -13,6 +13,46 @@ namespace Neetcode150
 
     public class Meta
     {
+        public static int SubarraySum(int[] nums, int k)
+        {
+            int count = 0;
+            int sum = 0;
+            var map = new Dictionary<int, int>();
+            map.Add(0, 1);
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum += nums[i];
+                if (map.ContainsKey(sum - k))
+                    count += map[sum - k];
+
+                if (map.ContainsKey(sum)) map[sum]++;
+                else map.Add(sum, 1);
+            }
+
+            return count;
+        }
+        public static int MiceAndCheese(int[] reward1, int[] reward2, int k)
+        {
+            if (reward1.Length == 1) return reward1[0];
+            var r = MiceAndCheeseDFS(0, 0, reward1, reward2, k);
+            return r;
+        }
+
+        public static int MiceAndCheeseDFS(int i, int sum, int[] reward1, int[] reward2, int k)
+        {
+            if (i >= reward1.Length) return sum;
+            if (k > 0)
+            {
+                int include = MiceAndCheeseDFS(i + 1, reward1[i] + sum, reward1, reward2, k - 1);
+                int skip2 = MiceAndCheeseDFS(i + 1, reward2[i] + sum, reward1, reward2, k);
+
+                return Math.Max(include, skip2);
+            }
+
+            int skip = MiceAndCheeseDFS(i + 1, reward2[i] + sum, reward1, reward2, k);
+
+            return skip;
+        }
         public static int MyAtoi(string s)
         {
             s = s.Trim();

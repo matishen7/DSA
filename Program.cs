@@ -8,5 +8,5 @@ using Node = Neetcode150.Meta.Node;
 
 //int?[] arr = [4, 2, 5, 1, 3];
 //var root = TreeProblems.BuildTree(arr);
-
-Console.WriteLine(Meta.MyAtoi("1337c0d3"));
+int[] nums = [1, 2, 3];
+Console.WriteLine(Meta.SubarraySum(nums, 3));
