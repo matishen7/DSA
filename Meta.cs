@@ -13,6 +13,7 @@ namespace Neetcode150
 
     public class Meta
     {
+
         public static string LongestCommonPrefix(string[] strs)
         {
             var prefix = strs[0];
