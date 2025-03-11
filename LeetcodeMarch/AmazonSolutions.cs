@@ -9,6 +9,39 @@ namespace Neetcode150.LeetcodeMarch
 {
     public class AmazonSolutions
     {
+        public static bool SearchMatrix(int[][] matrix, int target)
+        {
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                if (matrix[i][0] <= target && target <= matrix[i][matrix[i].Length - 1])
+                {
+                    if (BinarySearch(matrix[i], 0, matrix[i].Length, target) != -1)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+        public static int RemoveDuplicates(int[] nums)
+        {
+            if (nums.Length == 1) return 1;
+
+            int left = 0;
+            int right = 0;
+
+            while (right < nums.Length)
+            {
+                while (right < nums.Length && nums[left] == nums[right])
+                    right++;
+
+                left++;
+                if (right < nums.Length)
+                    nums[left] = nums[right];
+            }
+
+            return left;
+
+        }
         public static bool IsAnagram(string s, string t)
         {
             int[] countS = new int[26];

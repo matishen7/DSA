@@ -10,5 +10,6 @@ using Node = Neetcode150.Meta.Node;
 //int?[] arr = [5, 5, 5, 5, 5, null, 5];
 //var root = TreeProblems.BuildTree(arr);
 //TreeProblems.PrintBST(root);
-int[] nums = [8, 9, 2, 3, 4];
-Console.WriteLine(AmazonSolutions.SearchRotatedArray(nums, 9));
+int[][] matrix = [[-5]];
+int target = -5;
+Console.WriteLine(AmazonSolutions.SearchMatrix(matrix, target));
