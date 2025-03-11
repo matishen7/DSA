@@ -7,8 +7,31 @@ using static Neetcode150.TreeProblems;
 
 namespace Neetcode150.LeetcodeMarch
 {
-    internal class SolutionMarch
+    public class SolutionMarch
     {
+        public static IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            var ans = new Dictionary<string, IList<string>>();
+
+            foreach (var s in strs)
+            {
+                var count = new int[26];
+                foreach (var c in s)
+                {
+                    count[c - 'a']++;
+                }
+
+                var key = string.Join(',', count);
+                if (!ans.ContainsKey(key))
+                {
+                    ans[key] = new List<string>();
+                }
+
+                ans[key].Add(s);
+            }
+
+            return new List<IList<string>>(ans.Values);
+        }
         public IList<int> RightSideView(TreeNode root)
         {
             if (root == null) return new List<int>();
