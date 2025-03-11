@@ -9,6 +9,83 @@ namespace Neetcode150.LeetcodeMarch
 {
     public class AmazonSolutions
     {
+        public static long MaxSum(int[][] grid, int[] limits, int k)
+        {
+            var maxHeapTotal = new PriorityQueue<int, int>();
+            
+            for (int i = 0; i < limits.Length; i++)
+            {
+                var maxHeap = new PriorityQueue<int, int>();
+                for (int j = 0; j < grid[i].Length; j++)
+                {
+                    maxHeap.Enqueue(grid[i][j], -grid[i][j]);
+                }
+
+                var limit = limits[i];
+                while (maxHeap.Count > 0 && limit > 0)
+                {
+                    var value = maxHeap.Dequeue();
+                    maxHeapTotal.Enqueue(value,-value);
+                    limit--;
+                }
+
+            }
+
+            long sum = 0;
+            while (maxHeapTotal.Count > 0 && k > 0)
+            {
+                sum += maxHeapTotal.Dequeue();
+                k--;
+            }
+            return sum;
+        }
+        public static int SetZeroesOPtimal(int[][] matrix)
+        {
+            int n = matrix.Length;
+            int m = matrix[0].Length;
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    if (matrix[i][j] == 0)
+                    {
+                        matrix[0][j] = 0;
+                        matrix[i][0] = 0;
+                    }
+
+            for (int i = 0; i < n; i++)
+                if (matrix[i][0] == 0)
+                    for (int j = 0; j < m; j++)
+                        matrix[i][j] = 0;
+
+            for (int j = 0; j < m; j++)
+                if (matrix[0][j] == 0)
+                    for (int i = 0; i < n; i++)
+                        matrix[i][j] = 0;
+
+            return 1;
+
+        }
+        public static int SetZeroes(int[][] matrix)
+        {
+            int n = matrix.Length;
+            int m = matrix[0].Length;
+            var rows = new HashSet<int>();
+            var cols = new HashSet<int>();
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    if (matrix[i][j] == 0)
+                    {
+                        rows.Add(i);
+                        cols.Add(j);
+                    }
+
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    if (rows.Contains(i) || cols.Contains(j))
+                        matrix[i][j] = 0;
+
+            return 1;
+
+        }
         public static bool SearchMatrix(int[][] matrix, int target)
         {
             for (int i = 0; i < matrix.Length; i++)
