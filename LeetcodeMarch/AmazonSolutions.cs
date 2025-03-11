@@ -9,6 +9,49 @@ namespace Neetcode150.LeetcodeMarch
 {
     public class AmazonSolutions
     {
+        public static int SearchRotatedArray(int[] nums, int target)
+        {
+            int pivot = FindPivot(nums);
+
+            int left = 0;
+            int right = nums.Length - 1;
+            if (pivot == 0)
+                right = pivot;
+            else right = pivot - 1;
+
+            int found = BinarySearch(nums, left, right, target);
+            if (found != -1) return found;
+            found = BinarySearch(nums, pivot, nums.Length - 1, target);
+            return found;
+        }
+
+        public static int BinarySearch(int[] nums, int left, int right, int target)
+        {
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+                if (nums[mid] == target) return mid;
+                else if (nums[mid] < target) left = mid + 1;
+                else right = mid-1;
+            }
+
+            return -1;
+        }
+        public static int FindPivot(int[] nums)
+        {
+            int left = 0;
+            int right = nums.Length - 1;
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+                if (nums[mid] > nums[nums.Length - 1])
+                    left = mid + 1;
+                else right = mid - 1;
+            }
+
+            return left;
+        }
+
         public static int CountUnivalSubtrees(TreeNode root)
         {
             int count = 0;
@@ -27,7 +70,7 @@ namespace Neetcode150.LeetcodeMarch
             if (parent != node.val) return false;
             bool left = CountUnivalSubtreesDFS(node.left, node.val);
             bool right = CountUnivalSubtreesDFS(node.right, node.val);
-            return (left&&right);
+            return (left && right);
         }
 
         public static void ListAllNodes(TreeNode root, HashSet<TreeNode> list)
