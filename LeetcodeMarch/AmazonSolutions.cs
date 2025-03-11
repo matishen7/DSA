@@ -9,6 +9,25 @@ namespace Neetcode150.LeetcodeMarch
 {
     public class AmazonSolutions
     {
+        public static bool IsAnagram(string s, string t)
+        {
+            int[] countS = new int[26];
+            int[] countT = new int[26];
+            for (int i = 0; i < s.Length; i++)
+            {
+                countS[s[i] - 'a']++;
+            }
+
+            for (int i = 0; i < t.Length; i++)
+            {
+                countT[t[i] - 'a']++;
+            }
+
+            for (int i = 0; i < countT.Length; i++)
+                if (countS[i] != countT[i]) return false;
+
+            return true;
+        }
         public static int SearchRotatedArray(int[] nums, int target)
         {
             int pivot = FindPivot(nums);
@@ -32,7 +51,7 @@ namespace Neetcode150.LeetcodeMarch
                 int mid = (left + right) / 2;
                 if (nums[mid] == target) return mid;
                 else if (nums[mid] < target) left = mid + 1;
-                else right = mid-1;
+                else right = mid - 1;
             }
 
             return -1;
