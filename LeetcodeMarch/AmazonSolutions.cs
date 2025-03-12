@@ -7,12 +7,35 @@ using static Neetcode150.TreeProblems;
 
 namespace Neetcode150.LeetcodeMarch
 {
+
     public class AmazonSolutions
     {
+        public static bool HasSameDigits(string s)
+        {
+            while (s.Length > 2)
+            {
+                int left = 0;
+                int right = 1;
+                var sb = new StringBuilder();
+                while (right < s.Length)
+                {
+                    int d1 = int.Parse(s[left].ToString());
+                    int d2 = int.Parse(s[right].ToString());
+                    int sum = (d1 + d2) % 10;
+                    sb.Append(sum);
+                    left++;
+                    right++;
+                }
+
+                s = sb.ToString();
+            }
+
+            return (s[0] == s[1]);
+        }
         public static long MaxSum(int[][] grid, int[] limits, int k)
         {
             var maxHeapTotal = new PriorityQueue<int, int>();
-            
+
             for (int i = 0; i < limits.Length; i++)
             {
                 var maxHeap = new PriorityQueue<int, int>();
@@ -25,7 +48,7 @@ namespace Neetcode150.LeetcodeMarch
                 while (maxHeap.Count > 0 && limit > 0)
                 {
                     var value = maxHeap.Dequeue();
-                    maxHeapTotal.Enqueue(value,-value);
+                    maxHeapTotal.Enqueue(value, -value);
                     limit--;
                 }
 
