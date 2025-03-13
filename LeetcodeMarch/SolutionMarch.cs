@@ -30,7 +30,7 @@ namespace Neetcode150.LeetcodeMarch
                     (int dr, int dc) = directions[i];
                     int newRow = row + dr;
                     int newCol = col + dc;
-                    if (newRow >= 0 && newCol >= 0 && newRow < rows && newCol < cols && (grid[newRow][newCol] == 'O') && !visited.Contains((newRow,newCol)))
+                    if (newRow >= 0 && newCol >= 0 && newRow < rows && newCol < cols && (grid[newRow][newCol] == 'O' || grid[newRow][newCol] == '#') && !visited.Contains((newRow,newCol)))
                     {
                         copyGrid[newRow][newCol] = copyGrid[row][col] + 1;
                         queue.Enqueue((newRow, newCol));
