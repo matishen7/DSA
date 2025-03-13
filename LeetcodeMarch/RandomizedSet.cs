@@ -32,14 +32,17 @@ namespace Neetcode150.LeetcodeMarch
         {
             if (dict.ContainsKey(val))
             {
+                //get val index and get last num value
                 var index = dict[val];
                 var last = list[list.Count - 1];
-                
+
+                //update last number index
                 list[index] = last;
                 dict[last] = index;
+                
+                //remove val
                 dict.Remove(val);
-                var count = list.Count - 1;
-                list.RemoveAt(count);
+                list.RemoveAt(list.Count - 1);
                 return true;
             }
             return false;

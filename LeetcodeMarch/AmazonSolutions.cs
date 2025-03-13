@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,90 @@ namespace Neetcode150.LeetcodeMarch
 
     public class AmazonSolutions
     {
+        public static int ShortestPath(int[][] grid, int k)
+        {
+            var result = ShortestPathDFS(0, 0, 1, grid, k, grid.Length, grid[0].Length);
+            return result;
+        }
+
+        public static int ShortestPathDFS(int i, int j, int sum, int[][] grid, int k, int n, int m)
+        {
+            if (i == grid.Length - 1 && j == grid[i].Length - 1) return sum + 1;
+
+            if (i >= n || j >= m || j < 0 || i < 0) return sum;
+            int result = 0;
+            int result2 = 0;
+            if (grid[i][j] == 0)
+            {
+                int right = ShortestPathDFS(i, j + 1, grid[i][j] + 1, grid, k, n, m);
+                int left = ShortestPathDFS(i, j - 1, grid[i][j] + 1, grid, k, n, m);
+                int down = ShortestPathDFS(i + 1, j, grid[i][j] + 1, grid, k, n, m);
+
+                result = Math.Min(right, Math.Min(left, down));
+            }
+            else if (k > 0)
+            {
+                int right = ShortestPathDFS(i, j + 1, grid[i][j] + 1, grid, k - 1, n, m);
+                int left = ShortestPathDFS(i, j - 1, grid[i][j] + 1, grid, k - 1, n, m);
+                int down = ShortestPathDFS(i + 1, j, grid[i][j] + 1, grid, k - 1, n, m);
+                result2 = Math.Min(right, Math.Min(left,  down));
+            }
+
+            return sum;
+        }
+        private static List<(int, int)> GetDirections()
+        {
+            List<(int r, int c)> directions = new List<(int, int)>();
+            directions.Add((-1, 0));
+            directions.Add((0, -1));
+            directions.Add((0, 1));
+            directions.Add((1, 0));
+
+            return directions;
+        }
+        //public static IList<string> MostVisitedPattern(string[] username, int[] timestamp, string[] website)
+        //{
+        //    var dict = new Dictionary<string, List<string[]>>();
+        //    for (int i = 0; i < username.Length; i++)
+        //    {
+        //        var user = username[i];
+        //        var time = timestamp[i];
+        //        var web = website[i];
+        //        string[] values = new string[] { time.ToString(), web };
+        //        if (dict.ContainsKey(user))
+        //        {
+        //            dict[user].Add(values);
+        //        }
+        //        else
+        //            dict[user] = new List<string[]>() { values };
+        //    }
+
+        //    var sortedDict = dict
+        //          .Select(kvp => new
+        //          {
+        //              Key = kvp.Key,
+        //              Values = kvp.Value.OrderBy(arr => int.Parse(arr[0])).ToList() // Sorting by integer time
+        //          })
+        //          .ToDictionary(x => x.Key, x => x.Values);
+        //    var patterns = new Dictionary<string, int>();
+
+        //    foreach (var pair in sortedDict)
+        //    {
+        //        var pattern = new StringBuilder();
+        //        var value = pair.Value;
+        //        int left = 0;
+        //        int right = 2;
+        //        while (right < )
+        //        for (int i = 0; i < value.Count; i++)
+        //            pattern.Append(value[i][1] + "+");
+
+        //        if (patterns.ContainsKey(pattern.ToString())) patterns[pattern.ToString()]++;
+        //        else patterns.Add(pattern.ToString(), 1);
+        //    }
+
+        //    return new List<string> { patterns.ToString() };
+
+        //}
         public static bool HasSameDigits(string s)
         {
             while (s.Length > 2)
