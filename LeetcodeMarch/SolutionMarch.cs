@@ -32,7 +32,8 @@ namespace Neetcode150.LeetcodeMarch
                     }
                     else
                     {
-                        return IsValidPalindromeDSF(s.Substring(left, right - left + 1), k - 1);
+                        return (IsValidPalindromeDSF(s.Substring(left, right - left), k - 1) ||
+                            IsValidPalindromeDSF(s.Substring(left + 1, right - (left + 1) + 1), k - 1));
                     }
                 }
 
