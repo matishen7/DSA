@@ -120,6 +120,26 @@ namespace Neetcode150
             if (negative) return -num;
             else return num;
         }
+
+        public static TreeNode LowestCommonAncestor(TreeNode root, TreeNode[] nodes)
+        {
+            var set = new HashSet<TreeNode>();
+            for (int i = 0; i < nodes.Length; i++)
+                set.Add(nodes[i]);
+
+            return LowestCommonAncestorDFS2(root, set);
+        }
+        public static TreeNode LowestCommonAncestorDFS2(TreeNode root, HashSet<TreeNode> set)
+        {
+            if (root == null) return root;
+            if (set.Contains(root)) return root;
+            var l = LowestCommonAncestorDFS2(root.left, set);
+            var r = LowestCommonAncestorDFS2(root.right, set);
+
+            if (l != null && r != null) return root;
+            else if (l != null) return l;
+            else return r;
+        }
         public TreeNode LowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q)
         {
             if (BinaryTreeDFS(root, q) == false
