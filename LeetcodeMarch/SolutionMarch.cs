@@ -13,12 +13,65 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static long MinimumHealth(int[] damage, int armor)
+        {
+            long total = 1;
+            long maxSoFar = 0;
+            for (int i = damage.Length - 1; i >= 0; i--)
+            {
+                if (damage[i] > maxSoFar)
+                    maxSoFar = damage[i];
+                total += damage[i];
+            }
+            maxSoFar = Math.Min(maxSoFar, armor);
+            return total - maxSoFar;
+        }
+        public IList<bool> KidsWithCandies(int[] candies, int extraCandies)
+        {
+            var result = new List<bool>();
+            int mx = candies[0];
+            for (int i = 1; i < candies.Length; i++)
+            {
+                if (mx < candies[i]) mx = candies[i];
+            }
+
+            for (int i = 0; i < candies.Length; i++)
+            {
+                if (candies[i] + extraCandies >= mx) result.Add(true);
+                else result.Add(false);
+            }
+
+            return result;
+        }
+        public static int MinimumTime(int[] jobs, int[] workers)
+        {
+            PriorityQueue<int, int> maxJobs = new PriorityQueue<int, int>();
+            for (int j = 0; j < jobs.Length; j++)
+                maxJobs.Enqueue(jobs[j], -jobs[j]);
+
+            PriorityQueue<int, int> maxWorkers = new PriorityQueue<int, int>();
+            for (int j = 0; j < workers.Length; j++)
+                maxWorkers.Enqueue(workers[j], -workers[j]);
+
+            int max = 0;
+            while (maxJobs.Count > 0)
+            {
+                var currJob = maxJobs.Dequeue();
+                var currWorker = maxWorkers.Dequeue();
+
+                int days = currJob / currWorker;
+                if (currJob % currWorker != 0) days += 1;
+                max = Math.Max(max, days);
+            }
+
+            return max;
+        }
         public static int MaximumUnits(int[][] boxTypes, int truckSize)
         {
             PriorityQueue<(int numBox, int numUnits), int> max = new PriorityQueue<(int numBox, int numUnits), int>();
             for (int j = 0; j < boxTypes.Length; j++)
                 max.Enqueue((boxTypes[j][0], boxTypes[j][1]), -boxTypes[j][1]);
-            
+
             int i = 0;
             int total = 0;
             while (truckSize > 0 && max.Count > 0)
