@@ -12,5 +12,5 @@ using Node = Neetcode150.Meta.Node;
 //var root = TreeProblems.BuildTree(arr);
 //TreeProblems.PrintBST(root);
 //int[] nums = [1, 0, 1];int[][] queries = [[0, 2]];
-string s = "abcdef";
-Console.WriteLine(SolutionMarch.IsValidPalindrome("abbababa", 1));
+int[][] boxTypes = [[5, 10], [2, 5], [4, 7], [3, 9]]; int truckSize = 4;
+Console.WriteLine(SolutionMarch.MaximumUnits(boxTypes, 10));

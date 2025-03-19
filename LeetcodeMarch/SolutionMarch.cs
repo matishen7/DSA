@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Neetcode150.Intervals;
 using static Neetcode150.LinkedListProblems;
 using static Neetcode150.TreeProblems;
 
@@ -12,6 +13,36 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int MaximumUnits(int[][] boxTypes, int truckSize)
+        {
+            PriorityQueue<(int numBox, int numUnits), int> max = new PriorityQueue<(int numBox, int numUnits), int>();
+            for (int j = 0; j < boxTypes.Length; j++)
+                max.Enqueue((boxTypes[j][0], boxTypes[j][1]), -boxTypes[j][1]);
+            
+            int i = 0;
+            int total = 0;
+            while (truckSize > 0 && max.Count > 0)
+            {
+                var curr = max.Dequeue();
+                var numOfBox = curr.numBox;
+                var numOfUnits = curr.numUnits;
+
+                if (truckSize > numOfBox)
+                {
+                    total += numOfBox * numOfUnits;
+                    truckSize -= numOfBox;
+                }
+                else
+                {
+                    total += truckSize * numOfUnits;
+                    truckSize = 0;
+                }
+
+                i++;
+            }
+
+            return total;
+        }
 
         public static bool IsValidPalindrome(string s, int k)
         {
