@@ -13,6 +13,138 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int MySqrt(int x)
+        {
+            if (x < 2) return x;
+            int left = 2;
+            int right = x / 2;
+            long num;
+            int mid = 1;
+            while (left <= right)
+            {
+                mid = (left + right) / 2;
+                num = (long) mid * mid;
+                if (num < x)
+                    left = mid + 1;
+                else if (num > x) right = mid - 1;
+                else if (num == x) return mid;
+            }
+            return right;
+        }
+
+        public static ListNode GetIntersectionNode(ListNode headA, ListNode headB)
+        {
+            var curr = headA;
+            var setA = new HashSet<ListNode>();
+            while (curr != null)
+            {
+                setA.Add(curr);
+                curr = curr.next;
+            }
+
+            curr = headB;
+            while (curr != null)
+            {
+                if (setA.Contains(curr)) return curr;
+                curr = curr.next;
+            }
+
+            return null;
+        }
+        public static TreeNode SortedArrayToBST(int[] nums)
+        {
+            return SortedArrayToBSTDFS(nums, 0, nums.Length - 1);
+        }
+
+        public static TreeNode SortedArrayToBSTDFS(int[] nums, int left, int right)
+        {
+            if (left > right) return null;
+
+            int mid = (left + right) / 2;
+
+            var node = new TreeNode(nums[mid]);
+
+            node.left = SortedArrayToBSTDFS(nums, left, mid - 1);
+            node.right = SortedArrayToBSTDFS(nums, mid + 1, right);
+            return node;
+        }
+
+        public static int LongestCommonSubsequence(string text1, string text2)
+        {
+            var memo = new Dictionary<(int, int, int), int>();
+            var result = LongestCommonSubsequenceDFS(0, 0, 0, text1, text2, memo);
+            return result;
+        }
+
+        public static int LongestCommonSubsequenceDFS(int i, int j, int count, string text1, string text2, Dictionary<(int, int, int), int> memo)
+        {
+            if (i >= text1.Length || j >= text2.Length)
+                return count;
+
+            if (memo.ContainsKey((i, j, count))) return memo[(i, j, count)];
+
+            int skip = 0; int include1 = 0, include2 = 0;
+            if (text1[i] == text2[j])
+            {
+                count++;
+                skip = LongestCommonSubsequenceDFS(i + 1, j + 1, count, text1, text2, memo);
+            }
+            else
+            {
+                include1 = LongestCommonSubsequenceDFS(i + 1, j, count, text1, text2, memo);
+                include2 = LongestCommonSubsequenceDFS(i, j + 1, count, text1, text2, memo);
+            }
+            memo[(i, j, count)] = Math.Max(skip, Math.Max(include1, include2));
+            return memo[(i, j, count)];
+        }
+
+        public static int FurthestBuilding(int[] heights, int bricks, int ladders)
+        {
+            int i = 0;
+            while (i < heights.Length)
+            {
+                if (i == heights.Length - 1) break;
+                if (heights[i] - heights[i + 1] >= 0)
+                    i++;
+                else if (bricks > 0 || ladders > 0)
+                {
+                    if (bricks - Math.Abs(heights[i] - heights[i + 1]) >= 0)
+                    {
+                        bricks -= Math.Abs(heights[i] - heights[i + 1]);
+                        i++;
+                    }
+                    else if (ladders > 0)
+                    {
+                        ladders--;
+                        i++;
+                    }
+                    else break;
+                }
+                else break;
+            }
+
+            return i;
+        }
+        public static int SingleNonDuplicate(int[] nums)
+        {
+            int left = 0;
+            int right = nums.Length - 1;
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+                if (mid % 2 == 0 && nums[mid] == nums[mid - 1])
+                    left = mid + 1;
+                else if (mid % 2 == 0 && nums[mid] == nums[mid + 1])
+                    left = mid + 1;
+                else if (mid % 2 != 0 && nums[mid] != nums[mid - 1] || nums[mid] == nums[mid + 1])
+                    right = mid - 1;
+                else if (mid % 2 != 0 && nums[mid] != nums[mid + 1] || nums[mid] == nums[mid - 1])
+                    right = mid - 1;
+                else return nums[mid];
+            }
+
+            return -1;
+        }
         public static long MinimumHealth(int[] damage, int armor)
         {
             long total = 1;

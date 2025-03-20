@@ -12,5 +12,5 @@ using Node = Neetcode150.Meta.Node;
 //var root = TreeProblems.BuildTree(arr);
 //TreeProblems.PrintBST(root);
 //int[] nums = [1, 0, 1];int[][] queries = [[0, 2]];
-int[] damage = [3,3,3];
-Console.WriteLine(SolutionMarch.MinimumHealth(damage, 0));
+int[] nums = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+Console.WriteLine(SolutionMarch.MySqrt(36));
