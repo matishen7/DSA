@@ -13,18 +13,45 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static IList<IList<int>> ZigzagLevelOrder(TreeNode root)
+        {
+            var result = new List<IList<int>>();
+            if (root == null) return result;
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            int level = 0;
+            while (queue.Count > 0)
+            {
+                int size = queue.Count;
+                var order = new List<int>();
+                for (int i = 0; i < size; i++)
+                {
+                    var curr = queue.Dequeue();
+                    order.Add(curr.val);
+
+                    if (curr.left != null) queue.Enqueue(curr.left);
+                    if (curr.right != null) queue.Enqueue(curr.right);
+                }
+                if (level % 2 == 1)
+                    order.Reverse();
+                result.Add(order);
+                level++;
+            }
+
+            return result;
+        }
         public static int MinDays(int n)
         {
-            var memo = new Dictionary<(int,int), int>();
-            var result = MinDaysDFS(n,0, memo);
+            var memo = new Dictionary<(int, int), int>();
+            var result = MinDaysDFS(n, 0, memo);
             return result;
         }
 
-        public static int MinDaysDFS(int n, int days, Dictionary<(int, int),int> memo)
+        public static int MinDaysDFS(int n, int days, Dictionary<(int, int), int> memo)
         {
             if (n <= 0) return days;
 
-            if (memo.ContainsKey((n,days))) return memo[(n,days)];
+            if (memo.ContainsKey((n, days))) return memo[(n, days)];
 
             int minDays1 = int.MaxValue;
             int minDays2 = int.MaxValue;

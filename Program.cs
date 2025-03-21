@@ -8,9 +8,9 @@ using static Neetcode150.LinkedListProblems;
 using static Neetcode150.Meta;
 using Node = Neetcode150.Meta.Node;
 
-//int?[] arr = [5, 5, 5, 5, 5, null, 5];
-//var root = TreeProblems.BuildTree(arr);
-//TreeProblems.PrintBST(root);
-//int[] nums = [1, 0, 1];int[][] queries = [[0, 2]];
+int?[] arr = [3, 9, 20, null, null, 15, 7];
+var root = TreeProblems.BuildTree(arr);
+TreeProblems.PrintBST(root);
 
-Console.WriteLine(SolutionMarch.MinDays(6));
+
+Console.WriteLine(SolutionMarch.ZigzagLevelOrder(root));
