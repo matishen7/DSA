@@ -13,6 +13,100 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int MinDays(int n)
+        {
+            var memo = new Dictionary<(int,int), int>();
+            var result = MinDaysDFS(n,0, memo);
+            return result;
+        }
+
+        public static int MinDaysDFS(int n, int days, Dictionary<(int, int),int> memo)
+        {
+            if (n <= 0) return days;
+
+            if (memo.ContainsKey((n,days))) return memo[(n,days)];
+
+            int minDays1 = int.MaxValue;
+            int minDays2 = int.MaxValue;
+            int minDays3 = int.MaxValue;
+
+            if (n % 2 == 0)
+                minDays1 = MinDaysDFS(n - (n / 2), days + 1, memo);
+            if (n % 3 == 0)
+                minDays2 = MinDaysDFS(n - (2 * (n / 3)), days + 1, memo);
+
+            minDays3 = MinDaysDFS(n - 1, days + 1, memo);
+
+            memo[(n, days)] = Math.Min(minDays1, Math.Min(minDays2, minDays3));
+            return memo[(n, days)];
+        }
+        public int MaxProductDifference(int[] nums)
+        {
+            int biggest = 0;
+            int secondBiggest = 0;
+            int smallest = int.MaxValue;
+            int secondSmallest = int.MaxValue;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] > biggest)
+                {
+                    secondBiggest = biggest;
+                    biggest = nums[i];
+                }
+
+                else secondBiggest = Math.Max(secondBiggest, nums[i]);
+
+                if (smallest > nums[i])
+                {
+                    secondSmallest = smallest;
+                    smallest = nums[i];
+                }
+                else secondSmallest = Math.Min(secondSmallest, nums[i]);
+            }
+
+            return (biggest * secondBiggest) - (smallest * secondSmallest);
+        }
+        public static string LargestGoodInteger(string num)
+        {
+            var list = new List<string>()
+            { "999", "888","777","666","555","444","333","222","111","000",};
+
+            foreach (var item in list)
+            {
+                if (num.Contains(item)) return item;
+            }
+
+            return string.Empty;
+
+        }
+        public static IList<string> FizzBuzz(int n)
+        {
+            var ans = new List<string>();
+            for (int i = 1; i <= n; i++)
+            {
+                if (i % 3 == 0 && i % 5 == 0) ans.Add("FizzBuzz");
+                else if (i % 3 == 0) ans.Add("Fizz");
+                else if (i % 5 == 0) ans.Add("Buzz");
+                else ans.Add(i.ToString());
+            }
+
+            return ans;
+        }
+        public static bool IsPowerOfThree(int n)
+        {
+            return n > 0 && 1162261467 % n == 0;
+        }
+        public static int HammingWeight(int n)
+        {
+            int w = 0;
+            while (n > 0)
+            {
+                if (n % 2 == 1) w++;
+                n /= 10;
+            }
+            return w;
+        }
         public static int MySqrt(int x)
         {
             if (x < 2) return x;
@@ -23,7 +117,7 @@ namespace Neetcode150.LeetcodeMarch
             while (left <= right)
             {
                 mid = (left + right) / 2;
-                num = (long) mid * mid;
+                num = (long)mid * mid;
                 if (num < x)
                     left = mid + 1;
                 else if (num > x) right = mid - 1;
