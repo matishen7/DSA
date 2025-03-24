@@ -15,5 +15,5 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(2);
 //var node2 = new ListNode(1, node3);
 //var node1 = new ListNode(1, node2);
-int[] arr = [11, 13, 17, 23, 29, 31, 7, 5, 2, 3];int k = 3, threshold = 5;
-Console.WriteLine(SolutionMarch.NumOfSubarrays(arr, k, threshold));
+string s = "abciiidef"; int k = 3;
+Console.WriteLine(SolutionMarch.MaxVowels(s, k));

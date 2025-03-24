@@ -13,6 +13,34 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int MaxVowels(string s, int k)
+        {
+            var vowels = new HashSet<char>()
+                {'a', 'o', 'i', 'e', 'u'};
+
+            int count = 0;
+            int right = 0;
+            double sum = 0;
+            while (right < k && right < s.Length)
+            {
+                if (vowels.Contains(s[right])) count++;
+                right++;
+            }
+            int max = 0;
+            max = Math.Max(count, max);
+            int left = 0;
+            while (right < s.Length)
+            {
+                if (vowels.Contains(s[right])) count++;
+                if (vowels.Contains(s[left])) count--;
+
+                max = Math.Max(count, max);
+                right++;
+                left++;
+            }
+
+            return max;
+        }
         public static int NumOfSubarrays(int[] arr, int k, int threshold)
         {
             int count = 0;
