@@ -13,6 +13,26 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static ListNode DeleteDuplicates(ListNode head)
+        {
+            if (head == null) return null;
+            var dummy = new ListNode(200);
+            var result = dummy;
+            var prev = dummy;
+            var curr = head;
+            while (curr != null)
+            {
+                if (curr.val != prev.val)
+                {
+                    var node = new ListNode(curr.val);
+                    dummy.next = node;
+                    dummy = dummy.next;
+                }
+                prev = curr;
+                curr = curr.next;
+            }
+            return result.next;
+        }
         public static IList<IList<int>> ZigzagLevelOrder(TreeNode root)
         {
             var result = new List<IList<int>>();

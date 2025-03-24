@@ -12,5 +12,7 @@ int?[] arr = [3, 9, 20, null, null, 15, 7];
 var root = TreeProblems.BuildTree(arr);
 TreeProblems.PrintBST(root);
 
-
-Console.WriteLine(SolutionMarch.ZigzagLevelOrder(root));
+var node3 = new ListNode(2);
+var node2 = new ListNode(1, node3);
+var node1 = new ListNode(1, node2);
+Console.WriteLine(SolutionMarch.DeleteDuplicates(node1));
