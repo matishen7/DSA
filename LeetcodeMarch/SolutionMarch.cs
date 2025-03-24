@@ -13,6 +13,31 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int NumOfSubarrays(int[] arr, int k, int threshold)
+        {
+            int count = 0;
+            int right = 0;
+            double sum = 0;
+            while (right < k && right < arr.Length)
+            {
+                sum += arr[right];
+                right++;
+            }
+
+            if ((double)(sum / k) >= threshold) count++;
+            int left = 0;
+            while (right < arr.Length)
+            {
+                sum += arr[right];
+                sum -= arr[left];
+                if ((double)(sum / k) >= threshold) count++;
+
+                left++;
+                right++;
+            }
+
+            return count;
+        }
         public static string KthLargestNumber(string[] nums, int k)
         {
             for (int i = 0; i < nums.Length; i++)
