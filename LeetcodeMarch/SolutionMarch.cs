@@ -13,13 +13,60 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+
+        public static IList<int> AddToArrayForm(int[] num, int k)
+        {
+            int carry = 0;
+            int i = num.Length - 1;
+            var result = new List<int>();
+            var knum = new List<int>();
+            while (k > 0)
+            {
+                int digit = k % 10;
+                k /= 10;
+                knum.Insert(0,digit);
+            }
+            int j = knum.Count - 1;
+            while (i >= 0 && j >= 0)
+            {
+                int digit = num[i] + knum[j] + carry;
+                carry = digit / 10;
+                digit = digit % 10;
+
+                result.Insert(0,digit);
+                i--;
+                j--;
+            }
+            while (i >= 0)
+            {
+                int digit = num[i] + carry;
+                carry = digit / 10;
+                digit = digit % 10;
+
+                result.Insert(0, digit);
+                i--;
+            }
+            while (j >= 0)
+            {
+                int digit = knum[j] + carry;
+                carry = digit / 10;
+                digit = digit % 10;
+
+                result.Insert(0, digit);
+                j--;
+            }
+            if (carry != 0)
+                result.Insert(0, carry);
+            return result;
+        }
+
         public static IList<int> LargestValues(TreeNode root)
         {
             if (root == null) return new List<int>();
             var result = new List<int>();
             var queue = new Queue<TreeNode>();
             queue.Enqueue(root);
-            
+
             while (queue.Count > 0)
             {
                 int size = queue.Count;
