@@ -13,6 +13,46 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static string KthLargestNumber(string[] nums, int k)
+        {
+            for (int i = 0; i < nums.Length; i++)
+            {
+                for (int j = 0; j < nums.Length; j++)
+                {
+                    if (nums[i].Length > nums[j].Length)
+                    {
+                        var temp = nums[i];
+                        nums[i] = nums[j];
+                        nums[j] = temp;
+                    }
+                    else if (nums[i].Length == nums[j].Length)
+                    {
+                        if (LargestNumber(nums[i], nums[j]) == 0)
+                        {
+                            var temp = nums[i];
+                            nums[i] = nums[j];
+                            nums[j] = temp;
+                        }
+                    }
+                    
+                }
+            }
+
+            return nums[k-1];
+        }
+
+        private static int LargestNumber(string num1, string num2)
+        {
+            int i = 0;
+            while (i < num1.Length)
+            {
+                if (num1[i] - '0' == num2[i] - '0')
+                    i++;
+                else if (num1[i] - '0' > num2[i] - '0') return 0;
+                else return 1;
+            }
+            return 0;
+        }
 
         public static IList<int> AddToArrayForm(int[] num, int k)
         {
@@ -24,7 +64,7 @@ namespace Neetcode150.LeetcodeMarch
             {
                 int digit = k % 10;
                 k /= 10;
-                knum.Insert(0,digit);
+                knum.Insert(0, digit);
             }
             int j = knum.Count - 1;
             while (i >= 0 && j >= 0)
@@ -33,7 +73,7 @@ namespace Neetcode150.LeetcodeMarch
                 carry = digit / 10;
                 digit = digit % 10;
 
-                result.Insert(0,digit);
+                result.Insert(0, digit);
                 i--;
                 j--;
             }

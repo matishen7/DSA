@@ -15,5 +15,5 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(2);
 //var node2 = new ListNode(1, node3);
 //var node1 = new ListNode(1, node2);
-int[] arr = [9];
-Console.WriteLine(SolutionMarch.AddToArrayForm(arr, 10));
+string[] nums = ["2", "21", "12", "1"]; int k = 3;
+Console.WriteLine(SolutionMarch.KthLargestNumber(nums, k));
