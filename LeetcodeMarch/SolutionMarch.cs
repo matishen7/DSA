@@ -13,6 +13,30 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static IList<int> LargestValues(TreeNode root)
+        {
+            if (root == null) return new List<int>();
+            var result = new List<int>();
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            
+            while (queue.Count > 0)
+            {
+                int size = queue.Count;
+                int max = int.MinValue;
+                for (int i = 0; i < size; i++)
+                {
+                    var node = queue.Dequeue();
+                    if (max < node.val) max = node.val;
+
+                    if (node.left != null) queue.Enqueue(node.left);
+                    if (node.right != null) queue.Enqueue(node.right);
+                }
+                result.Add(max);
+            }
+
+            return result;
+        }
         public static ListNode DeleteDuplicates(ListNode head)
         {
             if (head == null) return null;
