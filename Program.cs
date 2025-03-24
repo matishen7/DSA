@@ -15,5 +15,5 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(2);
 //var node2 = new ListNode(1, node3);
 //var node1 = new ListNode(1, node2);
-string s = "abciiidef"; int k = 3;
-Console.WriteLine(SolutionMarch.MaxVowels(s, k));
+int[] nums = [1, 2, 1, 2, 1, 2, 1, 2];int k = 1;
+Console.WriteLine(SolutionMarch.MaxSubarrayLength(nums, k));

@@ -13,6 +13,37 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int MaxSubarrayLength(int[] nums, int k)
+        {
+            var map = new Dictionary<int, int>();
+            int left = 0;
+            int right = 0;
+            int max = 0;
+            while (right < nums.Length)
+            {
+                if (!map.ContainsKey(nums[right]))
+                {
+                    map.Add(nums[right], 1);
+                    right++;
+                    max = Math.Max(max, right - left);
+                }
+                else
+                {
+                    map[nums[right]]++;
+                    while (map[nums[right]] > k)
+                    {
+                        map[nums[left]]--;
+                        left += 1;
+                    }
+                    max = Math.Max(max, right - left + 1);
+                    right++;
+                }
+
+
+            }
+
+            return max;
+        }
         public static int MaxVowels(string s, int k)
         {
             var vowels = new HashSet<char>()
@@ -87,11 +118,11 @@ namespace Neetcode150.LeetcodeMarch
                             nums[j] = temp;
                         }
                     }
-                    
+
                 }
             }
 
-            return nums[k-1];
+            return nums[k - 1];
         }
 
         private static int LargestNumber(string num1, string num2)
