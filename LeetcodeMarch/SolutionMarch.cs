@@ -13,6 +13,74 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int ClosestMeetingNode(int[] edges, int node1, int node2)
+        {
+            var adjList = new Dictionary<int, List<int>>();
+            for (int i = 0; i < edges.Length; i++)
+            {
+                adjList.Add(i, new List<int>() { });
+            }
+            for (int i = 0; i < edges.Length; i++)
+            {
+                if (edges[i] != -1)
+                    adjList[i].Add(edges[i]);
+            }
+
+            var queue = new Queue<(int node, int depth)>();
+            queue.Enqueue((node1, 0));
+            var visited = new HashSet<int>();
+            var fromNode1 = new int[edges.Length];
+            Array.Fill(fromNode1, -1);
+            while (queue.Count > 0)
+            {
+                var curr = queue.Dequeue();
+                visited.Add(curr.node);
+                fromNode1[curr.node] = curr.depth;
+
+                foreach (var nei in adjList[curr.node])
+                {
+                    if (!visited.Contains(nei))
+                    {
+                        queue.Enqueue((nei, curr.depth + 1));
+                    }
+                }
+            }
+
+            queue.Enqueue((node2, 0));
+            visited.Clear();
+            var fromNode2 = new int[edges.Length];
+            Array.Fill(fromNode2, -1);
+            while (queue.Count > 0)
+            {
+                var curr = queue.Dequeue();
+                visited.Add(curr.node);
+                fromNode2[curr.node] = curr.depth;
+
+                foreach (var nei in adjList[curr.node])
+                {
+                    if (!visited.Contains(nei))
+                    {
+                        queue.Enqueue((nei, curr.depth + 1));
+                    }
+                }
+            }
+            int minDepth = int.MaxValue;
+            int result = -1;
+            for (int i = 0; i < edges.Length; i++)
+            {
+                if (fromNode1[i] != -1 && fromNode2[i] != -1)
+                {
+                    int dist = Math.Max(fromNode1[i], fromNode2[i]);
+                    if (dist < minDepth)
+                    {
+                        minDepth = dist;
+                        result = i;
+                    }
+                }
+            }
+
+            return result;
+        }
         public static int MaxSubarrayLength(int[] nums, int k)
         {
             var map = new Dictionary<int, int>();

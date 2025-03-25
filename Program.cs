@@ -15,5 +15,5 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(2);
 //var node2 = new ListNode(1, node3);
 //var node1 = new ListNode(1, node2);
-int[] nums = [1, 2, 1, 2, 1, 2, 1, 2];int k = 1;
-Console.WriteLine(SolutionMarch.MaxSubarrayLength(nums, k));
+int[] edges = [2,0,0];int node1 = 2, node2 = 0;
+Console.WriteLine(SolutionMarch.ClosestMeetingNode(edges, node1, node2));
