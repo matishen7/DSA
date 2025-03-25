@@ -13,6 +13,47 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public int ClosedIsland(int[][] grid)
+        {
+
+        }
+        public static long MinimumFuelCost(int[][] roads, int seats)
+        {
+            var adjList = new Dictionary<long, List<long>>();
+
+            int n = roads.Length + 1;
+            for (int i = 0; i < n; i++)
+                adjList.Add(i, new List<long>());
+
+            for (int i = 0; i < roads.Length; i++)
+            {
+                var src = roads[i][0];
+                var dst = roads[i][1];
+                adjList[src].Add(dst);
+                adjList[dst].Add(src);
+            }
+
+            long result = 0;
+            MinimumFuelCostDFS(0, -1, seats, adjList, ref result);
+
+            return result;
+        }
+        public static long MinimumFuelCostDFS(long node, long parent, int seats, Dictionary<long, List<long>> adjList, ref long result)
+        {
+            long passengers = 0;
+            foreach (var nei in adjList[node])
+            {
+                if (nei != parent)
+                {
+                    long p = MinimumFuelCostDFS(nei, node, seats, adjList, ref result);
+                    passengers += p;
+                    result += (long)Math.Ceiling((double)p / seats);
+                }
+            }
+
+            return passengers + 1;
+        }
+
         public static int ClosestMeetingNode(int[] edges, int node1, int node2)
         {
             var adjList = new Dictionary<int, List<int>>();

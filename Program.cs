@@ -15,5 +15,5 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(2);
 //var node2 = new ListNode(1, node3);
 //var node1 = new ListNode(1, node2);
-int[] edges = [2,0,0];int node1 = 2, node2 = 0;
-Console.WriteLine(SolutionMarch.ClosestMeetingNode(edges, node1, node2));
+int[][] roads = [[0, 1], [0, 2], [0, 3]]; int seats = 5;
+Console.WriteLine(SolutionMarch.MinimumFuelCost(roads, seats));
