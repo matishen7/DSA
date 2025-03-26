@@ -13,6 +13,63 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static string Tree2str(TreeNode root)
+        {
+            StringBuilder sb = new StringBuilder();
+            Tree2strDFS(root, sb);
+            return sb.ToString();
+        }
+        public static void Tree2strDFS(TreeNode root, StringBuilder result)
+        {
+            if (root == null) return;
+
+            result.Append(root.val);
+
+            if (root.left == null && root.right != null)
+            {
+                result.Append("()");
+                result.Append("(");
+                Tree2strDFS(root.right, result);
+                result.Append(")");
+            }
+
+            else if (root.left != null && root.right != null)
+            {
+                result.Append("(");
+                Tree2strDFS(root.left, result);
+                result.Append(")");
+                result.Append("(");
+                Tree2strDFS(root.right, result);
+                result.Append(")");
+            }
+
+            else if (root.left != null && root.right == null)
+            {
+                result.Append("(");
+                Tree2strDFS(root.left, result);
+                result.Append(")");
+            }
+        }
+        public static bool EvaluateTree(TreeNode root)
+        {
+            return EvaluateTreeDFS(root);
+        }
+
+        public static bool EvaluateTreeDFS(TreeNode root)
+        {
+            if (root.left == null && root.right == null) return root.val == 1;
+
+            if (root.val == 2)
+            {
+                var op = EvaluateTreeDFS(root.left) || EvaluateTreeDFS(root.right);
+                return op;
+            }
+            else
+            {
+                var op = EvaluateTreeDFS(root.left) && EvaluateTreeDFS(root.right);
+                return op;
+            }
+        }
 
         public static bool LeafSimilar(TreeNode root1, TreeNode root2)
         {
@@ -21,7 +78,7 @@ namespace Neetcode150.LeetcodeMarch
             var list2 = new List<int>();
             LeafSimilarDFS(root2, list2);
             if (list1.Count != list2.Count) return false;
-            for (int i = 0;i < list2.Count;i++)
+            for (int i = 0; i < list2.Count; i++)
                 if (list1[i] != list2[i]) return false;
             return true;
         }
