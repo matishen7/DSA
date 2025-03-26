@@ -13,6 +13,67 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static bool IsCompleteTree(TreeNode root)
+        {
+            Queue<TreeNode?> queue = new Queue<TreeNode?>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                TreeNode node = queue.Dequeue();
+
+                if (node != null)
+                {
+                    queue.Enqueue(node.left);
+                    queue.Enqueue(node.right);
+                }
+                else
+                {
+                    while (queue.Count > 0)
+                    {
+                        if (queue.Dequeue() != null) return false;
+                    }
+                }
+            }
+
+            return true;
+
+        }
+
+        public static int MinTime(int n, int[][] edges, IList<bool> hasApple)
+        {
+            var adjList = new Dictionary<int, List<int>>();
+            for (int i = 0; i < n; i++)
+            {
+                adjList.Add(i, new List<int>());
+            }
+
+            for (int i = 0; i < edges.Length; i++)
+            {
+                var src = edges[i][0];
+                var dst = edges[i][1];
+                adjList[src].Add(dst);
+                adjList[dst].Add(src);
+            }
+
+            var result = MinTimeDFS(0, -1, adjList, hasApple);
+            return result;
+        }
+
+        public static int MinTimeDFS(int node, int parent, Dictionary<int, List<int>> adjList, IList<bool> hasApple)
+        {
+            int time = 0;
+            foreach (var nei in adjList[node])
+            {
+                if (nei != parent)
+                {
+                    int childTime = MinTimeDFS(nei, node, adjList, hasApple);
+                    if (childTime > 0 || hasApple[nei])
+                        time += 2 + childTime;
+                }
+            }
+
+            return time;
+        }
         public static string Tree2str(TreeNode root)
         {
             StringBuilder sb = new StringBuilder();
