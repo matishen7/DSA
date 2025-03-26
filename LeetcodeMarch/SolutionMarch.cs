@@ -13,9 +13,107 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
-        public int ClosedIsland(int[][] grid)
-        {
 
+        public static bool LeafSimilar(TreeNode root1, TreeNode root2)
+        {
+            var list1 = new List<int>();
+            LeafSimilarDFS(root1, list1);
+            var list2 = new List<int>();
+            LeafSimilarDFS(root2, list2);
+            if (list1.Count != list2.Count) return false;
+            for (int i = 0;i < list2.Count;i++)
+                if (list1[i] != list2[i]) return false;
+            return true;
+        }
+        public static void LeafSimilarDFS(TreeNode root, List<int> list)
+        {
+            if (root == null) return;
+
+            if (root.left == null && root.right == null) list.Add(root.val);
+
+            LeafSimilarDFS(root.left, list);
+            LeafSimilarDFS(root.right, list);
+
+        }
+        public static TreeNode MergeTrees(TreeNode root1, TreeNode root2)
+        {
+            var node = MergeTreesDFS(root1, root2);
+            return node;
+        }
+
+        public static TreeNode MergeTreesDFS(TreeNode root1, TreeNode root2)
+        {
+            if (root1 == null) return root2;
+            if (root2 == null) return root1;
+
+            var node = new TreeNode(root1.val + root2.val);
+            node.left = MergeTreesDFS(root1.left, root2.left);
+            node.right = MergeTreesDFS(root1.right, root2.right);
+            return node;
+        }
+        public static int ClosedIsland(int[][] grid)
+        {
+            int n = grid.Length;
+            int m = grid[0].Length;
+            int count = 0;
+            PrintGrid(grid);
+            Console.WriteLine("---------");
+            Queue<(int row, int col)> queue = new Queue<(int row, int col)>();
+            var visited = new HashSet<(int, int)>();
+            for (int i = 1; i < n - 1; i++)
+                for (int j = 1; j < m - 1; j++)
+                {
+                    if (grid[i][j] == 0)
+                    {
+                        queue.Enqueue((i, j));
+                        visited.Add((i, j));
+
+                        while (queue.Count > 0)
+                        {
+                            (int row, int col) = queue.Dequeue();
+
+                            if (!visited.Contains((row, col))) grid[row][col] = 1;
+                            visited.Add((row, col));
+                            if (row + 1 < n - 1 && grid[row + 1][col] == 0 && !visited.Contains((row + 1, col)))
+                                queue.Enqueue((row + 1, col));
+                            if (row - 1 > 0 && grid[row - 1][col] == 0 && !visited.Contains((row - 1, col)))
+                                queue.Enqueue((row - 1, col));
+                            if (col + 1 < m - 1 && grid[row][col + 1] == 0 && !visited.Contains((row, col + 1)))
+                                queue.Enqueue((row, col + 1));
+                            if (col - 1 > 0 && grid[row][col - 1] == 0 && !visited.Contains((row, col - 1)))
+                                queue.Enqueue((row, col - 1));
+                        }
+                    }
+                }
+
+            for (int i = 1; i < n - 1; i++)
+                for (int j = 1; j < m - 1; j++)
+                {
+                    if (grid[i][j] == 0)
+                    {
+                        {
+                            if ((i + 1 < n && grid[i + 1][j] == 1) &&
+                                    (i - 1 >= 0 && grid[i - 1][j] == 1) &&
+                                    (j - 1 >= 0 && grid[i][j - 1] == 1) &&
+                                    (j + 1 < m && grid[i][j + 1] == 1)
+                                ) count++;
+                        }
+                    }
+                }
+            PrintGrid(grid);
+            return count;
+        }
+
+        private static void PrintGrid(int[][] grid)
+        {
+            for (int i = 0; i < grid.Length; i++)
+            {
+                for (int j = 0; j < grid[i].Length; j++)
+                {
+                    Console.Write(grid[i][j] + " ");
+                }
+                Console.WriteLine();
+            }
         }
         public static long MinimumFuelCost(int[][] roads, int seats)
         {
