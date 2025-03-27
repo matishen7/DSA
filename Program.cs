@@ -8,7 +8,7 @@ using static Neetcode150.LinkedListProblems;
 using static Neetcode150.Meta;
 using Node = Neetcode150.Meta.Node;
 
-int?[] arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, null, null, 15];
+int?[] arr = [1, 3, 2, 5, null, null, 9, 6, null, 7];
 var root1 = TreeProblems.BuildTree(arr);
 TreeProblems.PrintBST(root1);
 
@@ -16,4 +16,4 @@ TreeProblems.PrintBST(root1);
 //var node2 = new ListNode(1, node3);
 //var node1 = new ListNode(1, node2);
 
-Console.WriteLine(SolutionMarch.IsCompleteTree(root1));
+Console.WriteLine(SolutionMarch.WidthOfBinaryTree(root1));

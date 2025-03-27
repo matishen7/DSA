@@ -13,6 +13,34 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int WidthOfBinaryTree(TreeNode root)
+        {
+            Queue<(int no, TreeNode node)> queue = new Queue<(int no, TreeNode node)>();
+            queue.Enqueue((0, root));
+            int max = 0;
+            int level = 0;
+            while (queue.Count > 0)
+            {
+                int size = queue.Count;
+                int leftmost = queue.Peek().no;
+                int rightmost = int.MinValue;
+                for (int i = 0; i < size; i++)
+                {
+                    var curr = queue.Dequeue();
+                    rightmost = Math.Max(rightmost, curr.no);
+                    if (curr.node.left != null)
+                        queue.Enqueue((2 * curr.no + 1, curr.node.left));
+
+                    if (curr.node.right != null)
+                        queue.Enqueue((2 * curr.no + 2, curr.node.right));
+
+                }
+
+                max = Math.Max(max, rightmost - leftmost + 1);
+            }
+
+            return max;
+        }
         public static bool IsCompleteTree(TreeNode root)
         {
             Queue<TreeNode?> queue = new Queue<TreeNode?>();
