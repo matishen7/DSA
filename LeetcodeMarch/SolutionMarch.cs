@@ -13,12 +13,60 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static ListNode SwapNodes(ListNode head, int k)
+        {
+            var list = new List<int>();
+            var curr = head;
+            while (curr != null)
+            {
+                list.Add(curr.val);
+                curr = curr.next;
+            }
+
+            var temp = list[k - 1];
+            list[k - 1] = list[list.Count - k];
+            list[list.Count - k] = temp;
+            ListNode prev = null;
+            for (int i = list.Count - 1; i>=0 ; i--)
+            {
+                var node = new ListNode(list[i]);
+                node.next = prev;
+                prev = node;
+            }
+
+            return prev;
+
+        }
+        public static ListNode RemoveNodes(ListNode head)
+        {
+            var list = new List<int>();
+            var curr = head;
+            while (curr != null)
+            {
+                list.Add(curr.val);
+                curr = curr.next;
+            }
+
+            int max = 0;
+            ListNode prev = null;
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (list[i] >= max)
+                {
+                    max = list[i];
+                    var node = new ListNode(list[i]);
+                    node.next = prev;
+                    prev = node;
+                }
+            }
+
+            return prev;
+        }
         public static int WidthOfBinaryTree(TreeNode root)
         {
             Queue<(int no, TreeNode node)> queue = new Queue<(int no, TreeNode node)>();
             queue.Enqueue((0, root));
             int max = 0;
-            int level = 0;
             while (queue.Count > 0)
             {
                 int size = queue.Count;
