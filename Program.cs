@@ -17,7 +17,7 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(3, node4);
 //var node2 = new ListNode(2);
 //var node1 = new ListNode(1, node2);
-string num = "10"; int k = 2;
-Console.WriteLine(SolutionMarch.RemoveKdigits(num, k));
+int[] nums = [2, 1, 3, 5, 6]; int k = 5, multiplier = 2;
+Console.WriteLine(SolutionMarch.GetFinalState(nums, k, multiplier));
 
 

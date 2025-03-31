@@ -13,6 +13,50 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+
+        public static int[] GetFinalState(int[] nums, int k, int multiplier)
+        {
+            var min = new PriorityQueue<(int num, int index), (int, int)>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                min.Enqueue((nums[i], i), (nums[i], i));
+            }
+
+            while (min.Count > 0 && k > 0)
+            {
+                var curr = min.Dequeue();
+                var result = curr.num * multiplier;
+                nums[curr.index] = result;
+                min.Enqueue((result, curr.index), (result, curr.index));
+                k--;
+            }
+
+            return nums;
+        }
+        public static long PickGifts(int[] gifts, int k)
+        {
+            var max = new PriorityQueue<long, long>();
+            for (int i = 0; i < gifts.Length; i++)
+            {
+                max.Enqueue(gifts[i], -gifts[i]);
+            }
+
+            while (max.Count > 0 && k > 0)
+            {
+                var curr = max.Dequeue();
+                curr = (int)Math.Floor(Math.Sqrt(curr));
+                max.Enqueue(curr, -curr);
+                k--;
+            }
+            long sum = 0;
+            while (max.Count > 0)
+            {
+                var curr = max.Dequeue();
+                sum+= curr;
+            }
+
+            return sum;
+        }
         public static string RemoveKdigits(string num, int k)
         {
             var stack = new Stack<char>();
