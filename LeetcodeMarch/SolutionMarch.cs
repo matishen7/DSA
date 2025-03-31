@@ -13,6 +13,77 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static string RemoveKdigits(string num, int k)
+        {
+            var stack = new Stack<char>();
+            for (int i = 0; i < num.Length; i++)
+            {
+                char c = num[i];
+                while (k > 0 && stack.Count > 0 && stack.Peek() > c)
+                {
+                    stack.Pop();
+                    k--;
+                }
+                stack.Push(c);
+            }
+
+            while (k > 0 && stack.Count > 0)
+            {
+                stack.Pop();
+                k--;
+            }
+            var sb = new StringBuilder();
+            while (stack.Count > 0)
+            { 
+                sb.Insert(0, stack.Pop());
+            }
+            int j = 0;
+            while (j < sb.Length && sb[j] == '0')
+            {
+                j++;
+            }
+
+            var result = sb.ToString().Substring(j);
+            return (result.Length == 0) ? "0" : result;
+
+        }
+        public static bool ValidateStackSequences(int[] pushed, int[] popped)
+        {
+            int left = 0;
+            int right = 0;
+            int n = pushed.Length;
+            var stack = new Stack<int>();
+            while (left < n && right < n)
+            {
+                if (pushed[left] != popped[right])
+                {
+                    stack.Push(pushed[left]);
+                    left += 1;
+                }
+                else
+                {
+                    right += 1;
+                    while (stack.Count > 0 && stack.Peek() == popped[right])
+                    {
+                        stack.Pop();
+                        right += 1;
+                    }
+                    left += 1;
+                }
+            }
+
+            while (right < n && stack.Count > 0)
+            {
+                if (stack.Peek() == popped[right])
+                {
+                    stack.Pop();
+                    right += 1;
+                }
+                else return false;
+            }
+
+            return true;
+        }
         public static ListNode SwapNodes(ListNode head, int k)
         {
             var list = new List<int>();
@@ -27,7 +98,7 @@ namespace Neetcode150.LeetcodeMarch
             list[k - 1] = list[list.Count - k];
             list[list.Count - k] = temp;
             ListNode prev = null;
-            for (int i = list.Count - 1; i>=0 ; i--)
+            for (int i = list.Count - 1; i >= 0; i--)
             {
                 var node = new ListNode(list[i]);
                 node.next = prev;

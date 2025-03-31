@@ -17,16 +17,7 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(3, node4);
 //var node2 = new ListNode(2);
 //var node1 = new ListNode(1, node2);
+string num = "10"; int k = 2;
+Console.WriteLine(SolutionMarch.RemoveKdigits(num, k));
 
-//Console.WriteLine(SolutionMarch.SwapNodes(node1, 2));
 
-
-MyLinkedList myLinkedList = new MyLinkedList();
-myLinkedList.AddAtHead(1);
-myLinkedList.AddAtHead(2);
-myLinkedList.AddAtTail(3);
-myLinkedList.AddAtTail(4);
-myLinkedList.AddAtIndex(1, 2);    // linked list becomes 1->2->3
-myLinkedList.Get(1);              // return 2
-myLinkedList.DeleteAtIndex(1);    // now the linked list is 1->3
-myLinkedList.Get(1);                   // You are in "google.com", you can move back only one step to "leetcode.com". return "leetcode.com"
