@@ -17,7 +17,7 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(3, node4);
 //var node2 = new ListNode(2);
 //var node1 = new ListNode(1, node2);
-int[] nums = [2, 1, 3, 5, 6]; int k = 5, multiplier = 2;
-Console.WriteLine(SolutionMarch.GetFinalState(nums, k, multiplier));
+int[] arr = [5, 5, 4]; int k = 1;
+Console.WriteLine(SolutionMarch.FindLeastNumOfUniqueInts(arr, k));
 
 

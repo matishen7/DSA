@@ -13,6 +13,61 @@ namespace Neetcode150.LeetcodeMarch
 
     public class SolutionMarch
     {
+        public static int FindLeastNumOfUniqueInts(int[] arr, int k)
+        {
+            var freq = new Dictionary<int, int>();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (freq.ContainsKey(arr[i])) freq[arr[i]]++;
+                else freq.Add(arr[i], 1);
+            }
+
+            var max = new PriorityQueue<(int num, int count), int>();
+
+            foreach (var pair in freq)
+                max.Enqueue((pair.Key, pair.Value), pair.Value);
+
+            while (max.Count > 0 && k > 0)
+            {
+                var curr = max.Dequeue();
+                if (curr.count - 1 > 0)
+                    max.Enqueue((curr.num, curr.count - 1), curr.count - 1);
+                k--;
+            }
+
+          
+            return max.Count;
+        }
+        public static long RangeSum(int[] nums, int n, int left, int right)
+        {
+            var min = new PriorityQueue<long, long>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                long sum = nums[i];
+                min.Enqueue(sum, sum);
+                for (int j = i + 1; j < nums.Length; j++)
+                {
+                    sum += nums[j];
+                    min.Enqueue(sum, sum);
+                }
+            }
+            long summ = 0;
+            int jj = 1;
+            while (min.Count > 0 && jj < left)
+            {
+                min.Dequeue();
+                jj++;
+            }
+
+            while (min.Count > 0 && left <= right)
+            {
+                summ += min.Dequeue();
+                left++;
+            }
+
+            int mod = 1000000007;
+            return (int)summ % mod;
+        }
 
         public static int[] GetFinalState(int[] nums, int k, int multiplier)
         {
@@ -52,7 +107,7 @@ namespace Neetcode150.LeetcodeMarch
             while (max.Count > 0)
             {
                 var curr = max.Dequeue();
-                sum+= curr;
+                sum += curr;
             }
 
             return sum;
@@ -78,7 +133,7 @@ namespace Neetcode150.LeetcodeMarch
             }
             var sb = new StringBuilder();
             while (stack.Count > 0)
-            { 
+            {
                 sb.Insert(0, stack.Pop());
             }
             int j = 0;
