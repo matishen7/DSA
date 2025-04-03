@@ -1,4 +1,5 @@
 ﻿using Neetcode150;
+using Neetcode150.GraphProblems;
 using Neetcode150.LeetcodeMarch;
 using Neetcode150.MetaQuestions;
 using Neetcode150.ObjectOriented.ConnectFour;
@@ -17,7 +18,7 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(3, node4);
 //var node2 = new ListNode(2);
 //var node1 = new ListNode(1, node2);
-int[] arr = [5, 5, 4]; int k = 1;
-Console.WriteLine(SolutionMarch.FindLeastNumOfUniqueInts(arr, k));
+int[][] graph = [[1, 2], [2, 3], [5], [0], [5], [], []];
+Console.WriteLine(SolutionApril.EventualSafeNodes( graph));
 
 
