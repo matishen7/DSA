@@ -8,6 +8,52 @@ namespace Neetcode150.LeetcodeMarch
 {
     public class SolutionApril
     {
+        public static int CountCompleteComponents(int n, int[][] edges)
+        {
+            var adjList = new Dictionary<int, List<int>>();
+            for (int i = 0; i < n; i++)
+            {
+                adjList.Add(i, new List<int>());
+            }
+
+            for (int i = 0; i < edges.Length; i++)
+            {
+                var src = edges[i][0];
+                var dst = edges[i][1];
+                adjList[src].Add(dst);
+                adjList[dst].Add(src);
+            }
+
+            var visit = new HashSet<int>();
+            int result = 0;
+            for (int i = 0; i < n; i++)
+            {
+                var components = new int[2];
+                if (!visit.Contains(i))
+                {
+                    CountCompleteComponentsDFS(i, adjList, visit, components);
+                    int m = components[0];
+                    int edge = components[1];
+                    if ((m * (m - 1)) == edge) result += 1;
+                }
+            }
+
+            return result;
+        }
+        public static void CountCompleteComponentsDFS(int node, Dictionary<int, List<int>> adjList, HashSet<int> visit, int[] components)
+        {
+            visit.Add(node);
+            components[0]++;
+            components[1] += adjList[node].Count;
+            foreach (var nei in adjList[node])
+            {
+                if (!visit.Contains(nei))
+                {
+                    CountCompleteComponentsDFS(nei, adjList, visit, components);
+                }
+
+            }
+        }
         public static IList<int> EventualSafeNodes(int[][] graph)
         {
             int n = graph.Length;

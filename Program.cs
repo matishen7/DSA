@@ -18,7 +18,7 @@ using Node = Neetcode150.Meta.Node;
 //var node3 = new ListNode(3, node4);
 //var node2 = new ListNode(2);
 //var node1 = new ListNode(1, node2);
-int[][] graph = [[1, 2], [2, 3], [5], [0], [5], [], []];
-Console.WriteLine(SolutionApril.EventualSafeNodes( graph));
+int n = 6;  int[][] edges = [[0, 1], [0, 2], [1, 2], [3, 4]];
+Console.WriteLine(SolutionApril.CountCompleteComponents( n, edges));
 
 
