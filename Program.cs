@@ -3,22 +3,20 @@ using Neetcode150.GraphProblems;
 using Neetcode150.LeetcodeMarch;
 using Neetcode150.MetaQuestions;
 using Neetcode150.ObjectOriented.ConnectFour;
+using Neetcode150.Problems;
 using System;
 using static Neetcode150.Intervals;
 using static Neetcode150.LinkedListProblems;
 using static Neetcode150.Meta;
 using Node = Neetcode150.Meta.Node;
 
-//int?[] arr = [1, 3, 2, 5, null, null, 9, 6, null, 7];
+//int?[] arr = [2,1,4];
+//int?[] arr2 = [0,1,3];
 //var root1 = TreeProblems.BuildTree(arr);
+//var root2 = TreeProblems.BuildTree(arr2);
 //TreeProblems.PrintBST(root1);
-
-//var node5 = new ListNode(5);
-//var node4 = new ListNode(4, node5);
-//var node3 = new ListNode(3, node4);
-//var node2 = new ListNode(2);
-//var node1 = new ListNode(1, node2);
-int n = 6;  int[][] edges = [[0, 1], [0, 2], [1, 2], [3, 4]];
-Console.WriteLine(SolutionApril.CountCompleteComponents( n, edges));
+//TreeProblems.PrintBST(root2);
+int[] cells = [0, 1, 0, 1, 1, 0, 0, 1];int n = 7;
+Console.WriteLine(August.MaxDifference("yzyyys"));
 
 
